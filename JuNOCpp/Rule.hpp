@@ -2,6 +2,9 @@
 
 #include "./Condition.hpp"
 #include "./Attributes/Integer.hpp"
+#include "./Attributes/Boolean.hpp"
+#include "./Attributes/String.hpp"
+#include "./Attributes/Char.hpp"
 
 namespace JuNOCpp
 {
@@ -9,21 +12,28 @@ namespace JuNOCpp
     {
     private:
         Condition* cond;
-        Attributes::Integer* attr;
-        int exec_value;
+        Attributes::Attribute* attr;
+        int attr_type; // 0 - Integer; 1 - Boolean; 2 - String; 3 - Char
+        int exec_value_int;
+        bool exec_value_bool;
+        CustomString exec_value_str;
+        char exec_value_char;
 
     public:
-        Rule(const int exec_value = 0, Condition* pcond = nullptr);
+        Rule(CustomString mode = "CONJUNCTION");
 
         ~Rule();
 
         void addPremise(Attributes::Integer* pattr, const int value);
-
+        void addPremise(Attributes::Boolean* pattr, const bool value);
+        void addPremise(Attributes::String* pattr, CustomString value);
+        void addPremise(Attributes::Char* pattr, const char value);
         void addPremise(Premise* pprm);
 
-        void addCondition(Condition* cond);
-
-        void referenceAttr(Attributes::Integer* attr);
+        void referenceAttr(Attributes::Integer* attr, const int exec_value);
+        void referenceAttr(Attributes::Boolean* attr, const bool exec_value);
+        void referenceAttr(Attributes::String* attr, CustomString exec_value);
+        void referenceAttr(Attributes::Char* attr, const char exec_value);
 
         void execute();
 

@@ -8,11 +8,11 @@ using namespace Attributes;
 class Archer: public FBE
 {
 public:
-    Integer* atArcherStatus;
+    Boolean* atArcherStatus;
 public:
     Archer()
     {
-        this->atArcherStatus = new Integer(0);
+        this->atArcherStatus = new Boolean();
         this->insertAttribute(this->atArcherStatus);
     }
     ~Archer()

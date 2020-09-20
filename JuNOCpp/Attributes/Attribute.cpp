@@ -4,27 +4,34 @@ using namespace Attributes;
 
 Attribute::Attribute()
 {
-    this->currentStatus = nullptr;
-    this->previousStatus = nullptr;
 }
 
 Attribute::~Attribute()
 {
-    this->currentStatus = nullptr;
-    this->previousStatus = nullptr;
 }
 
-void Attribute::notifyPremises()
+void Attribute::notifyPremises(int current, int previous)
 {
-    Premise* aux = premises[*(int*)this->previousStatus];
+    Premise* aux = premises[previous];
     if(aux)
-        aux->conditionalCheck();
-    aux = premises[*(int*)this->currentStatus];
+        aux->conditionalCheck(current);
+    aux = premises[current];
     if(aux)
-        aux->conditionalCheck();
+        aux->conditionalCheck(current);
 }
 
-Table<Premise>* Attribute::getTable()
+void Attribute::notifyPremises(CustomString current, CustomString previous)
+{
+    Premise* aux = premises[previous];
+    if(aux)
+        aux->conditionalCheck(current);
+    aux = premises[current];
+    if(aux)
+        aux->conditionalCheck(current);
+}
+
+
+/*std::unordered_map<int, Premise*>**/Table<Premise>* Attribute::getTable()
 {
     return &premises;
 }

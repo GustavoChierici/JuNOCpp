@@ -8,14 +8,14 @@ using namespace Attributes;
 class Apple: public FBE
 {
 public:
-    Integer* atAppleStatus;
-    Integer* atAppleColor; //0 - Green; 1 - Red
+    Boolean* atAppleStatus;
+    String* atAppleColor;
 public:
     Apple()
     {
-        this->atAppleStatus = new Integer(0);
+        this->atAppleStatus = new Boolean();
         this->insertAttribute(this->atAppleStatus);
-        this->atAppleColor = new Integer(0);
+        this->atAppleColor = new String("GREEN");
         this->insertAttribute(this->atAppleColor);
     }
     ~Apple()

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Premise.hpp"
+#include "CustomString.hpp"
 #include <iostream>
+
 namespace JuNOCpp
 {
     class Rule;
@@ -11,9 +13,10 @@ namespace JuNOCpp
         int quantity;
         int true_premises;
         Rule* rule;
+        CustomString mode;
 
     public:
-        Condition();
+        Condition(CustomString mode = "CONJUNCTION");
         ~Condition();
 
         void addPremise(Premise* prm);

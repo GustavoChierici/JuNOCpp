@@ -1,15 +1,16 @@
 #pragma once
+#include "./JuNOCpp/CustomString.hpp"
 
 class ApplePI
 {
 public:
     bool status;
-    bool color; //true significa RED; false significa GREEN
+    CustomString color;
 public:
     ApplePI()
     {
         status = false;
-        color = false;
+        color = "GREEN";
     }
     ~ApplePI(){}
 };

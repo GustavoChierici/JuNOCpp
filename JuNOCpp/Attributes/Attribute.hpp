@@ -1,6 +1,7 @@
 #pragma once
 #include "../Table.hpp"
 #include "../Premise.hpp"
+#include "../CustomString.hpp"
 
 namespace JuNOCpp
 {
@@ -9,16 +10,16 @@ namespace JuNOCpp
         class Attribute {
         protected:
             Table<Premise> premises;
-            void* currentStatus;
-            void* previousStatus;
+            //std::unordered_map<int, Premise*> premises;
 
         public:
             Attribute();
             ~Attribute();
 
-            void notifyPremises();
+            void notifyPremises(int current, int previous);
+            void notifyPremises(CustomString current, CustomString previous);
 
-            Table<Premise>* getTable();
+            /*std::unordered_map<int, Premise*>**/Table<Premise>* getTable();
         };
     }
 }

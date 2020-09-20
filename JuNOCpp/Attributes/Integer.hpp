@@ -7,13 +7,18 @@ namespace JuNOCpp
     {
         class Integer: public Attribute
         {
+        private:
+            int currentStatus;
+            int previousStatus;
         public:
             Integer(int value = 0);
             ~Integer();
 
             void setStatus(int status);
 
-            int getState();
+            //void notifyPremises();
+
+            int getStatus();
         };
     }
 }

@@ -19,18 +19,15 @@ int main()
         Apple* apple_tmp = new Apple();
         apple_list.push_back(apple_tmp);
 
-        archer_tmp->atArcherStatus->setStatus(1);
-        apple_tmp->atAppleStatus->setStatus(1);
-
         //Init Rules
-        Rule* rlFireApple = new Rule(0);
-        rlFireApple->addPremise(apple_tmp->atAppleColor, 1);
-        rlFireApple->addPremise(apple_tmp->atAppleStatus, 1);
-        rlFireApple->addPremise(archer_tmp->atArcherStatus, 1);
-        rlFireApple->referenceAttr(apple_tmp->atAppleColor);
+        Rule* rlFireApple = new Rule();
+        rlFireApple->addPremise(apple_tmp->atAppleStatus, true);
+        rlFireApple->addPremise(apple_tmp->atAppleStatus, true);
+        rlFireApple->addPremise(archer_tmp->atArcherStatus, true);
+        rlFireApple->referenceAttr(apple_tmp->atAppleColor, "GREEN");
 
-        archer_tmp->atArcherStatus->setStatus(1);
-        apple_tmp->atAppleStatus->setStatus(1);
+        archer_tmp->atArcherStatus->setStatus(true);
+        apple_tmp->atAppleStatus->setStatus(true);
     }
 
     long iterations = 0;
@@ -47,7 +44,7 @@ int main()
     {
         for(int j = 0; j < percentage; j++)
         {
-            apple_list.at(j)->atAppleColor->setStatus(1);
+            apple_list.at(j)->atAppleColor->setStatus("RED");
         }
     }
     finish = clock();
@@ -66,7 +63,7 @@ int main()
 
         ApplePI* applePI_tmp = new ApplePI();
         applePI_tmp->status = true;
-        applePI_tmp->color = false;
+        applePI_tmp->color = "GREEN";
         applePI_list.push_back(applePI_tmp);
     }
 
@@ -75,16 +72,16 @@ int main()
     {
         for(int j = 0; j < percentage; j++)
         {
-            applePI_list.at(j)->color = true;
+            applePI_list.at(j)->color = "RED";
         }
 
         for(int k = 0; k < 100; k++)
         {
             if((archerPI_list.at(k)->status) &&
                (applePI_list.at(k)->status) &&
-               (applePI_list.at(k)->color))
+               (applePI_list.at(k)->color == "RED"))
             {
-                applePI_list.at(k)->color = false;
+                applePI_list.at(k)->color = "GREEN";
             }
         }
     }
