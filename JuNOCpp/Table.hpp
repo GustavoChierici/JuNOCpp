@@ -11,10 +11,10 @@ namespace JuNOCpp
     private:
         int capacity;
         int count;
-        T* array[1000];
+        T* array[2048];
 
     public:
-        Table(const int capacity = 1000)
+        Table(const int capacity = 2048)
         {
             this->capacity = capacity;
             this->count = 0;
@@ -24,14 +24,14 @@ namespace JuNOCpp
 
         void insertValue(const int key, T* value)
         {
-            int index = hashing(key);
+            unsigned int index = hashing(key);
 
             array[index] = value;
         }
 
         void insertValue(CustomString key, T* value)
         {
-            int index = hashing(key.getString());
+            unsigned int index = hashing(key.getString());
 
             array[index] = value;
         }
@@ -45,23 +45,25 @@ namespace JuNOCpp
 
         T* operator[](CustomString key)
         {
-            int index = hashing(key.getString());
+            unsigned int index = hashing(key.getString());
             //std::cout << index << std::endl;
             return array[index];
         }
 
-        int hashing(const int key)
+        unsigned int hashing(const int key)
         {
-            int num_bits = 1000;
-            unsigned int parte1 = key >> num_bits;
-            unsigned int parte2 = key & (this->capacity-1);
-            if((parte1 ^ parte2) > this->capacity)
-                return(hashing(parte1 ^ parte2));
+            int num_bits = 10;
+            int parte1 = key >> num_bits;
+            int parte2 = key & (this->capacity - 1);
+            int index = (parte1 ^ parte2);
+            int u_index = (index < 0 ? UINT_MAX - index : index);
+            if(u_index > this->capacity - 1)
+                return hashing(u_index);
             else
-                return (parte1 ^ parte2);
+                return u_index;
         }
 
-        int hashing(const char* s)
+        unsigned int hashing(const char* s)
         {
             const int p = 131;
             const int m = 1e12 + 9;
@@ -72,7 +74,7 @@ namespace JuNOCpp
                 hash = (hash + (s[i] - 'a' + 1) * pow) % m;
                 pow = (pow * p) % m;
             }
-            if(hash > this->capacity)
+            if(hash > this->capacity - 1)
                 return hashing(hash);
             return hash;
         }
