@@ -28,7 +28,7 @@ Methods, por fim, são entidades que encapsulam os métodos de um FBE, responsá
 Agora enfim sobre como o JuNOC++ funciona:
 O JuNOC++, agora em sua versão 0.1.6, possui Attributes do tipo Integer, Boolean, Char e String, e só possui as 5 entidades estritamente necessárias ao PON. Além disso, por hora uma Rule só consegue alterar um único Attribute, as Premises são todas do tipo Equal, e as Conditions do tipo Conjunction ou Disjunction. Para criar novos FBEs, derive a classe FBE do framework e inclua o header da classe do tipo de Attribute que será utilizado. Para criar uma Rule, basta criar uma instância da classe Rule da seguinte forma:
 
-_Rule* nome_da_rule = new Rule(tipo_da_condition_da_rule/*(string) - "CONJUNCTION"(default) ou "DISJUNCTION"*/);   
+_Rule* nome_da_rule = new Rule(tipo_da_condition_da_rule/\*(string) - "CONJUNCTION"(default) ou "DISJUNCTION"\*/);   
 nome_da_rule->addPremise(&attribute_a_ser_referenciado_na_premise, valor_desejado_para_que_premise_seja_aprovada);  
 nome_da_rule->addPremise(&premise_criada_separadamente);  
 nome_da_rule->referenceAttr(&attribute_a_ser_modificado_pela_rule_quando_aprovada, valor_que_deve_ser_usado_para_alterar_um_attribute);_  
