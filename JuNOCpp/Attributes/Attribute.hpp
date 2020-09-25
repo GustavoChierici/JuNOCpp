@@ -18,6 +18,7 @@ namespace JuNOCpp
 
             void notifyPremises(int current, int previous);
             void notifyPremises(CustomString current, CustomString previous);
+            void notifyPremises(double current, double previous);
 
             /*std::unordered_map<int, Premise*>**/Table<Premise>* getTable();
         };

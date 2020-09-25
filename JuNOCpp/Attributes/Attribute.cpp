@@ -30,6 +30,16 @@ void Attribute::notifyPremises(CustomString current, CustomString previous)
         aux->conditionalCheck(current);
 }
 
+void Attribute::notifyPremises(double current, double previous)
+{
+    Premise* aux = premises[previous];
+    if(aux)
+        aux->conditionalCheck(current);
+    aux = premises[current];
+    if(aux)
+        aux->conditionalCheck(current);
+}
+
 
 /*std::unordered_map<int, Premise*>**/Table<Premise>* Attribute::getTable()
 {

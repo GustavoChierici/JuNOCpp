@@ -51,6 +51,13 @@ void Premise::setAttribute(Attribute* attr, char value)
     this->attr_reference->getTable()->insertValue(this->char_value, this);
 }
 
+void Premise::setAttribute(Attribute* attr, double value)
+{
+    this->attr_reference = attr;
+    this->double_value = value;
+    this->attr_reference->getTable()->insertValue(this->double_value, this);
+}
+
 void Premise::conditionalCheck(int value)
 {
    
@@ -95,10 +102,25 @@ void Premise::conditionalCheck(CustomString value)
     this->notifyConditions();
 }
 
-void Premise::conditionalCheck(const char value)
+void Premise::conditionalCheck(char value)
 {
     
     if(value == this->char_value)
+    {
+        this->status = true;
+        //std::cout<<"true"<<std::endl;
+    }
+    else{
+        this->status = false;
+        //std::cout<< "false" << std::endl;
+    }
+    this->notifyConditions();
+}
+
+void Premise::conditionalCheck(double value)
+{
+    
+    if(value == this->double_value)
     {
         this->status = true;
         //std::cout<<"true"<<std::endl;

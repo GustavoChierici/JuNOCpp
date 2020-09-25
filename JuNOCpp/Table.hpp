@@ -2,6 +2,7 @@
 #include <array>
 #include <iostream>
 #include <math.h>
+#include <climits>
 #include "CustomString.hpp"
 
 namespace JuNOCpp
@@ -11,10 +12,10 @@ namespace JuNOCpp
     private:
         int capacity;
         int count;
-        T* array[2048];
+        T* array[1024];
 
     public:
-        Table(const int capacity = 2048)
+        Table(const int capacity = 1024)
         {
             this->capacity = capacity;
             this->count = 0;
@@ -24,14 +25,24 @@ namespace JuNOCpp
 
         void insertValue(const int key, T* value)
         {
-            unsigned int index = hashing(key);
+            int index = hashing(key);
 
             array[index] = value;
         }
 
         void insertValue(CustomString key, T* value)
         {
-            unsigned int index = hashing(key.getString());
+            int index = hashing(key.getString());
+
+            array[index] = value;
+        }
+
+        void insertValue(double key, T* value)
+        {
+            char aux_str[1000];
+            sprintf(aux_str, "%f", key);
+
+            unsigned int index(hashing(aux_str));
 
             array[index] = value;
         }
@@ -47,6 +58,16 @@ namespace JuNOCpp
         {
             unsigned int index = hashing(key.getString());
             //std::cout << index << std::endl;
+            return array[index];
+        }
+
+        T* operator[](double key)
+        {
+            char aux_str[1000];
+            sprintf(aux_str, "%f", key);
+
+            unsigned int index(hashing(aux_str));
+
             return array[index];
         }
 
@@ -66,15 +87,16 @@ namespace JuNOCpp
         unsigned int hashing(const char* s)
         {
             const int p = 131;
-            const int m = 1e12 + 9;
+            const int m = 1e5 + 1;
             unsigned int hash = 0;
             unsigned int pow = 1;
-            for(int i = 0; i < strlen(s); i++)
+            const int lenght = strlen(s);
+            for(int i = 0; i < lenght; i++)
             {
                 hash = (hash + (s[i] - 'a' + 1) * pow) % m;
                 pow = (pow * p) % m;
             }
-            if(hash > this->capacity - 1)
+            if(hash > this->capacity)
                 return hashing(hash);
             return hash;
         }

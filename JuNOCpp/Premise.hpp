@@ -16,6 +16,7 @@ namespace JuNOCpp
         int value;
         CustomString str_value;
         char char_value;
+        double double_value;
         bool status;
         bool previous_status;
         List<Condition> conditions;
@@ -29,11 +30,13 @@ namespace JuNOCpp
         void setAttribute(Attributes::Attribute* attr, bool value);
         void setAttribute(Attributes::Attribute* attr, CustomString value);
         void setAttribute(Attributes::Attribute* attr, const char value);
+        void setAttribute(Attributes::Attribute* attr, double value);
 
         void conditionalCheck(int value);
         void conditionalCheck(bool value);
         void conditionalCheck(CustomString value);
         void conditionalCheck(char value);
+        void conditionalCheck(double value);
 
         void referenceCondition(Condition* pcond);
 

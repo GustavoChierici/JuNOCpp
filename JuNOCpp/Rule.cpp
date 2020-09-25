@@ -42,6 +42,13 @@ void Rule::addPremise(Attributes::Char* pattr, const char value)
     this->cond->addPremise(aux);
 }
 
+void Rule::addPremise(Attributes::Double* pattr, const double value)
+{
+    Premise* aux = new Premise();
+    aux->setAttribute(pattr, value);
+    this->cond->addPremise(aux);
+}
+
 void Rule::addPremise(Premise* pprm)
 {
     this->cond->addPremise(pprm);
@@ -75,6 +82,13 @@ void Rule::referenceAttr(Attributes::Char* attr, const char exec_value)
     this->exec_value_char = exec_value;
 }
 
+void Rule::referenceAttr(Attributes::Double* attr, const double exec_value)
+{
+    this->attr = attr;
+    this->attr_type = 4;
+    this->exec_value_double = exec_value;
+}
+
 void Rule::execute() //Método execute da Rule (Derived) para modificar diretamente um Attribute, sem a necessidade de uma Action, Instigations e Methods
 {
     //std::cout << "APROVADA" << std::endl;
@@ -91,6 +105,9 @@ void Rule::execute() //Método execute da Rule (Derived) para modificar diretame
             break;
         case 3:
             static_cast<Attributes::Char*>(this->attr)->setStatus(this->exec_value_char);
+            break;
+        case 4:
+            static_cast<Attributes::Double*>(this->attr)->setStatus(this->exec_value_double);
             break;
     }
 }
