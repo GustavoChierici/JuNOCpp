@@ -2,15 +2,16 @@
 #include "../Table.hpp"
 #include "../Premise.hpp"
 #include "../CustomString.hpp"
+#include "../List.hpp"
 
 namespace JuNOCpp
 {
     namespace Attributes
     {
-        class Attribute {
+        class Attribute {        
         protected:
             Table<Premise> premises;
-            //std::unordered_map<int, Premise*> premises;
+            List<Premise> especial_premises;
 
         public:
             Attribute();
@@ -20,7 +21,8 @@ namespace JuNOCpp
             void notifyPremises(CustomString current, CustomString previous);
             void notifyPremises(double current, double previous);
 
-            /*std::unordered_map<int, Premise*>**/Table<Premise>* getTable();
+            Table<Premise>* getTable();
+            List<Premise>* getList();
         };
     }
 }

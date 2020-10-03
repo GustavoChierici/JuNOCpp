@@ -18,6 +18,13 @@ void Attribute::notifyPremises(int current, int previous)
     aux = premises[current];
     if(aux)
         aux->conditionalCheck(current);
+
+    List<Premise>::Element<Premise>* aux2 = this->especial_premises.getFirst();
+    while(aux2 != nullptr)
+    {
+            aux2->getInfo()->conditionalCheck(current);
+            aux2 = aux2->getNext();
+    }
 }
 
 void Attribute::notifyPremises(CustomString current, CustomString previous)
@@ -28,6 +35,13 @@ void Attribute::notifyPremises(CustomString current, CustomString previous)
     aux = premises[current];
     if(aux)
         aux->conditionalCheck(current);
+
+    List<Premise>::Element<Premise>* aux2 = this->especial_premises.getFirst();
+    while(aux2 != nullptr)
+    {
+            aux2->getInfo()->conditionalCheck(current);
+            aux2 = aux2->getNext();
+    }
 }
 
 void Attribute::notifyPremises(double current, double previous)
@@ -38,10 +52,22 @@ void Attribute::notifyPremises(double current, double previous)
     aux = premises[current];
     if(aux)
         aux->conditionalCheck(current);
+    
+    List<Premise>::Element<Premise>* aux2 = this->especial_premises.getFirst();
+    while(aux2 != nullptr)
+    {
+            aux2->getInfo()->conditionalCheck(current);
+            aux2 = aux2->getNext();
+    }
 }
 
 
 /*std::unordered_map<int, Premise*>**/Table<Premise>* Attribute::getTable()
 {
     return &premises;
+}
+
+List<Premise>* Attribute::getList()
+{
+    return &this->especial_premises;
 }

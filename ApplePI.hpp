@@ -5,12 +5,12 @@ class ApplePI
 {
 public:
     bool status;
-    CustomString color;
+    char color;
 public:
     ApplePI()
     {
         status = false;
-        color = "GREEN";
+        color = 'G';
     }
     ~ApplePI(){}
 };

@@ -20,11 +20,11 @@ int main()
         apple_list.push_back(apple_tmp);
 
         //Init Rules
-        Rule* rlFireApple = new Rule();
-        rlFireApple->addPremise(apple_tmp->atAppleStatus, true);
+        Rule* rlFireApple = new Rule("CONJUNCTION", Rule::INCOMPLETE);
         rlFireApple->addPremise(apple_tmp->atAppleStatus, true);
         rlFireApple->addPremise(archer_tmp->atArcherStatus, true);
-        rlFireApple->referenceAttr(apple_tmp->atAppleColor, "GREEN");
+        rlFireApple->addPremise(apple_tmp->atAppleColor, 'R');
+        rlFireApple->referenceAttr(apple_tmp->atAppleColor, 'G');
 
         archer_tmp->atArcherStatus->setStatus(true);
         apple_tmp->atAppleStatus->setStatus(true);
@@ -44,12 +44,12 @@ int main()
     {
         for(int j = 0; j < percentage; j++)
         {
-            apple_list.at(j)->atAppleColor->setStatus("RED");
+            apple_list.at(j)->atAppleColor->setStatus('R');
         }
     }
     finish = clock();
 
-    std::cout << "O tempo total do JuNOC++ foi de: " << finish - start << " ms"<< std::endl;
+    std::cout << "O tempo total do JuNOC++ foi de: " << finish - start << " ms - Regras aprovadas: " << Rule::counter << std::endl;
 
     apple_list.clear();
 
@@ -63,31 +63,34 @@ int main()
 
         ApplePI* applePI_tmp = new ApplePI();
         applePI_tmp->status = true;
-        applePI_tmp->color = "GREEN";
+        applePI_tmp->color = 'G';
         applePI_list.push_back(applePI_tmp);
     }
 
+    long int counter = 0;
     start = clock();
     for(long i = 0; i < iterations; i++)
     {
         for(int j = 0; j < percentage; j++)
         {
-            applePI_list.at(j)->color = "RED";
+            applePI_list.at(j)->color = 'R';
         }
 
         for(int k = 0; k < 100; k++)
         {
             if((archerPI_list.at(k)->status) &&
                (applePI_list.at(k)->status) &&
-               (applePI_list.at(k)->color == "RED"))
+               (applePI_list.at(k)->color == 'R'))
             {
-                applePI_list.at(k)->color = "GREEN";
+                applePI_list.at(k)->color = 'G';
+                counter++;
+                //std::cout << "AP" << std::endl;
             }
         }
     }
     finish = clock();
 
-    std::cout << "O tempo total do PI foi de: " << finish - start << " ms"<< std::endl;
+    std::cout << "O tempo total do PI foi de: " << finish - start << " ms - Regras aprovadas: " << counter << std::endl;
 
 
     return 0;

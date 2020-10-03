@@ -2,18 +2,22 @@
 
 #include "Premise.hpp"
 #include "CustomString.hpp"
+#include "List.hpp"
 #include <iostream>
 
 namespace JuNOCpp
 {
     class Rule;
+    class SubCondition;
     class Condition
     {
-    private:
+    protected:
         int quantity;
-        int true_premises;
+        int approved_premises_and_subconds;
         Rule* rule;
         CustomString mode;
+        List<SubCondition> subconditions;
+        SubCondition* current_subcondition;
 
     public:
         Condition(CustomString mode = "CONJUNCTION");
@@ -21,7 +25,11 @@ namespace JuNOCpp
 
         void addPremise(Premise* prm);
 
-        void conditionalCheck(bool status);
+        void addSubCondition(CustomString mode = "CONJUNCTION");
+        void addSubCondition(SubCondition* subcond);
+        void addPremiseToSubCondition(Premise* prm);
+
+        virtual void conditionalCheck(bool status);
         void referenceRule(Rule* rule);
 
     };

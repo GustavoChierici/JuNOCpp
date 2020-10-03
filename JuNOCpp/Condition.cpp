@@ -1,4 +1,5 @@
 #include "Condition.hpp"
+#include "SubCondition.hpp"
 #include "Rule.hpp"
 using namespace JuNOCpp;
 
@@ -10,9 +11,10 @@ Condition::Condition(CustomString mode /* = "CONJUNCTION" */)
         exit(1);
     }
     this->quantity = 0;
-    this->true_premises = 0;
+    this->approved_premises_and_subconds = 0;
     this->rule = nullptr;
     this->mode = mode;
+    this->current_subcondition = nullptr;
 
     if(this->mode == "DISJUNCTION")
         this->quantity = 1;
@@ -29,6 +31,34 @@ void Condition::addPremise(Premise* prm)
     prm->referenceCondition(this);
 }
 
+void Condition::addSubCondition(CustomString mode /* = "CONJUNCTION" */)
+{
+    if(this->mode == "CONJUNCTION")
+        this->quantity++;
+    SubCondition* aux = new SubCondition(mode);
+    this->subconditions.insertInfo(aux);
+    aux->referenceCondition(this);
+    this->current_subcondition = this->subconditions.getCurrent()->getInfo();
+    if(this->subconditions.getCurrent()->getNext() != nullptr)
+        this->current_subcondition = this->subconditions.getCurrent()->getNext()->getInfo();
+}
+
+void Condition::addSubCondition(SubCondition* subcond)
+{
+    if(this->mode == "CONJUNCTION")
+        this->quantity++;
+    this->subconditions.insertInfo(subcond);
+    subcond->referenceCondition(this);
+    this->current_subcondition = this->subconditions.getCurrent()->getInfo();
+    if(this->subconditions.getCurrent()->getNext() != nullptr)
+        this->current_subcondition = this->subconditions.getCurrent()->getNext()->getInfo();
+}
+
+void Condition::addPremiseToSubCondition(Premise* prm)
+{
+    this->current_subcondition->addPremise(prm);
+}
+
 void Condition::referenceRule(Rule* rule)
 {
     this->rule = rule;
@@ -38,20 +68,19 @@ void Condition::conditionalCheck(bool status)
 {
     if(status)
     {
-        this->true_premises++;
+        this->approved_premises_and_subconds++;
 
-        if(this->true_premises == this->quantity){
+        if(this->approved_premises_and_subconds == this->quantity){
             //printf("true-condition\n");
-            //printf("%dpremises\n", this->true_premises);
+            //printf("%dpremises\n", this->approved_premises_and_subconds);
             rule->execute();
 
         }
     }
     else
     {
-        this->true_premises--;
-        // printf("%dpremises\n", this->true_premises);
+        this->approved_premises_and_subconds--;
+        // printf("%dpremises\n", this->approved_premises_and_subconds);
         // printf("false-condition\n");
     }
-
 }

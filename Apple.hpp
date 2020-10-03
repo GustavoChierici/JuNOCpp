@@ -9,13 +9,13 @@ class Apple: public FBE
 {
 public:
     Boolean* atAppleStatus;
-    String* atAppleColor;
+    Char* atAppleColor;
 public:
     Apple()
     {
         this->atAppleStatus = new Boolean();
         this->insertAttribute(this->atAppleStatus);
-        this->atAppleColor = new String("GREEN");
+        this->atAppleColor = new Char('G');
         this->insertAttribute(this->atAppleColor);
     }
     ~Apple()

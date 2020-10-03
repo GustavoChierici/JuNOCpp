@@ -87,7 +87,7 @@ namespace JuNOCpp
         unsigned int hashing(const char* s)
         {
             const int p = 131;
-            const int m = 1e5 + 1;
+            const int m = 1e4 + 9;
             unsigned int hash = 0;
             unsigned int pow = 1;
             const int lenght = strlen(s);

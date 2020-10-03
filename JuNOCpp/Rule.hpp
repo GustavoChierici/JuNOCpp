@@ -6,43 +6,65 @@
 #include "./Attributes/String.hpp"
 #include "./Attributes/Char.hpp"
 #include "./Attributes/Double.hpp"
+#include "Instigation.hpp"
+#include "Method.hpp"
 
 
 namespace JuNOCpp
 {
+    class Action;
     class Rule
     {
     private:
         Condition* cond;
+        Action* action;
         Attributes::Attribute* attr;
-        int attr_type; // 0 - Integer; 1 - Boolean; 2 - String; 3 - Char; 4 - Double
-        int exec_value_int;
-        bool exec_value_bool;
-        CustomString exec_value_str;
-        char exec_value_char;
-        double exec_value_double;
+        void* exec_value;
+
+        void (*exec)(Attributes::Attribute*, void*, Action*);
+
+        int mode;
 
     public:
-        Rule(CustomString mode = "CONJUNCTION");
+        static int counter;
+
+        const static int COMPLETE = 0;
+        const static int INCOMPLETE = 1;
+        const static int DERIVED = 2;
+
+    public:
+        Rule(CustomString mode = "CONJUNCTION", int rl_mode = Rule::COMPLETE);
 
         ~Rule();
 
-        void addPremise(Attributes::Integer* pattr, const int value);
-        void addPremise(Attributes::Boolean* pattr, const bool value);
-        void addPremise(Attributes::String* pattr, CustomString value);
-        void addPremise(Attributes::Char* pattr, const char value);
-        void addPremise(Attributes::Double* pattr, const double value);
+        void addPremise(Attributes::Integer* pattr, const int value, CustomString mode = "EQUAL");
+        void addPremise(Attributes::Boolean* pattr, const bool , CustomString mode = "EQUAL");
+        void addPremise(Attributes::String* pattr, CustomString value, CustomString mode = "EQUAL");
+        void addPremise(Attributes::Char* pattr, const char value, CustomString mode = "EQUAL");
+        void addPremise(Attributes::Double* pattr, const double value, CustomString mode = "EQUAL");
         void addPremise(Premise* pprm);
 
-        void referenceAttr(Attributes::Integer* attr, const int exec_value);
-        void referenceAttr(Attributes::Boolean* attr, const bool exec_value);
+        void addSubcondition(CustomString mode = "CONJUNCTION");
+        void addSubcondition(SubCondition* subcond);
+        void addPremiseToSubCondition(Attributes::Integer* pattr, const int value, CustomString mode = "EQUAL");
+        void addPremiseToSubCondition(Attributes::Boolean* pattr, const bool value, CustomString mode = "EQUAL");
+        void addPremiseToSubCondition(Attributes::String* pattr, CustomString value, CustomString mode = "EQUAL");
+        void addPremiseToSubCondition(Attributes::Char* pattr, const char value, CustomString mode = "EQUAL");
+        void addPremiseToSubCondition(Attributes::Double* pattr, const double value, CustomString mode = "EQUAL");
+        void addPremiseToSubCondition(Premise* pprm);
+
+        void referenceAttr(Attributes::Integer* attr, int exec_value);
+        void referenceAttr(Attributes::Boolean* attr, bool exec_value);
         void referenceAttr(Attributes::String* attr, CustomString exec_value);
-        void referenceAttr(Attributes::Char* attr, const char exec_value);
-        void referenceAttr(Attributes::Double* attr, const double exec_value);
+        void referenceAttr(Attributes::Char* attr, char exec_value);
+        void referenceAttr(Attributes::Double* attr, double exec_value);
+
+        void addInstigation(Instigation* inst);
+        void addInstigation(Method* mt);
+        void addInstigation(Attributes::Integer* attr, int value);
 
         void execute();
 
     };
-
 }
 
