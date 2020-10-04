@@ -62,6 +62,10 @@ namespace JuNOCpp
         void addInstigation(Instigation* inst);
         void addInstigation(Method* mt);
         void addInstigation(Attributes::Integer* attr, int value);
+        void addInstigation(Attributes::Boolean* attr, bool value);
+        void addInstigation(Attributes::Double* attr, double value);
+        void addInstigation(Attributes::Char* attr, char value);
+        void addInstigation(Attributes::String* attr, const char* value);
 
         void execute();
 

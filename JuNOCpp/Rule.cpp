@@ -210,6 +210,26 @@ namespace JuNOCpp
         this->action->addInstigation(attr, value);
     }
 
+    void Rule::addInstigation(Attributes::Boolean* attr, bool value)
+    {
+        this->action->addInstigation(attr, value);
+    }
+
+    void Rule::addInstigation(Attributes::Double* attr, double value)
+    {
+        this->action->addInstigation(attr, value);
+    }
+
+    void Rule::addInstigation(Attributes::Char* attr, char value)
+    {
+        this->action->addInstigation(attr, value);
+    }
+
+    void Rule::addInstigation(Attributes::String* attr, const char* value)
+    {
+        this->action->addInstigation(attr, value);
+    }
+
     void Rule::execute() //Método execute da Rule (Derived) para modificar diretamente um Attribute, sem a necessidade de uma Action, Instigations e Methods
     {
         //std::cout << "APROVADA - " << this << std::endl;
