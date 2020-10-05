@@ -1,4 +1,4 @@
-# JuNOC++/JuNOCpp 0.2
+# JuNOC++/JuNOCpp 0.2.3
 ### Just a Notification Oriented C++
 ###### Rule* rlHelloWorld = new Rule();
 
