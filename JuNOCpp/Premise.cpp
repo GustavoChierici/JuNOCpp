@@ -303,7 +303,6 @@ void Premise::notifyConditions()
             aux2->getInfo()->conditionalCheck(this->status);
             aux2 = aux2->getNext();
         }
-
     }
 }
 

@@ -61,8 +61,7 @@ void Attribute::notifyPremises(double current, double previous)
     }
 }
 
-
-/*std::unordered_map<int, Premise*>**/Table<Premise>* Attribute::getTable()
+Table<Premise>* Attribute::getTable()
 {
     return &premises;
 }

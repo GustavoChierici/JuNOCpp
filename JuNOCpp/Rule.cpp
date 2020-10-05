@@ -4,8 +4,9 @@
 
 namespace JuNOCpp
 {
-    using namespace Attributes;
     int Rule::counter = 0;
+
+
     /**************************************** 
     * Construtores/Destrutores
     ****************************************/
@@ -23,15 +24,17 @@ namespace JuNOCpp
                 this->attr = nullptr;
                 this->exec_value = nullptr;
                 this->exec = [](Attributes::Attribute* attr = nullptr, void* value = nullptr, Action* act = nullptr)
-                {
-                    act->callInstigations();
-                };
+                            {
+                                act->callInstigations();
+                            };
                 break;
             case Rule::INCOMPLETE:
                 this->action = nullptr;
+                this->exec = nullptr;
+                this->attr = nullptr;
+                this->exec_value = nullptr;
                 break;
-            case Rule::DERIVED:
-                // Precisa ser implementada ainda
+            case Rule::CUSTOM:
                 this->action = nullptr;
                 this->exec = nullptr;
                 this->exec_value = nullptr;
@@ -43,6 +46,7 @@ namespace JuNOCpp
     Rule::~Rule()
     {
         delete this->cond;
+        delete this->action;
     }
 
 
@@ -89,6 +93,7 @@ namespace JuNOCpp
         this->cond->addPremise(pprm);
     }
 
+
     /***************************************
     *  Adicionar SubConditions
     ****************************************/
@@ -102,8 +107,9 @@ namespace JuNOCpp
         this->cond->addSubCondition(subcond);
     }
 
+
      /***************************************
-    *  Adicionar Premises a SubCondition
+    *  Adicionar Premises à SubCondition
     ****************************************/
    void Rule::addPremiseToSubCondition(Attributes::Integer* pattr, const int value, CustomString mode/* = "EQUAL"*/)
    {
@@ -145,6 +151,10 @@ namespace JuNOCpp
         this->cond->addPremiseToSubCondition(pprm);
     }
 
+
+    /**************************************************************************
+    *  Referenciar um Attribute para ser modificado (CUSTOM e INCOMPLETE)
+    ***************************************************************************/
     void Rule::referenceAttr(Attributes::Integer* attr, int exec_value)
     {
         this->attr = attr;
@@ -195,6 +205,10 @@ namespace JuNOCpp
         };
     }
 
+
+    /***************************************
+    *  Adicionar Instigation à Action
+    ****************************************/
     void Rule::addInstigation(Instigation* inst)
     {
         this->action->addInstigation(inst);
@@ -230,7 +244,20 @@ namespace JuNOCpp
         this->action->addInstigation(attr, value);
     }
 
-    void Rule::execute() //Método execute da Rule (Derived) para modificar diretamente um Attribute, sem a necessidade de uma Action, Instigations e Methods
+    
+    /***************************************
+    *  Definir execução da Custom Rule
+    ****************************************/
+    void Rule::setCustomExecution(void (*func)(Attributes::Attribute*, void*, Action*))
+    {
+        this->exec = func;
+    }
+
+
+    /***************************************
+    *  Executar Rule aprovada
+    ****************************************/
+    void Rule::execute() //Método que a Rule execute após ter sido aprovada
     {
         //std::cout << "APROVADA - " << this << std::endl;
         Rule::counter++;

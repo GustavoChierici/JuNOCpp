@@ -16,8 +16,6 @@ namespace JuNOCpp
 
             void setStatus(int status);
 
-            //void notifyPremises();
-
             int getStatus();
         };
     }

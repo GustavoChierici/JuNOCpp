@@ -70,17 +70,9 @@ void Condition::conditionalCheck(bool status)
     {
         this->approved_premises_and_subconds++;
 
-        if(this->approved_premises_and_subconds == this->quantity){
-            //printf("true-condition\n");
-            //printf("%dpremises\n", this->approved_premises_and_subconds);
+        if(this->approved_premises_and_subconds == this->quantity)
             rule->execute();
-
-        }
     }
     else
-    {
         this->approved_premises_and_subconds--;
-        // printf("%dpremises\n", this->approved_premises_and_subconds);
-        // printf("false-condition\n");
-    }
 }

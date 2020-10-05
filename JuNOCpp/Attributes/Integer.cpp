@@ -23,13 +23,3 @@ int Integer::getStatus()
 {
     return this->currentStatus;
 }
-
-// void Integer::notifyPremises()
-// {
-//     Premise* aux = premises[this->previousStatus];
-//     if(aux)
-//         aux->conditionalCheck(this->getStatus());
-//     aux = premises[this->currentStatus];
-//     if(aux)
-//         aux->conditionalCheck(this->getStatus());
-// }

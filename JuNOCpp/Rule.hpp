@@ -8,6 +8,7 @@
 #include "./Attributes/Double.hpp"
 #include "Instigation.hpp"
 #include "Method.hpp"
+#include "List.hpp"
 
 
 namespace JuNOCpp
@@ -30,7 +31,7 @@ namespace JuNOCpp
 
         const static int COMPLETE = 0;
         const static int INCOMPLETE = 1;
-        const static int DERIVED = 2;
+        const static int CUSTOM = 2;
 
     public:
         Rule(CustomString mode = "CONJUNCTION", int rl_mode = Rule::COMPLETE);
@@ -66,6 +67,8 @@ namespace JuNOCpp
         void addInstigation(Attributes::Double* attr, double value);
         void addInstigation(Attributes::Char* attr, char value);
         void addInstigation(Attributes::String* attr, const char* value);
+
+        void setCustomExecution(void (*func)(Attributes::Attribute*, void*, Action*));
 
         void execute();
 
