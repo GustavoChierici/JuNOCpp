@@ -1,26 +1,19 @@
 #pragma once
 
-#include "./JuNOCpp/FBE.hpp"
+#include "../JuNOCpp/JuNOC++.hpp"
 
-using namespace JuNOCpp;
-using namespace Attributes;
-
-class Apple: public FBE
+class Apple
 {
 public:
-    Boolean* atAppleStatus;
-    Char* atAppleColor;
+    NOP::Attribute<bool> atAppleStatus;
+    NOP::Attribute<char> atAppleColor;
 public:
     Apple()
     {
-        this->atAppleStatus = new Boolean();
-        this->insertAttribute(this->atAppleStatus);
-        this->atAppleColor = new Char('G');
-        this->insertAttribute(this->atAppleColor);
+        this->atAppleStatus;
+        this->atAppleColor = 'G';
     }
     ~Apple()
     {
-        delete this->atAppleStatus;
-        delete this->atAppleColor;
     }
 };

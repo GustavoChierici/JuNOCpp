@@ -1,4 +1,4 @@
-#include "./JuNOCpp/JuNOC++.hpp"
+#include "../JuNOCpp/JuNOC++.hpp"
 #include "Apple.hpp"
 #include "Archer.hpp"
 #include <iostream>
@@ -20,15 +20,12 @@ int main()
         apple_list.push_back(apple_tmp);
 
         //Init Rules
-        Rule* rlFireApple = new Rule("CONJUNCTION", Rule::COMPLETE);
-        rlFireApple->addPremise(apple_tmp->atAppleStatus, true);
-        rlFireApple->addPremise(archer_tmp->atArcherStatus, true);
-        rlFireApple->addPremise(apple_tmp->atAppleColor, 'R');
-        //rlFireApple->referenceAttr(apple_tmp->atAppleColor, 'G');
-        rlFireApple->addInstigation(apple_tmp->atAppleColor, 'G');
+        RULE(apple_tmp->atAppleStatus == true and apple_tmp->atAppleColor == 'R');
+            INSTIGATE([=](){apple_tmp->atAppleColor = 'G';});
+        END_RULE
 
-        archer_tmp->atArcherStatus->setStatus(true);
-        apple_tmp->atAppleStatus->setStatus(true);
+        archer_tmp->atArcherStatus = true;
+        apple_tmp->atAppleStatus = true;
     }
 
     long iterations = 0;
@@ -45,12 +42,12 @@ int main()
     {
         for(int j = 0; j < percentage; j++)
         {
-            apple_list.at(j)->atAppleColor->setStatus('R');
+            apple_list.at(j)->atAppleColor = 'R';
         }
     }
     finish = clock();
 
-    std::cout << "O tempo total do JuNOC++ foi de: " << finish - start << " ms - Regras aprovadas: " << Rule::counter << std::endl;
+    std::cout << "O tempo total do JuNOC++ foi de: " << (finish - start )/CLOCKS_PER_SEC << " s - Regras aprovadas: " << BetterRule::approved << std::endl;
 
     apple_list.clear();
 
@@ -91,7 +88,7 @@ int main()
     }
     finish = clock();
 
-    std::cout << "O tempo total do PI foi de: " << finish - start << " ms - Regras aprovadas: " << counter << std::endl;
+    std::cout << "O tempo total do PI foi de: " << (finish - start)/CLOCKS_PER_SEC << " s - Regras aprovadas: " << counter << std::endl;
 
 
     return 0;

@@ -1,20 +1,19 @@
 #pragma once
 
-#include "JuNOCpp/JuNOC++.hpp"
+#include "../JuNOCpp/JuNOC++.hpp"
 
-class NOPSensor: public FBE
+class NOPSensor
 {
 public:
-    Boolean* at_person_detected;
+    NOP::Attribute<bool> at_person_detected;
 
 public:
     NOPSensor(bool value = false)
     {
-        this->at_person_detected = new Boolean(value);
+        this->at_person_detected = value;
     }
 
     ~NOPSensor()
     {
-        delete this->at_person_detected;
     }
 };

@@ -32,59 +32,34 @@ int main()
         NOPSensor* sensor = new NOPSensor();
 
         //Init shared Premises
-        Premise* prPersonInDoorFront = new Premise("EQUAL");
-        prPersonInDoorFront->setAttribute(person->at_pos_door_front, true);
+        NOP::Premise<bool> prPersonOnDoorFront = person->at_pos_door_front == true;
 
-        Premise* prIsDoorOpen = new Premise();
-        prIsDoorOpen->setAttribute(door->at_is_open, true);
+        NOP::Premise<bool> prIsDoorOpen = door->at_is_open == true;
 
-        Premise* prIsPersonMoving = new Premise(">");
-        prIsPersonMoving->setAttribute(person->at_velocity, 0.0);
+        NOP::Premise<double> prIsPersonMoving = person->at_velocity >= 0.0;
 
         //Init Rules
-        Rule* rlOpenDoor = new Rule("CONJUNCTION", Rule::COMPLETE);
-        rlOpenDoor->addPremise(prPersonInDoorFront);
-        rlOpenDoor->addPremise(prIsPersonMoving);
-        rlOpenDoor->addPremise(door->at_is_open, false, "==");
-        rlOpenDoor->addPremise(sensor->at_person_detected, true, "EQUAL");    
-        rlOpenDoor->addInstigation(door->at_is_open, true);
-        //rlOpenDoor->referenceAttr(door->at_is_open, true);
-        //rlOpenDoor->setCustomExecution([](Attribute* attr = nullptr, void* value = nullptr, Action* act = nullptr){
-        //     std::cout << "(NOP) Abrindo porta..." << std::endl;
-        //     static_cast<Boolean*>(attr)->setStatus(true);
-        // });   
+        RULE((prPersonOnDoorFront and prIsPersonMoving) and (door->at_is_open == false and sensor->at_person_detected == true));
+            INSTIGATE([=](){door->at_is_open = true;});
+        END_RULE
 
-        Rule* rlPersonPassDoor = new Rule("CONJUNCTION");
-        rlPersonPassDoor->addPremise(prPersonInDoorFront);
-        rlPersonPassDoor->addPremise(prIsDoorOpen);
-        rlPersonPassDoor->addPremise(prIsPersonMoving);
-        rlPersonPassDoor->addInstigation(person->at_pos_door_front, false);
-        //rlPersonPassDoor->referenceAttr(person->at_pos_door_front, false);
-        // rlPersonPassDoor->setCustomExecution([](Attribute* attr = nullptr, void* value = nullptr, Action* act = nullptr){
-        //     std::cout << "(NOP) Pessoa passando..." << std::endl;
-        //     static_cast<Boolean*>(attr)->setStatus(false);
-        // });
+        RULE(prPersonOnDoorFront and prIsDoorOpen and prIsPersonMoving);
+            INSTIGATE([=](){person->at_pos_door_front = false;});
+            INSTIGATE([=](){sensor->at_person_detected = false;});
+        END_RULE
 
-        Rule* rlCloseDoor = new Rule();
-        rlCloseDoor->addPremise(person->at_pos_door_front, false);
-        rlCloseDoor->addPremise(prIsDoorOpen);
-        rlCloseDoor->addPremise(sensor->at_person_detected, false);
-        //rlCloseDoor->referenceAttr(door->at_is_open, false);
-        rlCloseDoor->addInstigation(door->at_is_open, false);
-        // rlCloseDoor->setCustomExecution([](Attribute* attr = nullptr, void* value = nullptr, Action* act = nullptr){
-        //     std::cout << "(NOP) Fechando porta..." << std::endl;
-        //     static_cast<Boolean*>(attr)->setStatus(false);
-        // });
+        RULE(person->at_pos_door_front == false and prIsDoorOpen and sensor->at_person_detected == false);
+            INSTIGATE([=](){door->at_is_open = false;});
+        END_RULE
 
         //Init initial Attributes status
 
-        person->at_pos_door_front->setStatus(false);
-        person->at_velocity->setStatus(1.5);
+        person->at_pos_door_front = false;
+        person->at_velocity = 1.5;
 
-        sensor->at_person_detected->setStatus(false);
+        sensor->at_person_detected = false;
 
-        door->at_is_open->setStatus(false);
-        
+        door->at_is_open.setStatus(false, true);
 
         NOPpersons.push_back(person);
         NOPdoors.push_back(door);
@@ -97,14 +72,13 @@ int main()
     {
         for(int j = 0; j < ((percentage/100) * elements); j++)
         {
-            NOPpersons.at(j)->at_pos_door_front->setStatus(true);
-            NOPsensors.at(j)->at_person_detected->setStatus(true);
-            NOPsensors.at(j)->at_person_detected->setStatus(false);
+            NOPpersons.at(j)->at_pos_door_front = true;
+            NOPsensors.at(j)->at_person_detected = true;
         }
     }
     finish = clock();
 
-    std::cout << "O tempo total do JuNOC++ foi de: " << finish - start << " ms - Regras aprovadas: "<< Rule::counter << std::endl;
+    std::cout << "O tempo total do JuNOC++ foi de: " << (finish - start)/CLOCKS_PER_SEC << " s - Regras aprovadas: "<< BetterRule::approved << std::endl;
 
     NOPdoors.clear();
     NOPsensors.clear();
@@ -167,7 +141,7 @@ int main()
 
     finish = clock();
 
-    std::cout << "O tempo total do PI foi de: " << finish - start << " ms - Regras aprovadas: " << counter << std::endl;
+    std::cout << "O tempo total do PI foi de: " << (finish - start)/CLOCKS_PER_SEC << " s - Regras aprovadas: " << counter << std::endl;
 
     for(int i = 0; i < elements; i++)
     {
@@ -177,49 +151,26 @@ int main()
         NOPSensor* sensor = new NOPSensor();
 
         //Init shared Premises
-        Premise* prPersonInDoorFront = new Premise("EQUAL");
-        prPersonInDoorFront->setAttribute(person->at_pos_door_front, true);
+        NOP::Premise<bool> prPersonOnDoorFront = person->at_pos_door_front == true;
 
-        Premise* prIsDoorOpen = new Premise();
-        prIsDoorOpen->setAttribute(door->at_is_open, true);
+        NOP::Premise<bool> prIsDoorOpen = door->at_is_open == true;
 
-        Premise* prIsPersonMoving = new Premise(">");
-        prIsPersonMoving->setAttribute(person->at_velocity, 0.0);
+        NOP::Premise<double> prIsPersonMoving = person->at_velocity >= 0.0;
 
         //Init Rules
-        Rule* rlOpenDoor = new Rule("CONJUNCTION", Rule::COMPLETE);
-        rlOpenDoor->addPremise(prPersonInDoorFront);
-        rlOpenDoor->addPremise(prIsPersonMoving);
-        rlOpenDoor->addPremise(door->at_is_open, false, "==");
-        rlOpenDoor->addPremise(sensor->at_person_detected, true, "EQUAL");
-        //rlOpenDoor->referenceAttr(door->at_is_open, true);
-        rlOpenDoor->addInstigation(door->at_is_open, true);
-        rlOpenDoor->addInstigation(person->at_pos_door_front, false);
-        rlOpenDoor->addInstigation(sensor->at_person_detected, false);
-        rlOpenDoor->addInstigation(door->at_is_open, false);
+        RULE((prPersonOnDoorFront and prIsPersonMoving) and (door->at_is_open == false and sensor->at_person_detected == true));
+            INSTIGATE([=](){door->at_is_open = true;});
+            INSTIGATE([=](){person->at_pos_door_front = false;});
+            INSTIGATE([=](){sensor->at_person_detected = false;});
+            INSTIGATE([=](){door->at_is_open = false;});
+        END_RULE
 
-        // Rule* rlPersonPassDoor = new Rule("CONJUNCTION", Rule::COMPLETE);
-        // rlPersonPassDoor->addPremise(prPersonInDoorFront);
-        // rlPersonPassDoor->addPremise(prIsDoorOpen);
-        // rlPersonPassDoor->addPremise(prIsPersonMoving);
-        // //rlPersonPassDoor->referenceAttr(person->at_pos_door_front, false);
-        // rlPersonPassDoor->referenceAttr(person->at_pos_door_front, false);
+        person->at_pos_door_front = false;
+        person->at_velocity = 1.5;
 
-        // Rule* rlCloseDoor = new Rule("CONJUNCTION", Rule::COMPLETE);
-        // rlCloseDoor->addPremise(person->at_pos_door_front, false);
-        // rlCloseDoor->addPremise(prIsDoorOpen);
-        // rlCloseDoor->addPremise(sensor->at_person_detected, false);
-        // //rlCloseDoor->referenceAttr(door->at_is_open, false);
-        // rlCloseDoor->addInstigation(door->at_is_open, false);
+        sensor->at_person_detected = false;
 
-        //Init initial Attributes status
-
-        person->at_pos_door_front->setStatus(false);
-        person->at_velocity->setStatus(1.5);
-
-        sensor->at_person_detected->setStatus(false);
-
-        door->at_is_open->setStatus(false);
+        door->at_is_open.setStatus(false, true);
         
 
         NOPpersons.push_back(person);
@@ -227,21 +178,20 @@ int main()
         NOPsensors.push_back(sensor);
     }
 
-    Rule::counter = 0;
+    BetterRule::approved = 0;
     start = clock();
 
     for(int i = 0; i < iterations; i++)
     {
         for(int j = 0; j < ((percentage/100) * elements); j++)
         {
-            NOPpersons.at(j)->at_pos_door_front->setStatus(true);
-            NOPsensors.at(j)->at_person_detected->setStatus(true);
-            // NOPsensors.at(j)->at_person_detected->setStatus(false);
+            NOPpersons.at(j)->at_pos_door_front = true;
+            NOPsensors.at(j)->at_person_detected = true;
         }
     }
     finish = clock();
 
-    std::cout << "O tempo total do JuNOC++ em uma unica regra foi de: " << finish - start << " ms - Regras aprovadas: " << Rule::counter << std::endl;
+    std::cout << "O tempo total do JuNOC++ em uma unica regra foi de: " << (finish - start)/CLOCKS_PER_SEC << " s - Regras aprovadas: " << BetterRule::approved << std::endl;
 
     return 0;
 }

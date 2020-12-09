@@ -1,22 +1,17 @@
 #pragma once
 
-#include "./JuNOCpp/FBE.hpp"
+#include "../JuNOCpp/JuNOC++.hpp"
 
-using namespace JuNOCpp;
-using namespace Attributes;
-
-class Archer: public FBE
+class Archer
 {
 public:
-    Boolean* atArcherStatus;
+    NOP::Attribute<bool> atArcherStatus;
 public:
     Archer()
     {
-        this->atArcherStatus = new Boolean();
-        this->insertAttribute(this->atArcherStatus);
+        this->atArcherStatus;
     }
     ~Archer()
     {
-        delete this->atArcherStatus;
     }
 };

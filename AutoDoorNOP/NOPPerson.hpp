@@ -1,23 +1,21 @@
 #pragma once
 
-#include "JuNOCpp/JuNOC++.hpp"
+#include "../JuNOCpp/JuNOC++.hpp"
 
-class NOPPerson: public FBE
+class NOPPerson
 {
 public:
-    Boolean* at_pos_door_front;
-    Double* at_velocity;
+    NOP::Attribute<bool> at_pos_door_front;
+    NOP::Attribute<double> at_velocity;
 
 public:
     NOPPerson(bool value = false, double velocity = 0.0)
     {
-        this->at_pos_door_front = new Boolean(value);
-        this->at_velocity = new Double(velocity);
+        this->at_pos_door_front = value;
+        this->at_velocity = velocity;
     }
 
     ~NOPPerson()
     {
-        delete this->at_pos_door_front;
-        delete this->at_velocity;
     }
 };
