@@ -39,8 +39,8 @@ namespace JuNOCpp
 
         void referenceBetterCondition(BetterCondition* b_cond);
 
-        void notify(const bool renotify = false);
         void update(const bool renotify = false);
+        void update(const bool renotify, const bool status) {}
 
         template <class OT>
         BetterCondition& operator &&(BetterPremise<OT>& b_premise);
@@ -140,16 +140,7 @@ namespace JuNOCpp
     template <class TYPE>
     void BetterPremise<TYPE>::referenceBetterCondition(BetterCondition* b_condition)
     {
-        this->conditions.insertInfo(b_condition);
-    }
-    
-    template <class TYPE>
-    void BetterPremise<TYPE>::notify(const bool renotify)
-    {
-        for(auto notf : notfs)
-        {
-            static_cast<BetterCondition*>(notf.get())->conditionalCheck(this->status);
-        }
+        this->conditions.insertInfo(*b_condition);
     }
 
     template <class TYPE>
@@ -163,7 +154,7 @@ namespace JuNOCpp
         if(renotify || this->status != this->previous_status)
         {
             this->previous_status = this->status;
-            this->notify(renotify);
+            this->notify(renotify, this->status);
         }
     }
 
@@ -174,6 +165,7 @@ namespace JuNOCpp
         BetterCondition aux;
         std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
         condition->setQuantity(2);
+        condition->mode = BetterCondition::CONJUNCTION;
 
         this->insert(condition);
         b_premise.insert(condition);
@@ -189,6 +181,7 @@ namespace JuNOCpp
 
         std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
         condition->setQuantity(2);
+        condition->mode = BetterCondition::CONJUNCTION;
 
         this->insert(condition);
         b_premise.insert(condition);
@@ -204,6 +197,7 @@ namespace JuNOCpp
 
         std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
         condition->setQuantity(1);
+        condition->mode = BetterCondition::DISJUNCTION;
 
         this->insert(condition);
         b_premise.insert(condition);
@@ -219,6 +213,7 @@ namespace JuNOCpp
 
         std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
         condition->setQuantity(1);
+        condition->mode = BetterCondition::DISJUNCTION;
 
         this->insert(condition);
         b_premise.insert(condition);
@@ -226,61 +221,102 @@ namespace JuNOCpp
         return *condition;
     }
 
-
     template <class TYPE>
     BetterCondition& BetterPremise<TYPE>::operator &&(BetterCondition& b_condition)
     {
-        BetterCondition aux;
+        if((b_condition.mode == BetterCondition::CONJUNCTION or b_condition.mode == BetterCondition::SINGLE) and !b_condition.persistant)
+        {
+            this->insert(b_condition.shared_from_this());
+            b_condition.setQuantity(b_condition.quantity + 1);
+            
+            return b_condition;
+        }
+        else
+        {
+            BetterCondition aux;
 
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
-        condition->setQuantity(2);
+            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+            condition->setQuantity(2);
+            condition->mode = BetterCondition::CONJUNCTION;
 
-        this->insert(condition);
-        b_condition.insert(condition);
-        
-        return *condition;
+            this->insert(condition);
+            b_condition.insert(condition);
+            
+            return *condition;
+        }
     }
 
     template <class TYPE>
     BetterCondition& BetterPremise<TYPE>::operator &&(BetterCondition&& b_condition)
     {
-        BetterCondition aux;
+        if((b_condition.mode == BetterCondition::CONJUNCTION or b_condition.mode == BetterCondition::SINGLE) and !b_condition.persistant)
+        {
+            this->insert(b_condition.shared_from_this());
+            b_condition.setQuantity(b_condition.quantity + 1);
+            
+            return b_condition;
+        }
+        else
+        {
+            BetterCondition aux;
 
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
-        condition->setQuantity(2);
+            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+            condition->setQuantity(2);
+            condition->mode = BetterCondition::CONJUNCTION;
 
-        this->insert(condition);
-        b_condition.insert(condition);
-        
-        return *condition;
+            this->insert(condition);
+            b_condition.insert(condition);
+            
+            return *condition;
+        }
     }
 
     template <class TYPE>
     BetterCondition& BetterPremise<TYPE>::operator ||(BetterCondition& b_condition)
     {
-        BetterCondition aux;
+        if ((b_condition.mode == BetterCondition::DISJUNCTION or b_condition.mode == BetterCondition::SINGLE) and !b_condition.persistant)
+        {
+            this->insert(b_condition.shared_from_this());
 
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
-        condition->setQuantity(1);
+            return b_condition;
+        }
+        else
+        {
+            BetterCondition aux;
 
-        this->insert(condition);
-        b_condition.insert(condition);
-        
-        return *condition;
+            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+            condition->setQuantity(1);
+            condition->mode = BetterCondition::DISJUNCTION;
+
+            this->insert(condition);
+            b_condition.insert(condition);
+            
+            return *condition;
+        }
     }
 
     template <class TYPE>
     BetterCondition& BetterPremise<TYPE>::operator ||(BetterCondition&& b_condition)
     {
-        BetterCondition aux;
+        if ((b_condition.mode == BetterCondition::DISJUNCTION or b_condition.mode == BetterCondition::SINGLE) and !b_condition.persistant)
+        {
+            this->insert(b_condition.shared_from_this());
 
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
-        condition->setQuantity(1);
+            return b_condition;
+        }
+        else
+        {
+            BetterCondition aux;
 
-        this->insert(condition);
-        b_condition.insert(condition);
-        
-        return *condition;
+            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+            condition->setQuantity(1);
+            condition->mode = BetterCondition::DISJUNCTION;
+
+            this->insert(condition);
+            b_condition.insert(condition);
+            
+            return *condition;
+        }
     }
 
     template <class TYPE>
@@ -290,6 +326,7 @@ namespace JuNOCpp
 
         std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
         condition->setQuantity(1);
+        condition->mode = BetterCondition::SINGLE;
 
         this->insert(condition);
         

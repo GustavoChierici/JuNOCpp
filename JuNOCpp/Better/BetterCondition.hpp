@@ -15,12 +15,16 @@ namespace JuNOCpp
     class BetterCondition: public Notifiable, public Notifier
     {
     public:
+        const static int CONJUNCTION = 0;
+        const static int DISJUNCTION = 1;
+        const static int SINGLE = 2;
+    public:
         int quantity;
-        int approved_premises_and_subconds;
-        bool permanent;
+        int count_approved;
+        bool persistant;
+        int mode;
         BetterRule* rule;
     public:
-        BetterCondition* better_condition_above;
         bool previous_status;
         bool current_status;
 
@@ -38,72 +42,114 @@ namespace JuNOCpp
 
         static BetterCondition& sharedCondition(BetterCondition& b_condition)
         {
-            b_condition.permanent = true;
+            b_condition.persistant = true;
             return b_condition;
         }
 
-        virtual void conditionalCheck(bool status, bool renotify = false);
         void referenceBetterRule(BetterRule* rule);
 
         void setQuantity(const int quant);
 
         void update(const bool renotify = false);
+        void update(const bool renotify, const bool status);
         void notify(const bool renotify = false);
     
         template <class TYPE>
         BetterCondition& operator &&(BetterPremise<TYPE>& b_premise)
         {
-            BetterCondition aux;
+            if((this->mode == BetterCondition::CONJUNCTION or this->mode == BetterCondition::SINGLE) and !this->persistant)
+            {
+                b_premise.insert(this->shared_from_this());
+                this->setQuantity(this->quantity + 1);
 
-            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
-            condition->setQuantity(2);
+                return *this;
+            }
+            else
+            {
+                BetterCondition aux;
 
-            this->insert(condition);
-            b_premise.insert(condition);
-            
-            return *condition;
+                std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+                condition->setQuantity(2);
+                condition->mode = BetterCondition::CONJUNCTION;
+
+                this->insert(condition);
+                b_premise.insert(condition);
+                
+                return *condition;
+            }
         }
 
         template <class TYPE>
         BetterCondition& operator &&(BetterPremise<TYPE>&& b_premise)
         {
-            BetterCondition aux;
+            if((this->mode == BetterCondition::CONJUNCTION or this->mode == BetterCondition::SINGLE) and !this->persistant)
+            {
+                b_premise.insert(this->shared_from_this());
+                this->setQuantity(this->quantity + 1);
 
-            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
-            condition->setQuantity(2);
+                return *this;
+            }
+            else
+            {
+                BetterCondition aux;
 
-            this->insert(condition);
-            b_premise.insert(condition);
-            
-            return *condition;
+                std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+                condition->setQuantity(2);
+                condition->mode = BetterCondition::CONJUNCTION;
+
+                this->insert(condition);
+                b_premise.insert(condition);
+                
+                return *condition;
+            }
         }
 
         template <class TYPE>
         BetterCondition& operator ||(BetterPremise<TYPE>& b_premise)
         {
-            BetterCondition aux;
+            if((this->mode == BetterCondition::DISJUNCTION or this->mode == BetterCondition::SINGLE) and !this->persistant)
+            {
+                b_premise.insert(this->shared_from_this());
 
-            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
-            condition->setQuantity(1);
+                return *this;
+            }
+            else
+            {
+                BetterCondition aux;
 
-            this->insert(condition);
-            b_premise.insert(condition);
-            
-            return *condition;
+                std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+                condition->setQuantity(1);
+                condition->mode = BetterCondition::DISJUNCTION;
+
+                this->insert(condition);
+                b_premise.insert(condition);
+                
+                return *condition;
+            }
         }
 
         template <class TYPE>
         BetterCondition& operator ||(BetterPremise<TYPE>&& b_premise)
         {
-            BetterCondition aux;
+            if((this->mode == BetterCondition::DISJUNCTION or this->mode == BetterCondition::SINGLE) and !this->persistant)
+            {
+                b_premise.insert(this->shared_from_this());
 
-            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
-            condition->setQuantity(1);
+                return *this;
+            }
+            else
+            {
+                BetterCondition aux;
 
-            this->insert(condition);
-            b_premise.insert(condition);
-            
-            return *condition;
+                std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+                condition->setQuantity(1);
+                condition->mode = BetterCondition::DISJUNCTION;
+
+                this->insert(condition);
+                b_premise.insert(condition);
+                
+                return *condition;
+            }
         }
         
         BetterCondition& operator &&(BetterCondition& b_condition);

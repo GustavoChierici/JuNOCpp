@@ -10,10 +10,12 @@ namespace JuNOCpp
     class BetterRule: public Notifiable, public Notifier
     {
     public:
-        BetterCondition* cond;
+        BetterCondition* condition;
         BetterAction* action;
         
         int id;
+        bool is_approved;
+        CustomString name;
 
     public:
         static int counter;
@@ -25,6 +27,7 @@ namespace JuNOCpp
 
         void execute();
         void update(const bool renotify = false);
+        void update(const bool renotify, const bool status) {}
     };
 }
 

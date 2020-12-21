@@ -64,5 +64,9 @@ build/
 *.code-workspace
 settings.json
 
+#test files
+teste.cpp
+GenericFBE.hpp
+Stack.hpp
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,c++,cmake

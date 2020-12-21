@@ -3,6 +3,7 @@
 #include "./BetterInstigation.hpp"
 #include "./NOPManager.hpp"
 #include "Notifier.hpp"
+#include "BetterCondition.hpp"
 
 namespace JuNOCpp
 {
@@ -11,6 +12,7 @@ namespace JuNOCpp
     {
     public:
         BetterRule* rule;
+        List<BetterCondition*> dependant_rules;
 
     public:
         BetterAction();
@@ -19,5 +21,8 @@ namespace JuNOCpp
         void setBetterRule(BetterRule* b_rule);
 
         void update(const bool renotify = false);
+        void update(const bool renotify, const bool status) {}
+        void notify(const bool renotify = false);
+        void disapproveDependantRules();
     };
 }

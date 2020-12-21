@@ -17,8 +17,9 @@ using namespace JuNOCpp;
 using namespace Attributes;
 
 #define RULE(expression)                NOPManager::Get().CreateRule(expression)
+#define RULE_N(expression, name)        NOPManager::Get().CreateRule(expression, #name)
 #define INSTIGATE(instigation)          NOPManager::Get().CreateInstigation(instigation)
-#define END_RULE                        //Placeholder
+#define END_RULE                        NOPManager::Get().EndRule()
 #define SharedCondition(expression)     BetterCondition::sharedCondition(expression)
 
 namespace NOP {
@@ -32,4 +33,6 @@ namespace NOP {
     using PremisePtr = BetterPremise<TYPE>*;
     using Condition = BetterCondition&;
     using ConditionPtr = BetterCondition*;
+    using Rule = BetterRule&;
+    using RulePtr = BetterRule*;
 }

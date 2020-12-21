@@ -21,4 +21,10 @@ namespace JuNOCpp
         // std::cout << "INSTIGATION - " << this <<std::endl;
         this->method();
     }
+
+    void BetterInstigation::update(const bool renotify, const bool status)
+    {
+        // std::cout << "INSTIGATION - " << this <<std::endl;
+        this->method();
+    }
 }

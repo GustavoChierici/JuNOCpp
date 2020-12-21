@@ -12,5 +12,6 @@ namespace JuNOCpp
         ~Notifiable() = default;
 
         virtual void update(const bool renotify = false) = 0;
+        virtual void update(const bool renotify, const bool status) = 0;
     };
 }

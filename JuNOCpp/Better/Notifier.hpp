@@ -12,7 +12,7 @@ namespace JuNOCpp
     class Notifier
     {
     public:
-        // List<std::shared_ptr<Notifiable>> notifiables;
+        List<std::shared_ptr<Notifiable>> notifiables;
         std::vector<std::shared_ptr<Notifiable>> notfs;
     
     public:
@@ -20,9 +20,10 @@ namespace JuNOCpp
         ~Notifier() = default;
         
         void insert(std::shared_ptr<Notifiable>&& notifiable);
-        //void remove(std::weak_ptr<Notifiable>& notifiable);
+        void remove(std::shared_ptr<Notifiable>&& notifiable);
 
         virtual void notify(const bool renotify = false);
+        virtual void notify(const bool renotify, const bool status);
     };
 }
 

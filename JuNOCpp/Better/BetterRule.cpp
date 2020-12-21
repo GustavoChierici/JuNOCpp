@@ -44,9 +44,11 @@ namespace JuNOCpp
 
     BetterRule::BetterRule()
     {
-        this->cond = nullptr;
+        this->condition = nullptr;
         this->action = nullptr;
         this->id = BetterRule::counter;
+        this->approved = false;
+        this->name = "UnnamedRule";
         BetterRule::counter++;
     }
 

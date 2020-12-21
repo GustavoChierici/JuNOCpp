@@ -18,5 +18,6 @@ namespace JuNOCpp
         void setMt(std::function<void()>& func);
 
         void update(const bool renotify = false);
+        void update(const bool renotify, const bool status);
     };
 }

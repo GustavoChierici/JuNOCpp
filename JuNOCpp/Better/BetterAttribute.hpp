@@ -32,7 +32,8 @@ namespace JuNOCpp
 
             void referenceBetterAttributeAbove(BetterAttribute<TYPE>* b_attr);
 
-            void update(bool renotify = false);
+            void update(const bool renotify = false);
+            void update(const bool renotify, const bool status) {}
 
             // BetterAttribute<TYPE> operator+(BetterAttribute<TYPE>& b_attr);
             // BetterAttribute<TYPE> operator-(BetterAttribute<TYPE>& b_attr);
@@ -115,7 +116,8 @@ namespace JuNOCpp
         void BetterAttribute<TYPE>::update(bool renotify)
         {
             // this->current_status = this->updateOperation(this->current_status, value);
-
+            std::cout << this << std::endl;
+            std::cout << "Não era pra você estar aqui" << std::endl;
             // notify(renotify);
         }
 
@@ -427,7 +429,7 @@ namespace JuNOCpp
         {
             BetterPremise<TYPE> aux;
             std::shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(aux);
-            premise->setOperation(BetterPremise<TYPE>::EQUAL);
+            premise->setOperation(BetterPremise<TYPE>::LESS_OR_EQUAL_THAN);
             premise->setBetterAttribute(this, value);
 
             this->insert(premise);

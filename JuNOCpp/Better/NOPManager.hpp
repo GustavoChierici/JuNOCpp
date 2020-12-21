@@ -3,7 +3,8 @@
 #include "./BetterMethod.hpp"
 #include "./BetterInstigation.hpp"
 #include "Notifier.hpp"
-#include <vector>
+#include "../CustomString.hpp"
+#include <stack>
 
 namespace JuNOCpp
 {
@@ -26,6 +27,8 @@ namespace JuNOCpp
 
         static void CreateRule(BetterCondition&& b_cond);
         static void CreateRule(BetterCondition& b_cond);
+        static BetterRule& CreateRule(BetterCondition& b_cond, CustomString name);
+        static void EndRule();
 
         static void CreateInstigation(std::function<void()> func);
 
@@ -33,6 +36,7 @@ namespace JuNOCpp
         NOPManager();
 
         static List<std::shared_ptr<BetterRule>> rule_list;
+        static std::stack<std::shared_ptr<BetterRule>> rule_stack;
         // static List<std::shared_ptr<BetterCondition>> condition_list;
         // static List<BetterAction> action_list;
 

@@ -14,7 +14,7 @@ namespace JuNOCpp
         {
         protected:
             Element<U>*  pNext;
-            U* pInfo;
+            U info;
 
         public:
             Element();
@@ -26,9 +26,8 @@ namespace JuNOCpp
                 return pNext;
             }
 
-            void setInfo(U* pI);
-            void setInfo(const U* pI);
-            U* getInfo();
+            void setInfo(U pI);
+            U getInfo();
         };
 
         void setAutoDel(bool del)
@@ -40,8 +39,8 @@ namespace JuNOCpp
         ~List();
 
         void insertElement(Element<T>* pEl);
-        void insertInfo(T* pInfo);
-        void insertInfo(const T* pInfo);
+        void insertInfo(T info);
+        void removeInfo(T info);
 
         Element<T>* getFirst() {return pFirst;}
         Element<T>* getCurrent() {return pCurrent;}
@@ -105,29 +104,44 @@ namespace JuNOCpp
     }
 
     template<class T>
-    void List<T>::insertInfo(T* pInfo)
+    void List<T>::insertInfo(T info)
     {
         Element<T>* pElement;
         pElement = new Element<T>();
-        pElement->setInfo (pInfo);
+        pElement->setInfo(info);
         insertElement(pElement);
     }
 
     template<class T>
-    void List<T>::insertInfo(const T* pInfo)
+    void List<T>::removeInfo(T info)
     {
-        Element<T>* pElement;
-        pElement = new Element<T>();
-        pElement->setInfo(pInfo);
-        insertElement(pElement);
+        Element<T>* aux = this->getFirst();
+        Element<T>* aux2;
+
+        while(aux)
+        {
+            if(aux->getNext())
+            {
+                if(aux->getNext()->getInfo() == info)
+                {
+                    aux2 = aux->getNext();
+                    aux->setNext(aux2->getNext());
+                    delete aux2;
+                }
+            }
+            else if(aux->getInfo() == info)
+            {
+                delete aux;
+            }
+            aux = aux->getNext();
+        }
     }
 
     template<class T>
     template<class U>
     List<T>::Element<U>::Element()
     {
-    this->pNext = nullptr;
-        this->pInfo = nullptr;
+        this->pNext = nullptr;
     }
 
     template<class T>
@@ -135,7 +149,6 @@ namespace JuNOCpp
     List<T>::Element<U>::~Element ( )
     {
         this->pNext = nullptr;
-        this->pInfo = nullptr;
     }
 
     template<class T>
@@ -154,23 +167,16 @@ namespace JuNOCpp
 
     template<class T>
     template<class U>
-    void List<T>::Element<U>::setInfo( U* pI)
+    void List<T>::Element<U>::setInfo(U info)
     {
-        pInfo = pI;
+        this->info = info;
     }
 
     template<class T>
     template<class U>
-    void List<T>::Element<U>::setInfo(const U* pI)
+    U List<T>::Element<U>::getInfo()
     {
-        pInfo = pI;
-    }
-
-    template<class T>
-    template<class U>
-    U* List<T>::Element<U>::getInfo()
-    {
-        return pInfo;
+        return info;
     }
 
 } // namespace JuNOCpp
