@@ -8,11 +8,7 @@ public:
     NOP::Attribute<bool> atAppleStatus;
     NOP::Attribute<char> atAppleColor;
 public:
-    Apple()
-    {
-        this->atAppleStatus;
-        this->atAppleColor = 'G';
-    }
+    Apple() : atAppleColor{'G'} {}
     ~Apple()
     {
     }

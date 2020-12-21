@@ -42,12 +42,11 @@ namespace JuNOCpp
     //     }
     // }
 
-    BetterRule::BetterRule()
+    BetterRule::BetterRule() :
+        cond{nullptr},
+        action{nullptr},
+        id{BetterRule::counter++}
     {
-        this->cond = nullptr;
-        this->action = nullptr;
-        this->id = BetterRule::counter;
-        BetterRule::counter++;
     }
 
     BetterRule::~BetterRule()

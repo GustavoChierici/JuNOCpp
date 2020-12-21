@@ -60,15 +60,13 @@ namespace JuNOCpp
     };
 
     template <class TYPE>
-    BetterPremise<TYPE>::BetterPremise()
+    BetterPremise<TYPE>::BetterPremise() : 
+        attr1{nullptr}, 
+        attr2{nullptr},
+        status{false}, 
+        previous_status{false}, 
     {
-        this->conditions;
-        this->conditions.setAutoDel(false);
-        this->previous_status = false;
-        this->status = false;
-
-        this->attr1 = nullptr;
-        this->attr2 = nullptr;
+        this->conditions.setAutoDel(false);   
     }
 
     template <class TYPE>

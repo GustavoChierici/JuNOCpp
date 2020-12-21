@@ -6,11 +6,7 @@ public:
     bool status;
     char color;
 public:
-    ApplePI()
-    {
-        status = false;
-        color = 'G';
-    }
+    ApplePI() : status{false}, color{'G'} {}
     ~ApplePI(){}
 };
 

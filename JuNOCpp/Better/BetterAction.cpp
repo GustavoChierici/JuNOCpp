@@ -2,9 +2,8 @@
 
 namespace JuNOCpp
 {   
-    BetterAction::BetterAction()
+    BetterAction::BetterAction() : rule{nullptr}
     {
-        this->rule = nullptr;
     }
 
     BetterAction::~BetterAction()

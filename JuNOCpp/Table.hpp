@@ -12,21 +12,37 @@ namespace JuNOCpp
     private:
         int capacity;
         int count;
-        T* array[1024];
+        
+        
+        typedef struct _elem {
+            T* value;
+            struct _elem next;
+        } Elem;
+        Elem* array;
+        
+
 
     public:
-        Table(const int capacity = 1024)
+        Table(const int capacity = 1024) : 
+            capacity{capacity},
+            count{0},
+            array{new Elem*[capacity]}
         {
-            this->capacity = capacity;
-            this->count = 0;
             for(int i = 0; i < capacity; i++)
                 array[i] = nullptr;
+        }
+
+        ~Table() {
+            delete [] array;
         }
 
         void insertValue(const int key, T* value)
         {
             int index = hashing(key);
-
+            Elem* newElement = new Elem();
+            newElement->value = value;
+            newElement->next = array[index];
+            array[index] = newElement;
             array[index] = value;
         }
 

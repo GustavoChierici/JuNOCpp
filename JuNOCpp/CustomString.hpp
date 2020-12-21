@@ -6,7 +6,7 @@ namespace JuNOCpp
     class CustomString
     {
     private:
-        int lenght;
+        int length;
         char* str;
     public:
         CustomString(const char* s = "");

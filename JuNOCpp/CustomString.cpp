@@ -2,8 +2,8 @@
 
 namespace JuNOCpp
 {
-    CustomString::CustomString(const char* s):
-    lenght(strlen(s))
+    CustomString::CustomString(const char* s) :
+    length(strlen(s))
     {
         setString(s);
     }
@@ -14,7 +14,7 @@ namespace JuNOCpp
 
     void CustomString::setString(const char* s)
     {
-        this->str = new char[this->lenght + 1];
+        this->str = new char[this->length + 1];
         strcpy(this->str, s);
     }
 
@@ -25,13 +25,13 @@ namespace JuNOCpp
 
     void CustomString::operator=(const char* s)
     {
-        this->lenght = strlen(s);
+        this->length = strlen(s);
         setString(s);
     }
 
     void CustomString::operator=(CustomString& s)
     {
-        this->lenght = strlen(s.getString());
+        this->length = strlen(s.getString());
         setString(s.getString());
     }
 

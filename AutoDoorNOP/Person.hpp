@@ -7,11 +7,7 @@ public:
     double velocity;
 
 public:
-    Person(bool value = false, double velocity = 0.f)
-    {
-        this->pos_door_front = value;
-        this->velocity = velocity;
-    }
+    Person(bool value = false, double velocity = 0.f) : pos_door_front{value}, velocity{velocity} {}
 
     ~Person()
     {

@@ -3,15 +3,16 @@
 #include "BetterRule.hpp"
 using namespace JuNOCpp;
 
-BetterCondition::BetterCondition()
+BetterCondition::BetterCondition() :
+    quantity{0},
+    approved_premises_and_subconds{0},
+    permanent{false},
+    rule{nullptr},
+    better_condition_above{nullptr}
+    previous_status{false},
+    current_status{false},
 {
-    this->permanent = false;
-    this->quantity = 0;
-    this->approved_premises_and_subconds = 0;
-    this->rule = nullptr;
-    this->previous_status = false;
-    this->current_status = false;
-    this->better_condition_above = nullptr;
+    
 }
 
 BetterCondition::~BetterCondition()
