@@ -19,7 +19,8 @@ namespace JuNOCpp
 
     CustomString::~CustomString()
     {
-        if (str) delete[] str;
+        if (str)
+            delete[] str;
     }
 
     void CustomString::setString(const char *s)
@@ -61,22 +62,27 @@ namespace JuNOCpp
 
     bool CustomString::operator==(const CustomString &s) const
     {
-        return (!strcmp(this->getString(), s.getString()) ? true : false);
+        return !strcmp(this->getString(), s.getString());
     }
 
     bool CustomString::operator==(const std::string &s) const
     {
-        return (!strcmp(this->getString(), s.c_str()) ? true : false);
+        return !strcmp(this->getString(), s.c_str());
     }
 
     bool CustomString::operator!=(const char *s) const
     {
-        return (!strcmp(this->getString(), s) ? true : false);
+        return strcmp(this->getString(), s);
     }
 
     bool CustomString::operator!=(const std::string &s) const
     {
-        return (strcmp(this->getString(), s.c_str()) ? true : false);
+        return strcmp(this->getString(), s.c_str());
+    }
+
+    bool CustomString::operator!=(const CustomString &s) const
+    {
+        return strcmp(this->getString(), s.getString());
     }
 
     CustomString::operator const char *()
