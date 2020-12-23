@@ -24,16 +24,32 @@ namespace JuNOCpp
 
     void BetterAction::notify(const bool renotify)
     {
-        for(auto notf : notfs)
+        // for(auto notf : notfs)
+        // {
+        //     auto cond = dynamic_cast<BetterCondition*>(notf.get());
+        //     if(cond)
+        //     {
+        //         cond->update(false, true);
+        //         cond->update(false, false);
+        //     }    
+        //     else
+        //         notf->update(renotify);
+        // }
+
+        auto aux = this->notifiables.getFirst();
+
+        while(aux)
         {
-            auto cond = dynamic_cast<BetterCondition*>(notf.get());
+            auto cond = dynamic_cast<BetterCondition*>(aux->getInfo().get());
             if(cond)
             {
                 cond->update(false, true);
                 cond->update(false, false);
             }    
             else
-                notf->update(renotify);
+                aux->getInfo()->update(renotify);
+            
+            aux = aux->getNext();
         }
     }
 

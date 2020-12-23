@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include "Notifier.hpp"
+#include "./BasePremise.hpp"
 
 namespace JuNOCpp
 {
@@ -21,9 +22,12 @@ namespace JuNOCpp
     public:
         int quantity;
         int count_approved;
+        int count_impertinents;
+        List<BasePremise*> impertinents;
         bool persistant;
         int mode;
         BetterRule* rule;
+        bool is_impertinents_active {false};
     public:
         bool previous_status;
         bool current_status;
@@ -53,6 +57,8 @@ namespace JuNOCpp
         void update(const bool renotify = false);
         void update(const bool renotify, const bool status);
         void notify(const bool renotify = false);
+        void activateImpertinents();
+        void deactivateImpertinents();
     
         template <class TYPE>
         BetterCondition& operator &&(BetterPremise<TYPE>& b_premise)

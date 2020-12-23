@@ -8,6 +8,7 @@ BetterCondition::BetterCondition()
     this->persistant = false;
     this->quantity = 0;
     this->count_approved = 0;
+    this->count_impertinents = 0;
     this->rule = nullptr;
     this->previous_status = false;
     this->current_status = false;
@@ -45,6 +46,16 @@ void BetterCondition::update(const bool renotify, const bool status)
         this->previous_status = this->current_status;
         notify(renotify);
     }
+    if(this->count_approved + this->count_impertinents == this->quantity)
+    {
+        activateImpertinents();
+        this->is_impertinents_active = true;
+    }
+    else if(is_impertinents_active)
+    {
+        is_impertinents_active = false;
+        deactivateImpertinents();
+    }
 }
 
 void BetterCondition::notify(const bool renotify)
@@ -58,7 +69,32 @@ void BetterCondition::notify(const bool renotify)
             cond->update(renotify, this->current_status);
         else if(this->current_status)
             aux->getInfo()->update(renotify);
-        
+
+        aux = aux->getNext();
+    }
+    
+}
+
+void BetterCondition::activateImpertinents()
+{
+    auto aux = this->impertinents.getFirst();
+
+    while(aux)
+    {
+        aux->getInfo()->activate();
+
+        aux = aux->getNext();
+    }
+}
+
+void BetterCondition::deactivateImpertinents()
+{
+    auto aux = this->impertinents.getFirst();
+
+    while(aux)
+    {
+        aux->getInfo()->deactivate();
+
         aux = aux->getNext();
     }
 }

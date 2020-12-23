@@ -1,6 +1,5 @@
 #pragma once
 #include "../List.hpp"
-#include "./BetterMethod.hpp"
 #include "./BetterInstigation.hpp"
 #include "Notifier.hpp"
 #include "../CustomString.hpp"

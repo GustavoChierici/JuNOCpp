@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <iostream>
 
 namespace JuNOCpp
 {
@@ -13,7 +14,7 @@ namespace JuNOCpp
         class Element
         {
         protected:
-            Element<U>*  pNext;
+            Element<U>* pNext;
             U info;
 
         public:
@@ -118,22 +119,25 @@ namespace JuNOCpp
         Element<T>* aux = this->getFirst();
         Element<T>* aux2;
 
+        if(aux and aux->getInfo() == info)
+        {
+            this->pFirst = aux->getNext();
+            delete aux;
+
+            return;
+        }
+
+
         while(aux)
         {
-            if(aux->getNext())
+            aux2 = aux;
+            aux = aux->getNext();
+
+            if(aux and aux->getInfo() == info)
             {
-                if(aux->getNext()->getInfo() == info)
-                {
-                    aux2 = aux->getNext();
-                    aux->setNext(aux2->getNext());
-                    delete aux2;
-                }
-            }
-            else if(aux->getInfo() == info)
-            {
+                aux2->setNext(aux->getNext());
                 delete aux;
             }
-            aux = aux->getNext();
         }
     }
 

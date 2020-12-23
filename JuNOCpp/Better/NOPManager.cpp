@@ -4,7 +4,6 @@
 #include "./BetterPremise.hpp"
 #include "./BetterRule.hpp"
 #include "./BetterAction.hpp"
-#include "./BetterMethod.hpp"
 
 namespace JuNOCpp
 {

@@ -5,10 +5,11 @@
 #include "../List.hpp"
 #include "./BetterAttribute.hpp"
 #include "./BetterCondition.hpp"
+#include "./BasePremise.hpp"
 namespace JuNOCpp
 {
     template<class TYPE>
-    class BetterPremise: public Notifiable, public Notifier
+    class BetterPremise: public BasePremise
     {
     public:
         Attributes::BetterAttribute<TYPE>* attr1;
@@ -42,6 +43,24 @@ namespace JuNOCpp
         void update(const bool renotify = false);
         void update(const bool renotify, const bool status) {}
 
+        void makeImpertinent();
+        void activate()
+        {
+            this->attr1->insert(this->shared_from_this());
+            if(this->attr2)
+                this->attr2->insert(this->shared_from_this());
+
+            update();
+        }
+        void deactivate()
+        {
+            this->attr1->remove(this->shared_from_this());
+            if(this->attr2)
+                this->attr2->remove(this->shared_from_this());
+
+            notify(false, false);
+        }
+
         template <class OT>
         BetterCondition& operator &&(BetterPremise<OT>& b_premise);
         template <class OT>
@@ -56,6 +75,17 @@ namespace JuNOCpp
         BetterCondition& operator ||(BetterCondition& b_condition);
         BetterCondition& operator ||(BetterCondition&& b_condition);
 
+        bool operator==(BetterPremise<TYPE>& premise)
+        {
+
+            if(this->attr1 == premise.attr1 and this->attr2 == premise.attr2 and this->value == premise.value and this->operation == premise.operation)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         operator BetterCondition&();
     };
 
@@ -63,9 +93,10 @@ namespace JuNOCpp
     BetterPremise<TYPE>::BetterPremise()
     {
         this->conditions;
-        this->conditions.setAutoDel(false);
+        // this->conditions.setAutoDel(false);
         this->previous_status = false;
         this->status = false;
+        this->impertinent = false;
 
         this->attr1 = nullptr;
         this->attr2 = nullptr;
@@ -79,6 +110,8 @@ namespace JuNOCpp
     template <class TYPE>
     void BetterPremise<TYPE>::setOperation(const int op /* = BetterPremise::EQUAL*/)
     {
+        this->operation = op;
+
         switch (op)
         {
         case BetterPremise::DIFFERENT:
@@ -159,14 +192,34 @@ namespace JuNOCpp
     }
 
     template <class TYPE>
+    void BetterPremise<TYPE>::makeImpertinent()
+    { 
+        this->impertinent = true; 
+
+        this->attr1->remove(this->shared_from_this());
+        if(this->attr2)
+            this->attr2->remove(this->shared_from_this());
+    }
+
+    template <class TYPE>
     template <class OT>
     BetterCondition& BetterPremise<TYPE>::operator &&(BetterPremise<OT>& b_premise)
     {
-        BetterCondition aux;
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
         condition->setQuantity(2);
         condition->mode = BetterCondition::CONJUNCTION;
 
+        if(this->impertinent)
+        {
+            condition->count_impertinents++;
+            condition->impertinents.insertInfo(this);
+        }
+        if(b_premise.impertinent)
+        {
+            condition->count_impertinents++;
+            condition->impertinents.insertInfo(&b_premise);
+        }
+        // std::cout << condition->count_impertinents << std::endl;
         this->insert(condition);
         b_premise.insert(condition);
         
