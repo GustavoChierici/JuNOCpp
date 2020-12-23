@@ -2,9 +2,8 @@
 
 namespace JuNOCpp
 {
-    BetterInstigation::BetterInstigation()
+    BetterInstigation::BetterInstigation() : method{nullptr}
     {
-        this->method = nullptr;
     }
 
     BetterInstigation::~BetterInstigation()

@@ -42,14 +42,13 @@ namespace JuNOCpp
     //     }
     // }
 
-    BetterRule::BetterRule()
+    BetterRule::BetterRule() :
+        condition{nullptr},
+        action{nullptr},
+        id{BetterRule::counter++},
+        is_approved{false},
+        name{"UnnamedRule"}
     {
-        this->condition = nullptr;
-        this->action = nullptr;
-        this->id = BetterRule::counter;
-        this->approved = false;
-        this->name = "UnnamedRule";
-        BetterRule::counter++;
     }
 
     BetterRule::~BetterRule()

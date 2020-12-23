@@ -3,15 +3,15 @@
 #include "BetterRule.hpp"
 using namespace JuNOCpp;
 
-BetterCondition::BetterCondition()
-{
-    this->persistant = false;
-    this->quantity = 0;
-    this->count_approved = 0;
-    this->count_impertinents = 0;
-    this->rule = nullptr;
-    this->previous_status = false;
-    this->current_status = false;
+BetterCondition::BetterCondition() :
+    quantity{0},
+    count_approved{0},
+    persistant{false},
+    rule{nullptr},
+    count_impertinents{0},
+    previous_status{false},
+    current_status{false}
+{  
 }
 
 BetterCondition::~BetterCondition()

@@ -5,10 +5,7 @@ class Door
 public:
     bool is_open;
 public:
-    Door(bool value = false)
-    {
-        this->is_open = value;
-    }
+    Door(bool value = false) : is_open{value} {}
 
     ~Door()
     {

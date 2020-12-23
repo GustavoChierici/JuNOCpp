@@ -77,11 +77,7 @@ namespace JuNOCpp
         }
 
         template<class TYPE>
-        BetterAttribute<TYPE>::BetterAttribute(TYPE value)
-        {
-            this->current_status = value;
-            this->previous_status = value;
-        }
+        BetterAttribute<TYPE>::BetterAttribute(TYPE value) : current_status{value}, previous_status{value} {}
 
         template<class TYPE>
         BetterAttribute<TYPE>::~BetterAttribute()

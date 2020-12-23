@@ -9,11 +9,7 @@ public:
     NOP::Attribute<double> at_velocity;
 
 public:
-    NOPPerson(bool value = false, double velocity = 0.0)
-    {
-        this->at_pos_door_front = value;
-        this->at_velocity = velocity;
-    }
+    NOPPerson(bool value = false, double velocity = 0.0) : at_pos_door_front{value}, at_velocity{velocity} {}
 
     ~NOPPerson()
     {

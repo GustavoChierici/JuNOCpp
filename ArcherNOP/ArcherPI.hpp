@@ -5,9 +5,6 @@ class ArcherPI
 public:
     bool status;
 public:
-    ArcherPI()
-    {
-        status = false;
-    }
+    ArcherPI() : status{false} {}
     ~ArcherPI() {}
 };

@@ -9,7 +9,6 @@ public:
 public:
     Archer()
     {
-        this->atArcherStatus;
     }
     ~Archer()
     {

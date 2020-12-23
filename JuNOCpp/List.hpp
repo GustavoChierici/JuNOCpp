@@ -55,12 +55,12 @@ namespace JuNOCpp
     };
 
     template<class T>
-    List<T>::List(bool del)
+    List<T>::List(bool del) :
+        counter{0},
+        pFirst{nullptr},
+        pCurrent{nullptr},
+        auto_delete{del}
     {
-        pFirst = nullptr;
-        pCurrent = nullptr;
-        this->auto_delete = del;
-        this->counter = 0;
     }
 
     template<class T>
