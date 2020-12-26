@@ -5,6 +5,10 @@
 
 namespace JuNOCpp
 {
+    /**
+     * Classe abstrata Notifiable
+     * 
+     */
     class Notifiable: public std::enable_shared_from_this<Notifiable>
     {
     public:

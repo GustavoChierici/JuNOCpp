@@ -28,7 +28,7 @@ Attributes são entidades notificantes que encapsulam os atributos de um FBE. Qu
 _NOP::Attribute\<int> my_int_attr;_
   
 ### Premises  
-Premises são as entidades que cuidam da avaliação lógica entre um Attribute e um determinado valor desejado. Assim como os Attributes, as Premises também guardam seus estados lógicos e, assim que alterado, elas notificam pontualmente as Conditions que dependam delas. Premises ainda podem ser do tipo EQUAL (==), NOT_EQUAL (!=), GREATER_THAN (>), GREATHER_OR_EQUAL_THAN (>=), LESS_THAN (<) e LESS_OR_EQUAL_THAN (<=). Premises podem ser criadas dentro Rules, Conditions ou separadamente, caso você queira compartilhá-la para mais de uma Rule. Uma Premise pode ser criada separadamente da seguinte maneira:  
+Premises são as entidades que cuidam da avaliação lógica entre um Attribute e um determinado valor desejado. Assim como os Attributes, as Premises também guardam seus estados lógicos e, assim que alterado, elas notificam pontualmente as Conditions que dependam delas. Premises ainda podem ser do tipo EQUAL (==), NOT_EQUAL (!=), GREATER_THAN (>), GREATER_OR_EQUAL_THAN (>=), LESS_THAN (<) e LESS_OR_EQUAL_THAN (<=). Premises podem ser criadas dentro Rules, Conditions ou separadamente, caso você queira compartilhá-la para mais de uma Rule. Uma Premise pode ser criada separadamente da seguinte maneira:  
   
 _NOP::Premise\<int> shared_premise = fbe1->my_int_attr1 == fbe2->my_int_attr2;_  
 

@@ -1,4 +1,5 @@
-#include "BetterRule.hpp"
+#include "./BetterRule.hpp"
+#include "./NOPManager.hpp"
 #include <iostream>
 
 namespace JuNOCpp
@@ -9,39 +10,6 @@ namespace JuNOCpp
     /**************************************** 
     * Construtores/Destrutores
     ****************************************/
-    // BetterRule::BetterRule(CustomString mode /* = "CONJUNCTION" */, int rl_mode /* = BetterRule::COMPLETE */)
-    // {
-    //     this->cond = new Condition(mode);
-    //     this->cond->referenceBetterRule(this);
-
-    //     this->mode = rl_mode;
-
-    //     switch(rl_mode)
-    //     {
-    //         case BetterRule::COMPLETE:
-    //             this->action = new Action(this);
-    //             this->attr = nullptr;
-    //             this->exec_value = nullptr;
-    //             this->exec = [](Attributes::Attribute* attr = nullptr, void* value = nullptr, Action* act = nullptr)
-    //                         {
-    //                             act->callInstigations();
-    //                         };
-    //             break;
-    //         case BetterRule::INCOMPLETE:
-    //             this->action = nullptr;
-    //             this->exec = nullptr;
-    //             this->attr = nullptr;
-    //             this->exec_value = nullptr;
-    //             break;
-    //         case BetterRule::CUSTOM:
-    //             this->action = nullptr;
-    //             this->exec = nullptr;
-    //             this->exec_value = nullptr;
-    //             this->attr = nullptr;
-    //             break;
-    //     }
-    // }
-
     BetterRule::BetterRule() :
         condition{nullptr},
         action{nullptr},
@@ -58,7 +26,7 @@ namespace JuNOCpp
     /***************************************
     *  Executar BetterRule aprovada
     ****************************************/
-    void BetterRule::update(const bool renotify) //Método que a BetterRule execute após ter sido aprovada
+    void BetterRule::update(const bool renotify)
     {
         // std::cout << "RULE " << this->id << " (" << this << ")" <<std::endl;
 

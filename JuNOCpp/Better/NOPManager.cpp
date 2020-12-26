@@ -9,19 +9,32 @@ namespace JuNOCpp
 {
     List<std::shared_ptr<BetterRule>> NOPManager::rule_list;
     std::stack<std::shared_ptr<BetterRule>> NOPManager::rule_stack;
-
     BetterRule* NOPManager::current_rule = nullptr;
 
+    /**
+     * Construtor
+     * 
+     */
     NOPManager::NOPManager()
     {
     }
 
+    /**
+     * Acesso à instância do Singleton NOPManager
+     * 
+     * @return NOPManager& 
+     */
     NOPManager& NOPManager::Get()
     {
         static NOPManager instance; 
         return instance;
     }
 
+    /**
+     * Cria uma Rule
+     * 
+     * @param b_cond 
+     */
     void NOPManager::CreateRule(BetterCondition&& b_cond)
     {
        if(!rule_stack.empty())
@@ -40,7 +53,7 @@ namespace JuNOCpp
             dependant_rule->action = dependant_rule_action.get();
             dependant_rule->insert(dependant_rule_action);
             dependant_rule_action->setBetterRule(dependant_rule.get());
-            dependant_rule->condition->persistant = true;
+            dependant_rule->condition->makePersistant();
 
             rule_stack.push(dependant_rule);
         }
@@ -57,13 +70,18 @@ namespace JuNOCpp
             shared_action->setBetterRule(shared_rule.get());
             
             shared_rule->insert(shared_action);
-            shared_rule->condition->persistant = true;
+            shared_rule->condition->makePersistant();
 
             rule_list.insertInfo(shared_rule);
             rule_stack.push(shared_rule);
         }        
     }
     
+    /**
+     * Cria uma Rule
+     * 
+     * @param b_cond 
+     */
     void NOPManager::CreateRule(BetterCondition& b_cond)
     {
         if(!rule_stack.empty())
@@ -82,7 +100,7 @@ namespace JuNOCpp
             dependant_rule->action = dependant_rule_action.get();
             dependant_rule->insert(dependant_rule_action);
             dependant_rule_action->setBetterRule(dependant_rule.get());
-            dependant_rule->condition->persistant = true;
+            dependant_rule->condition->makePersistant();
 
             master_rule->action->dependant_rules.insertInfo(resultant_condition.get());
 
@@ -101,13 +119,20 @@ namespace JuNOCpp
             shared_action->setBetterRule(shared_rule.get());
             
             shared_rule->insert(shared_action);
-            shared_rule->condition->persistant = true;
+            shared_rule->condition->makePersistant();
 
             rule_list.insertInfo(shared_rule);
             rule_stack.push(shared_rule);
         }        
     }
 
+    /**
+     * Cria e retorna uma Rule nomeada
+     * 
+     * @param b_cond 
+     * @param name 
+     * @return BetterRule& 
+     */
     BetterRule& NOPManager::CreateRule(BetterCondition& b_cond, CustomString name)
     {
         if(!rule_stack.empty())
@@ -126,7 +151,7 @@ namespace JuNOCpp
             dependant_rule->action = dependant_rule_action.get();
             dependant_rule->insert(dependant_rule_action);
             dependant_rule_action->setBetterRule(dependant_rule.get());
-            dependant_rule->condition->persistant = true;
+            dependant_rule->condition->makePersistant();
 
             master_rule->action->dependant_rules.insertInfo(resultant_condition.get());
 
@@ -141,7 +166,7 @@ namespace JuNOCpp
             std::shared_ptr<BetterRule> shared_rule = std::make_shared<BetterRule>(rule);
             b_cond.insert(shared_rule);
             shared_rule->condition = &b_cond;
-            shared_rule->condition->persistant = true;
+            shared_rule->condition->makePersistant();
 
             BetterAction action;
             std::shared_ptr<BetterAction> shared_action = std::make_shared<BetterAction>(action);
@@ -158,11 +183,20 @@ namespace JuNOCpp
         }        
     }
 
+    /**
+     * Finaliza uma Rule
+     * 
+     */
     void NOPManager::EndRule()
     {
         rule_stack.pop();
     }
 
+    /**
+     * Cria uma Instigation e adiciona ela à Action da última Rule criada aberta
+     * 
+     * @param func 
+     */
     void NOPManager::CreateInstigation(std::function<void()> func)
     {
         BetterInstigation aux;

@@ -14,7 +14,7 @@ namespace JuNOCpp
         template<class TYPE>
         class BetterAttribute: public Notifier, public Notifiable
         {
-        public:
+        private:
             TYPE current_status;
             TYPE previous_status;
 
@@ -70,34 +70,73 @@ namespace JuNOCpp
             BetterPremise<TYPE>& operator<=(const TYPE value);
         };
 
+        /**
+         * Constrututor
+         * 
+         * @tparam TYPE 
+         */
         template<class TYPE>
         BetterAttribute<TYPE>::BetterAttribute()
         {
             this->updateOperation = nullptr;
         }
 
+        /**
+         * Construtor com valor inicial
+         * 
+         * @tparam TYPE 
+         * @param value 
+         */
         template<class TYPE>
-        BetterAttribute<TYPE>::BetterAttribute(TYPE value) : current_status{value}, previous_status{value} {}
+        BetterAttribute<TYPE>::BetterAttribute(TYPE value)
+        {
+            this->current_status = value;
+            this->previous_status = value;
+        }
 
+        /**
+         * Destrutor
+         * 
+         * @tparam TYPE 
+         */
         template<class TYPE>
         BetterAttribute<TYPE>::~BetterAttribute()
         {
         }
 
+        /**
+         * Getter do previous_status 
+         * 
+         * @tparam TYPE 
+         * @return TYPE 
+         */
         template<class TYPE>
         TYPE BetterAttribute<TYPE>::getPreviousStatus()
         {
             return this->previous_status;
         }
 
+        /**
+         * Getter do current_status
+         * 
+         * @tparam TYPE 
+         * @return TYPE 
+         */
         template<class TYPE>
         TYPE BetterAttribute<TYPE>::getCurrentStatus()
         {
             return this->current_status;
         }
 
+        /**
+         * Provoca uma cadeia de notificações se o valor do Attribute for alterado ou se a flag renotify for true
+         * 
+         * @tparam TYPE 
+         * @param value 
+         * @param renotify == false
+         */
         template<class TYPE>
-        void BetterAttribute<TYPE>::setStatus(TYPE value, bool renotify /* = false */)
+        void BetterAttribute<TYPE>::setStatus(TYPE value, bool renotify)
         {
             if(renotify || value != this->current_status)
             {
@@ -108,6 +147,12 @@ namespace JuNOCpp
             }
         }
 
+        /**
+         * Atualiza o valor do Attribute composto e provoca uma cadeia de notificações
+         * 
+         * @tparam TYPE 
+         * @param renotify 
+         */
         template<class TYPE>
         void BetterAttribute<TYPE>::update(bool renotify)
         {
@@ -117,6 +162,7 @@ namespace JuNOCpp
             // notify(renotify);
         }
 
+
         template <class TYPE>
         void BetterAttribute<TYPE>::referenceBetterAttributeAbove(BetterAttribute<TYPE>* b_attr)
         {
@@ -124,12 +170,25 @@ namespace JuNOCpp
             this->insert(aux);
         }
 
+        /**
+         * Overload do operator = para chamar automaticamente o método setStatus
+         * 
+         * @tparam TYPE 
+         * @param value 
+         */
         template<class TYPE>
         void BetterAttribute<TYPE>::operator=(TYPE value)
         {
             this->setStatus(value);
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo EQUAL
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator==(BetterAttribute<TYPE>& b_attr)
         {
@@ -144,6 +203,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo EQUAL
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator==(BetterAttribute<TYPE>&& b_attr)
         {
@@ -158,6 +224,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo DIFFERENT
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator!=(BetterAttribute<TYPE>& b_attr)
         {
@@ -172,6 +245,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo DIFFERENT
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator!=(BetterAttribute<TYPE>&& b_attr)
         {
@@ -186,12 +266,19 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo GREATER_THAN
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>(BetterAttribute<TYPE>& b_attr)
         {
             BetterPremise<TYPE> aux;
             std::shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(aux);
-            premise->setOperation(BetterPremise<TYPE>::GREATHER_THAN);
+            premise->setOperation(BetterPremise<TYPE>::GREATER_THAN);
             premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
@@ -200,12 +287,19 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo GREATER_THAN
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>(BetterAttribute<TYPE>&& b_attr)
         {
             BetterPremise<TYPE> aux;
             std::shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(aux);
-            premise->setOperation(BetterPremise<TYPE>::GREATHER_THAN);
+            premise->setOperation(BetterPremise<TYPE>::GREATER_THAN);
             premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
@@ -214,12 +308,19 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo GREATER_OR_EQUAL_THAN
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>=(BetterAttribute<TYPE>& b_attr)
         {
             BetterPremise<TYPE> aux;
             std::shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(aux);
-            premise->setOperation(BetterPremise<TYPE>::GREATHER_OR_THAN_EQUAL);
+            premise->setOperation(BetterPremise<TYPE>::GREATER_OR_THAN_EQUAL);
             premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
@@ -228,12 +329,19 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo GREATER_OR_EQUAL_THAN
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>=(BetterAttribute<TYPE>&& b_attr)
         {
             BetterPremise<TYPE> aux;
             std::shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(aux);
-            premise->setOperation(BetterPremise<TYPE>::GREATHER_OR_THAN_EQUAL);
+            premise->setOperation(BetterPremise<TYPE>::GREATER_OR_THAN_EQUAL);
             premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
@@ -242,6 +350,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo LESS_THAN
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<(BetterAttribute<TYPE>& b_attr)
         {
@@ -256,6 +371,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo LESS_THAN
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<(BetterAttribute<TYPE>&& b_attr)
         {
@@ -270,6 +392,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo LESS_OR_EQUAL_THAN
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<=(BetterAttribute<TYPE>& b_attr)
         {
@@ -284,6 +413,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo LESS_OR_EQUAL_THAN
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<=(BetterAttribute<TYPE>&& b_attr)
         {
@@ -355,6 +491,13 @@ namespace JuNOCpp
         //     return aux;
         // }
     
+        /**
+         * Cria e retorna uma Premise do tipo EQUAL (com valor constante)
+         * 
+         * @tparam TYPE 
+         * @param value 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator==(const TYPE value)
         {
@@ -368,6 +511,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo DIFFERENT (com valor constante)
+         * 
+         * @tparam TYPE 
+         * @param value 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator!=(const TYPE value)
         {
@@ -381,6 +531,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo GREATER_THAN (com valor constante)
+         * 
+         * @tparam TYPE 
+         * @param value 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>(const TYPE value)
         {
@@ -394,6 +551,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo GREATER_OR_EQUAL_THAN (com valor constante)
+         * 
+         * @tparam TYPE 
+         * @param value 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>=(const TYPE value)
         {
@@ -407,6 +571,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo LESS_THAN (com valor constante)
+         * 
+         * @tparam TYPE 
+         * @param value 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<(const TYPE value)
         {
@@ -420,6 +591,13 @@ namespace JuNOCpp
             return *premise;
         }
 
+        /**
+         * Cria e retorna uma Premise do tipo LESS_OR_EQUAL_THAN (com valor constante)
+         * 
+         * @tparam TYPE 
+         * @param value 
+         * @return BetterPremise<TYPE>& 
+         */
         template <class TYPE>
         BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<=(const TYPE value)
         {

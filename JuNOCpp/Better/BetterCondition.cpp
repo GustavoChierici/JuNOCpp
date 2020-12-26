@@ -3,25 +3,44 @@
 #include "BetterRule.hpp"
 using namespace JuNOCpp;
 
+
+/**
+ * Construtor
+ * 
+ */
 BetterCondition::BetterCondition() :
     quantity{0},
     count_approved{0},
     persistant{false},
-    rule{nullptr},
     count_impertinents{0},
     previous_status{false},
     current_status{false}
 {  
 }
 
+/**
+ * Destrutor
+ * 
+ */
 BetterCondition::~BetterCondition()
 {
 }
 
+/**
+ * Sobrecarga do update inútil para uma Condition
+ * 
+ * @param renotify 
+ */
 void BetterCondition::update(const bool renotify)
 {
 }
 
+/**
+ * Analisa se a Condition foi aprovada ou não
+ * 
+ * @param renotify 
+ * @param status 
+ */
 void BetterCondition::update(const bool renotify, const bool status)
 {
     if(status)
@@ -58,6 +77,11 @@ void BetterCondition::update(const bool renotify, const bool status)
     }
 }
 
+/**
+ * Notifica as demais Conditions e Rules que dependem da Condition
+ * 
+ * @param renotify 
+ */
 void BetterCondition::notify(const bool renotify)
 {
     auto aux = this->notifiables.getFirst();
@@ -75,6 +99,10 @@ void BetterCondition::notify(const bool renotify)
     
 }
 
+/**
+ * Notifica as Premises impertinentes sobre sua ativação, para que então elas passem a ser notificadas pelos Attributes dos quais dependem
+ * 
+ */
 void BetterCondition::activateImpertinents()
 {
     auto aux = this->impertinents.getFirst();
@@ -87,6 +115,10 @@ void BetterCondition::activateImpertinents()
     }
 }
 
+/**
+ * Notifica as Premises impertinentes sobre sua desativação, para que parem de ser notificadas pelos Attributes dos quais dependem
+ * 
+ */
 void BetterCondition::deactivateImpertinents()
 {
     auto aux = this->impertinents.getFirst();
@@ -99,11 +131,22 @@ void BetterCondition::deactivateImpertinents()
     }
 }
 
+/**
+ * Define a quantidade de notificações true que a Condition precisa para ser aprovada
+ * 
+ * @param quant 
+ */
 void BetterCondition::setQuantity(const int quant)
 {
     this->quantity = quant;
 }
 
+/**
+ * Cria e retorna uma Condition do tipo CONJUNCTION
+ * 
+ * @param b_condition 
+ * @return BetterCondition& 
+ */
 BetterCondition& BetterCondition::operator &&(BetterCondition& b_condition)
 {
     if((b_condition.mode == BetterCondition::CONJUNCTION or b_condition.mode == BetterCondition::SINGLE)
@@ -130,6 +173,12 @@ BetterCondition& BetterCondition::operator &&(BetterCondition& b_condition)
     }
 }
 
+/**
+ * Cria e retorna uma Condition do tipo CONJUNCTION
+ * 
+ * @param b_condition 
+ * @return BetterCondition& 
+ */
 BetterCondition& BetterCondition::operator &&(BetterCondition&& b_condition)
 {
     if((b_condition.mode == BetterCondition::CONJUNCTION or b_condition.mode == BetterCondition::SINGLE)
@@ -156,6 +205,12 @@ BetterCondition& BetterCondition::operator &&(BetterCondition&& b_condition)
     }
 }
 
+/**
+ * Cria e retorna uma Condition do tipo DISJUNCTION
+ * 
+ * @param b_condition 
+ * @return BetterCondition& 
+ */
 BetterCondition& BetterCondition::operator ||(BetterCondition& b_condition)
 {
     if((b_condition.mode == BetterCondition::DISJUNCTION or b_condition.mode == BetterCondition::SINGLE)
@@ -181,6 +236,12 @@ BetterCondition& BetterCondition::operator ||(BetterCondition& b_condition)
     }
 }
 
+/**
+ * Cria e retorna uma Condition do tipo DISJUNCTION
+ * 
+ * @param b_condition 
+ * @return BetterCondition& 
+ */
 BetterCondition& BetterCondition::operator ||(BetterCondition&& b_condition)
 {
     if((b_condition.mode == BetterCondition::DISJUNCTION or b_condition.mode == BetterCondition::SINGLE)

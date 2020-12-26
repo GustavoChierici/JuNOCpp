@@ -6,10 +6,11 @@
 
 namespace JuNOCpp
 {
-    class Action;
+    class NOPManager;
     class BetterRule: public Notifiable, public Notifier
     {
-    public:
+    friend class NOPManager;
+    private:
         BetterCondition* condition;
         BetterAction* action;
         
@@ -25,7 +26,6 @@ namespace JuNOCpp
         BetterRule();
         ~BetterRule();
 
-        void execute();
         void update(const bool renotify = false);
         void update(const bool renotify, const bool status) {}
     };

@@ -19,14 +19,13 @@ namespace JuNOCpp
         const static int CONJUNCTION = 0;
         const static int DISJUNCTION = 1;
         const static int SINGLE = 2;
-    public:
+    private:
         int quantity;
         int count_approved;
         int count_impertinents;
         List<BasePremise*> impertinents;
         bool persistant;
         int mode;
-        BetterRule* rule;
         bool is_impertinents_active {false};
     public:
         bool previous_status;
@@ -36,21 +35,11 @@ namespace JuNOCpp
         BetterCondition();
         ~BetterCondition();
 
-        template <class TYPE>
-        void addBetterPremise(BetterPremise<TYPE>* prm)
-        {
-            prm->referenceBetterCondition(this);
-        }
-
-        void addBetterCondition(BetterCondition* b_condition);
-
         static BetterCondition& sharedCondition(BetterCondition& b_condition)
         {
-            b_condition.persistant = true;
+            b_condition.makePersistant();
             return b_condition;
         }
-
-        void referenceBetterRule(BetterRule* rule);
 
         void setQuantity(const int quant);
 
@@ -59,7 +48,27 @@ namespace JuNOCpp
         void notify(const bool renotify = false);
         void activateImpertinents();
         void deactivateImpertinents();
+
+        void setMode(const int mode) { this->mode = mode; }
+        const int getMode() { return this->mode; }
+
+        void addImpertinent(BasePremise* premise) { this->impertinents.insertInfo(premise); }
+
+        void makePersistant() { this->persistant = true; }
+        bool isPersistant() { return this->persistant; }
     
+        void incCountApproved() { this->count_approved++; }
+        void decCountApproved() { this->count_approved--; } 
+        void incCountImpertinents() { this->count_impertinents++; }
+        void decCountImpertinents() { this->count_impertinents--; } 
+    
+        /**
+         * Cria e retorna uma Condition do tipo CONJUNCTION
+         * 
+         * @tparam TYPE 
+         * @param b_premise 
+         * @return BetterCondition& 
+         */
         template <class TYPE>
         BetterCondition& operator &&(BetterPremise<TYPE>& b_premise)
         {
@@ -85,6 +94,13 @@ namespace JuNOCpp
             }
         }
 
+        /**
+         * Cria e retorna uma Condition do tipo CONJUNCTION
+         * 
+         * @tparam TYPE 
+         * @param b_premise 
+         * @return BetterCondition& 
+         */
         template <class TYPE>
         BetterCondition& operator &&(BetterPremise<TYPE>&& b_premise)
         {
@@ -110,6 +126,13 @@ namespace JuNOCpp
             }
         }
 
+        /**
+         * Cria e retorna uma Condition do tipo DISJUNCTION
+         * 
+         * @tparam TYPE 
+         * @param b_premise 
+         * @return BetterCondition& 
+         */
         template <class TYPE>
         BetterCondition& operator ||(BetterPremise<TYPE>& b_premise)
         {
@@ -134,6 +157,13 @@ namespace JuNOCpp
             }
         }
 
+        /**
+         * Cria e retorna uma Condition do tipo DISJUNCTION
+         * 
+         * @tparam TYPE 
+         * @param b_premise 
+         * @return BetterCondition& 
+         */
         template <class TYPE>
         BetterCondition& operator ||(BetterPremise<TYPE>&& b_premise)
         {

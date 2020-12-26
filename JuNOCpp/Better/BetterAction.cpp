@@ -3,24 +3,47 @@
 
 namespace JuNOCpp
 {   
+    /**
+     * Constutor
+     * 
+     */
     BetterAction::BetterAction() : rule{nullptr}
     {
     }
 
+    /**
+     * Destrutor
+     * 
+     */
     BetterAction::~BetterAction()
     {
     }
 
+    /**
+     * Define a Rule da qual a Action pertence
+     * 
+     * @param b_rule 
+     */
     void BetterAction::setBetterRule(BetterRule* b_rule)
     {
         this->rule = b_rule;
     }
 
+    /**
+     * Inicializa a cadeia de notificações secundária
+     * 
+     * @param renotify 
+     */
     void BetterAction::update(const bool renotify)
     {
         notify();
     }
 
+    /**
+     * Notifica as Instigations (e Conditions de Rules dependentes) ligadas à Action 
+     * 
+     * @param renotify 
+     */
     void BetterAction::notify(const bool renotify)
     {
         // for(auto notf : notfs)
@@ -52,6 +75,10 @@ namespace JuNOCpp
         }
     }
 
+    /**
+     * Desaprova as Conditions das Rules dependentes
+     * 
+     */
     void BetterAction::disapproveDependantRules()
     {
         auto cond = this->dependant_rules.getFirst();

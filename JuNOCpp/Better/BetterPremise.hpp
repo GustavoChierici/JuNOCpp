@@ -11,7 +11,7 @@ namespace JuNOCpp
     template<class TYPE>
     class BetterPremise: public BasePremise
     {
-    public:
+    private:
         Attributes::BetterAttribute<TYPE>* attr1;
         Attributes::BetterAttribute<TYPE>* attr2;
         TYPE value;
@@ -44,6 +44,10 @@ namespace JuNOCpp
         void update(const bool renotify, const bool status) {}
 
         void makeImpertinent();
+        /**
+         * Ativa a Premise impertinente
+         * 
+         */
         void activate()
         {
             this->attr1->insert(this->shared_from_this());
@@ -52,6 +56,10 @@ namespace JuNOCpp
 
             update();
         }
+        /**
+         * Desativa a Premise impertinente
+         * 
+         */
         void deactivate()
         {
             this->attr1->remove(this->shared_from_this());
@@ -89,6 +97,11 @@ namespace JuNOCpp
         operator BetterCondition&();
     };
 
+    /**
+     * Construtor
+     * 
+     * @tparam TYPE 
+     */
     template <class TYPE>
     BetterPremise<TYPE>::BetterPremise() : 
         attr1{nullptr}, 
@@ -99,11 +112,21 @@ namespace JuNOCpp
         this->conditions.setAutoDel(false);   
     }
 
+    /**
+     * Destrutor
+     * 
+     * @tparam TYPE 
+     */
     template <class TYPE>
     BetterPremise<TYPE>::~BetterPremise()
     {
     }
 
+    /**
+     * Define o lambda responsável pela operação de comparação da Premise
+     * 
+     * @tparam TYPE 
+     */
     template <class TYPE>
     void BetterPremise<TYPE>::setOperation(const int op /* = BetterPremise::EQUAL*/)
     {
@@ -148,6 +171,13 @@ namespace JuNOCpp
         }
     }
 
+    /**
+     * Faz a ligação entre a Premise e os Attributes dos quais ela depende (2 Attributes)
+     * 
+     * @tparam TYPE 
+     * @param b_attr1 
+     * @param b_attr2 
+     */
     template <class TYPE>
     void BetterPremise<TYPE>::setBetterAttribute(Attributes::BetterAttribute<TYPE>* b_attr1, Attributes::BetterAttribute<TYPE>* b_attr2)
     {
@@ -157,6 +187,13 @@ namespace JuNOCpp
         //this->conditionalCheck();
     }
 
+    /**
+     * Faz a ligação entre a Premise e os Attributes dos quais ela depende (1 Attribute e 1 valor constante)
+     * 
+     * @tparam TYPE 
+     * @param b_attr1 
+     * @param b_attr2 
+     */
     template <class TYPE>
     void BetterPremise<TYPE>::setBetterAttribute(Attributes::BetterAttribute<TYPE>* b_attr1, TYPE value)
     {
@@ -167,12 +204,24 @@ namespace JuNOCpp
         //this->conditionalCheck();
     }
 
+    /**
+     * Faz a ligação entre a Premise e a Condition que depende dela
+     * 
+     * @tparam TYPE 
+     * @param b_condition 
+     */
     template <class TYPE>
     void BetterPremise<TYPE>::referenceBetterCondition(BetterCondition* b_condition)
     {
         this->conditions.insertInfo(*b_condition);
     }
 
+    /**
+     * Atualiza o status da Premise após ela ser notificada por um Attribute
+     * 
+     * @tparam TYPE 
+     * @param renotify 
+     */
     template <class TYPE>
     void BetterPremise<TYPE>::update(const bool renotify)
     {
@@ -188,6 +237,11 @@ namespace JuNOCpp
         }
     }
 
+    /**
+     * Transforma a Premise em impertinente
+     * 
+     * @tparam TYPE 
+     */
     template <class TYPE>
     void BetterPremise<TYPE>::makeImpertinent()
     { 
@@ -198,23 +252,31 @@ namespace JuNOCpp
             this->attr2->remove(this->shared_from_this());
     }
 
+    /**
+     * Cria e retorna uma Condition do tipo CONJUNCTION
+     * 
+     * @tparam TYPE 
+     * @tparam OT 
+     * @param b_premise 
+     * @return BetterCondition& 
+     */
     template <class TYPE>
     template <class OT>
     BetterCondition& BetterPremise<TYPE>::operator &&(BetterPremise<OT>& b_premise)
     {
         std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
         condition->setQuantity(2);
-        condition->mode = BetterCondition::CONJUNCTION;
+        condition->setMode(BetterCondition::CONJUNCTION);
 
-        if(this->impertinent)
+        if(this->isImpertinent())
         {
-            condition->count_impertinents++;
-            condition->impertinents.insertInfo(this);
+            condition->incCountImpertinents();
+            condition->addImpertinent(this);
         }
-        if(b_premise.impertinent)
+        if(b_premise.isImpertinent())
         {
-            condition->count_impertinents++;
-            condition->impertinents.insertInfo(&b_premise);
+            condition->incCountImpertinents();
+            condition->addImpertinent(&b_premise);
         }
         // std::cout << condition->count_impertinents << std::endl;
         this->insert(condition);
@@ -223,6 +285,14 @@ namespace JuNOCpp
         return *condition;
     }
 
+    /**
+     * Cria e retorna uma Condition do tipo CONJUNCTION
+     * 
+     * @tparam TYPE 
+     * @tparam OT 
+     * @param b_premise 
+     * @return BetterCondition& 
+     */
     template <class TYPE>
     template <class OT>
     BetterCondition& BetterPremise<TYPE>::operator &&(BetterPremise<OT>&& b_premise)
@@ -231,7 +301,7 @@ namespace JuNOCpp
 
         std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
         condition->setQuantity(2);
-        condition->mode = BetterCondition::CONJUNCTION;
+        condition->setMode(BetterCondition::CONJUNCTION);
 
         this->insert(condition);
         b_premise.insert(condition);
@@ -239,6 +309,14 @@ namespace JuNOCpp
         return *condition;
     }
 
+    /**
+     * Cria e retorna uma Condition do tipo DISJUNCTION
+     * 
+     * @tparam TYPE 
+     * @tparam OT 
+     * @param b_premise 
+     * @return BetterCondition& 
+     */
     template <class TYPE>
     template <class OT>
     BetterCondition& BetterPremise<TYPE>::operator ||(BetterPremise<OT>& b_premise)
@@ -247,7 +325,7 @@ namespace JuNOCpp
 
         std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
         condition->setQuantity(1);
-        condition->mode = BetterCondition::DISJUNCTION;
+        condition->setMode(BetterCondition::DISJUNCTION);
 
         this->insert(condition);
         b_premise.insert(condition);
@@ -255,6 +333,14 @@ namespace JuNOCpp
         return *condition;
     }
 
+    /**
+     * Cria e retorna uma Condition do tipo DISJUNCTION
+     * 
+     * @tparam TYPE 
+     * @tparam OT 
+     * @param b_premise 
+     * @return BetterCondition& 
+     */
     template <class TYPE>
     template <class OT>
     BetterCondition& BetterPremise<TYPE>::operator ||(BetterPremise<OT>&& b_premise)
@@ -263,7 +349,7 @@ namespace JuNOCpp
 
         std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
         condition->setQuantity(1);
-        condition->mode = BetterCondition::DISJUNCTION;
+        condition->setMode(BetterCondition::DISJUNCTION);
 
         this->insert(condition);
         b_premise.insert(condition);
@@ -271,10 +357,17 @@ namespace JuNOCpp
         return *condition;
     }
 
+    /**
+     * Cria e retorna uma Condition do tipo CONJUNCTION
+     * 
+     * @tparam TYPE 
+     * @param b_condition
+     * @return BetterCondition& 
+     */
     template <class TYPE>
     BetterCondition& BetterPremise<TYPE>::operator &&(BetterCondition& b_condition)
     {
-        if((b_condition.mode == BetterCondition::CONJUNCTION or b_condition.mode == BetterCondition::SINGLE) and !b_condition.persistant)
+        if((b_condition.getMode() == BetterCondition::CONJUNCTION or b_condition.getMode() == BetterCondition::SINGLE) and !b_condition.persistant)
         {
             this->insert(b_condition.shared_from_this());
             b_condition.setQuantity(b_condition.quantity + 1);
@@ -287,7 +380,7 @@ namespace JuNOCpp
 
             std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
             condition->setQuantity(2);
-            condition->mode = BetterCondition::CONJUNCTION;
+            condition->setMode(BetterCondition::CONJUNCTION);
 
             this->insert(condition);
             b_condition.insert(condition);
@@ -296,6 +389,13 @@ namespace JuNOCpp
         }
     }
 
+    /**
+     * Cria e retorna uma Condition do tipo CONJUNCTION
+     * 
+     * @tparam TYPE 
+     * @param b_condition 
+     * @return BetterCondition& 
+     */
     template <class TYPE>
     BetterCondition& BetterPremise<TYPE>::operator &&(BetterCondition&& b_condition)
     {
@@ -312,7 +412,7 @@ namespace JuNOCpp
 
             std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
             condition->setQuantity(2);
-            condition->mode = BetterCondition::CONJUNCTION;
+            condition->setMode(BetterCondition::CONJUNCTION);
 
             this->insert(condition);
             b_condition.insert(condition);
@@ -321,10 +421,17 @@ namespace JuNOCpp
         }
     }
 
+    /**
+     * Cria e retorna uma Condition do tipo DISJUNCTION
+     * 
+     * @tparam TYPE 
+     * @param b_condition 
+     * @return BetterCondition& 
+     */
     template <class TYPE>
     BetterCondition& BetterPremise<TYPE>::operator ||(BetterCondition& b_condition)
     {
-        if ((b_condition.mode == BetterCondition::DISJUNCTION or b_condition.mode == BetterCondition::SINGLE) and !b_condition.persistant)
+        if ((b_condition.getMode() == BetterCondition::DISJUNCTION or b_condition.getMode() == BetterCondition::SINGLE) and !b_condition.persistant)
         {
             this->insert(b_condition.shared_from_this());
 
@@ -336,7 +443,7 @@ namespace JuNOCpp
 
             std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
             condition->setQuantity(1);
-            condition->mode = BetterCondition::DISJUNCTION;
+            condition->setMode(BetterCondition::DISJUNCTION);
 
             this->insert(condition);
             b_condition.insert(condition);
@@ -345,6 +452,13 @@ namespace JuNOCpp
         }
     }
 
+    /**
+     * Cria e retorna uma Condition do tipo DISJUNCTION
+     * 
+     * @tparam TYPE  
+     * @param b_condition 
+     * @return BetterCondition& 
+     */
     template <class TYPE>
     BetterCondition& BetterPremise<TYPE>::operator ||(BetterCondition&& b_condition)
     {
@@ -360,7 +474,7 @@ namespace JuNOCpp
 
             std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
             condition->setQuantity(1);
-            condition->mode = BetterCondition::DISJUNCTION;
+            condition->setMode(BetterCondition::DISJUNCTION);
 
             this->insert(condition);
             b_condition.insert(condition);
@@ -369,6 +483,12 @@ namespace JuNOCpp
         }
     }
 
+    /**
+     * "Converte" a Premise numa BetterCondition do tipo SINGLE
+     * 
+     * @tparam TYPE 
+     * @return JuNOCpp::BetterCondition& 
+     */
     template <class TYPE>
     BetterPremise<TYPE>::operator JuNOCpp::BetterCondition&()
     {
@@ -376,7 +496,7 @@ namespace JuNOCpp
 
         std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
         condition->setQuantity(1);
-        condition->mode = BetterCondition::SINGLE;
+        condition->setMode(BetterCondition::SINGLE);
 
         this->insert(condition);
         

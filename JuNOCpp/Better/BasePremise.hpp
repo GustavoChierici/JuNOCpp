@@ -7,12 +7,13 @@ namespace JuNOCpp
 {
     class BasePremise: public Notifier, public Notifiable
     {
-    public:
+    protected:
         bool impertinent;
     public:
         BasePremise(): impertinent(false) {}
         ~BasePremise() {}
 
+        bool isImpertinent() { return this->impertinent; }
         virtual void activate() = 0;
         virtual void deactivate() = 0;
     };
