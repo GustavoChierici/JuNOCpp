@@ -43,6 +43,8 @@ namespace JuNOCpp
         void insertInfo(T info);
         void removeInfo(T info);
 
+        bool empty() { return counter == 0; }
+
         Element<T>* getFirst() {return pFirst;}
         Element<T>* getCurrent() {return pCurrent;}
 

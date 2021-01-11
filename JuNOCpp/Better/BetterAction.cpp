@@ -61,15 +61,8 @@ namespace JuNOCpp
         auto aux = this->notifiables.getFirst();
 
         while(aux)
-        {
-            auto cond = dynamic_cast<BetterCondition*>(aux->getInfo().get());
-            if(cond)
-            {
-                cond->update(false, true);
-                cond->update(false, false);
-            }    
-            else
-                aux->getInfo()->update(renotify);
+        {   
+            aux->getInfo()->update(renotify, true);
             
             aux = aux->getNext();
         }

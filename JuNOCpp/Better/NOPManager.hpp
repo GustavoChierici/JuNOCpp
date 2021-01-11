@@ -34,9 +34,9 @@ namespace JuNOCpp
     private:
         NOPManager();
 
-        static List<std::shared_ptr<BetterRule>> rule_list;
-        static std::stack<std::shared_ptr<BetterRule>> rule_stack;
-        // static List<std::shared_ptr<BetterCondition>> condition_list;
+        static List<shared_ptr<BetterRule>> rule_list;
+        static std::stack<shared_ptr<BetterRule>> rule_stack;
+        // static List<shared_ptr<BetterCondition>> condition_list;
         // static List<BetterAction> action_list;
 
         static BetterRule* current_rule;

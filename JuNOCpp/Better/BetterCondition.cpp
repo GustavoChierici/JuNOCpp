@@ -65,7 +65,7 @@ void BetterCondition::update(const bool renotify, const bool status)
         this->previous_status = this->current_status;
         notify(renotify);
     }
-    if(this->count_approved + this->count_impertinents == this->quantity)
+    if(this->count_approved + this->count_impertinents == this->quantity and this->impertinents.empty())
     {
         activateImpertinents();
         this->is_impertinents_active = true;
@@ -160,9 +160,11 @@ BetterCondition& BetterCondition::operator &&(BetterCondition& b_condition)
     }
     else
     {
-        BetterCondition aux;
+        shared_ptr<BetterCondition> condition(new BetterCondition());
 
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+        // BetterCondition aux;
+
+        // shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
         condition->setQuantity(2);
         condition->mode = BetterCondition::CONJUNCTION;
 
@@ -192,9 +194,11 @@ BetterCondition& BetterCondition::operator &&(BetterCondition&& b_condition)
     }
     else
     {
-        BetterCondition aux;
-
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+        #ifdef USE_CUSTOM_SMART_PTRS
+            shared_ptr<BetterCondition> condition(new BetterCondition());
+        #else
+            shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+        #endif // USE_CUSTOM_SMART_PTRS
         condition->setQuantity(2);
         condition->mode = BetterCondition::CONJUNCTION;
 
@@ -223,9 +227,11 @@ BetterCondition& BetterCondition::operator ||(BetterCondition& b_condition)
     }
     else
     {
-        BetterCondition aux;
-
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+        #ifdef USE_CUSTOM_SMART_PTRS
+            shared_ptr<BetterCondition> condition(new BetterCondition());
+        #else
+            shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+        #endif // USE_CUSTOM_SMART_PTRS
         condition->setQuantity(1);
         condition->mode = BetterCondition::DISJUNCTION;
 
@@ -254,9 +260,11 @@ BetterCondition& BetterCondition::operator ||(BetterCondition&& b_condition)
     }
     else
     {
-        BetterCondition aux;
-
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+        #ifdef USE_CUSTOM_SMART_PTRS
+            shared_ptr<BetterCondition> condition(new BetterCondition());
+        #else
+            shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+        #endif // USE_CUSTOM_SMART_PTRS
         condition->setQuantity(1);
         condition->mode = BetterCondition::DISJUNCTION;
 

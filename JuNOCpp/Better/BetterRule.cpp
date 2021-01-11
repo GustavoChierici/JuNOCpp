@@ -33,4 +33,12 @@ namespace JuNOCpp
         this->notify();
         BetterRule::approved++;
     }
+
+    void BetterRule::update(const bool renotify, const bool status)
+    {
+        // std::cout << "RULE " << this->id << " (" << this << ")" <<std::endl;
+
+        this->notify();
+        BetterRule::approved++;
+    }
 }

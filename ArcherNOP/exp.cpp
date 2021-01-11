@@ -20,8 +20,8 @@ int main()
         apple_list.push_back(apple_tmp);
 
         //Init Rules
-        RULE(apple_tmp->atAppleStatus == true and apple_tmp->atAppleColor == 'R');
-            INSTIGATE([=](){apple_tmp->atAppleColor = 'G';});
+        RULE(archer_tmp->atArcherStatus == true and apple_tmp->atAppleStatus == true and apple_tmp->atAppleColor == 'R')
+            INSTIGATE([=](){apple_tmp->atAppleColor = 'G';})
         END_RULE
 
         archer_tmp->atArcherStatus = true;

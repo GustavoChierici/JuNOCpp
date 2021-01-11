@@ -27,7 +27,7 @@ namespace JuNOCpp
         ~BetterRule();
 
         void update(const bool renotify = false);
-        void update(const bool renotify, const bool status) {}
+        void update(const bool renotify, const bool status);
     };
 }
 

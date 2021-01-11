@@ -39,17 +39,17 @@ int main()
         NOP::Premise<double> prIsPersonMoving = person->at_velocity >= 0.0;
 
         //Init Rules
-        RULE((prPersonOnDoorFront and prIsPersonMoving) and (door->at_is_open == false and sensor->at_person_detected == true));
-            INSTIGATE([=](){door->at_is_open = true;});
+        RULE(prPersonOnDoorFront and prIsPersonMoving and door->at_is_open == false and sensor->at_person_detected == true)
+            INSTIGATE([=](){door->at_is_open = true;})
         END_RULE
 
-        RULE(prPersonOnDoorFront and prIsDoorOpen and prIsPersonMoving);
-            INSTIGATE([=](){person->at_pos_door_front = false;});
-            INSTIGATE([=](){sensor->at_person_detected = false;});
+        RULE(prPersonOnDoorFront and prIsDoorOpen and prIsPersonMoving)
+            INSTIGATE([=](){person->at_pos_door_front = false;})
+            INSTIGATE([=](){sensor->at_person_detected = false;})
         END_RULE
 
-        RULE(person->at_pos_door_front == false and prIsDoorOpen and sensor->at_person_detected == false);
-            INSTIGATE([=](){door->at_is_open = false;});
+        RULE(person->at_pos_door_front == false and prIsDoorOpen and sensor->at_person_detected == false)
+            INSTIGATE([=](){door->at_is_open = false;})
         END_RULE
 
         //Init initial Attributes status
@@ -158,11 +158,11 @@ int main()
         NOP::Premise<double> prIsPersonMoving = person->at_velocity >= 0.0;
 
         //Init Rules
-        RULE((prPersonOnDoorFront and prIsPersonMoving) and (door->at_is_open == false and sensor->at_person_detected == true));
-            INSTIGATE([=](){door->at_is_open = true;});
-            INSTIGATE([=](){person->at_pos_door_front = false;});
-            INSTIGATE([=](){sensor->at_person_detected = false;});
-            INSTIGATE([=](){door->at_is_open = false;});
+        RULE((prPersonOnDoorFront and prIsPersonMoving) and (door->at_is_open == false and sensor->at_person_detected == true))
+            INSTIGATE([=](){door->at_is_open = true;})
+            INSTIGATE([=](){person->at_pos_door_front = false;})
+            INSTIGATE([=](){sensor->at_person_detected = false;})
+            INSTIGATE([=](){door->at_is_open = false;})
         END_RULE
 
         person->at_pos_door_front = false;

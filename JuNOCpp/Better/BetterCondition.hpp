@@ -2,7 +2,6 @@
 
 //#include "BetterPremise.hpp"
 #include "../List.hpp"
-
 #include <iostream>
 #include "Notifier.hpp"
 #include "./BasePremise.hpp"
@@ -81,9 +80,11 @@ namespace JuNOCpp
             }
             else
             {
-                BetterCondition aux;
-
-                std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+                #ifdef USE_CUSTOM_SMART_PTRS
+                    shared_ptr<BetterCondition> condition(new BetterCondition());
+                #else
+                    shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+                #endif // USE_CUSTOM_SMART_PTRS
                 condition->setQuantity(2);
                 condition->mode = BetterCondition::CONJUNCTION;
 
@@ -113,9 +114,11 @@ namespace JuNOCpp
             }
             else
             {
-                BetterCondition aux;
-
-                std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+                #ifdef USE_CUSTOM_SMART_PTRS
+                    shared_ptr<BetterCondition> condition(new BetterCondition());
+                #else
+                    shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+                #endif // USE_CUSTOM_SMART_PTRS
                 condition->setQuantity(2);
                 condition->mode = BetterCondition::CONJUNCTION;
 
@@ -144,9 +147,11 @@ namespace JuNOCpp
             }
             else
             {
-                BetterCondition aux;
-
-                std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+                #ifdef USE_CUSTOM_SMART_PTRS
+                    shared_ptr<BetterCondition> condition(new BetterCondition());
+                #else
+                    shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+                #endif // USE_CUSTOM_SMART_PTRS
                 condition->setQuantity(1);
                 condition->mode = BetterCondition::DISJUNCTION;
 
@@ -175,9 +180,11 @@ namespace JuNOCpp
             }
             else
             {
-                BetterCondition aux;
-
-                std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+                #ifdef USE_CUSTOM_SMART_PTRS
+                    shared_ptr<BetterCondition> condition(new BetterCondition());
+                #else
+                    shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+                #endif // USE_CUSTOM_SMART_PTRS> condition = std::make_shared<BetterCondition>(aux);
                 condition->setQuantity(1);
                 condition->mode = BetterCondition::DISJUNCTION;
 

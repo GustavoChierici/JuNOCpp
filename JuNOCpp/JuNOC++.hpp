@@ -3,6 +3,7 @@
 #include "./Table.hpp"
 #include "./List.hpp"
 #include "./CustomString.hpp"
+#include "./Utils/SmartPtr.hpp"
 
 #include "./Better/BetterAttribute.hpp"
 #include "./Better/BetterCondition.hpp"
@@ -17,12 +18,12 @@ using namespace Attributes;
 
 // #define RULE(expression)                NOPManager::Get().CreateRule(expression)
 // #define RULE_N(expression, name)        NOPManager::Get().CreateRule(expression, #name)
-#define RULE_1(expression)                                                              NOPManager::Get().CreateRule(expression)
-#define RULE_2(expression, name)                                                        NOPManager::Get().CreateRule(expression, #name)
+#define RULE_1(expression)                                                              NOPManager::Get().CreateRule(expression);
+#define RULE_2(expression, name)                                                        NOPManager::Get().CreateRule(expression, #name);
 #define GET_MACRO(_1,_2, NAME,...) NAME
 #define RULE(...) GET_MACRO(__VA_ARGS__, RULE_2, RULE_1)(__VA_ARGS__)
-#define INSTIGATE(instigation)                                                          NOPManager::Get().CreateInstigation(instigation)
-#define END_RULE                                                                        NOPManager::Get().EndRule()
+#define INSTIGATE(instigation)                                                          NOPManager::Get().CreateInstigation(instigation);
+#define END_RULE                                                                        NOPManager::Get().EndRule();
 #define SharedCondition(expression)                                                     BetterCondition::sharedCondition(expression)
 
 namespace NOP {

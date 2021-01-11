@@ -48,7 +48,7 @@ namespace JuNOCpp
          * Ativa a Premise impertinente
          * 
          */
-        void activate()
+        void activate() override
         {
             this->attr1->insert(this->shared_from_this());
             if(this->attr2)
@@ -60,7 +60,7 @@ namespace JuNOCpp
          * Desativa a Premise impertinente
          * 
          */
-        void deactivate()
+        void deactivate() override
         {
             this->attr1->remove(this->shared_from_this());
             if(this->attr2)
@@ -109,7 +109,7 @@ namespace JuNOCpp
         status{false}, 
         previous_status{false}
     {
-        this->conditions.setAutoDel(false);   
+        this->conditions.setAutoDel(false);
     }
 
     /**
@@ -247,9 +247,13 @@ namespace JuNOCpp
     { 
         this->impertinent = true; 
 
+        this->attr1->addImpertinent(this->shared_from_this());
         this->attr1->remove(this->shared_from_this());
         if(this->attr2)
+        {
+            this->attr2->addImpertinent(this->shared_from_this());
             this->attr2->remove(this->shared_from_this());
+        }
     }
 
     /**
@@ -264,7 +268,12 @@ namespace JuNOCpp
     template <class OT>
     BetterCondition& BetterPremise<TYPE>::operator &&(BetterPremise<OT>& b_premise)
     {
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+        #ifdef USE_CUSTOM_SMART_PTRS
+            shared_ptr<BetterCondition> condition(new BetterCondition());
+        #else
+            shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+        #endif // USE_CUSTOM_SMART_PTRS
+
         condition->setQuantity(2);
         condition->setMode(BetterCondition::CONJUNCTION);
 
@@ -297,9 +306,11 @@ namespace JuNOCpp
     template <class OT>
     BetterCondition& BetterPremise<TYPE>::operator &&(BetterPremise<OT>&& b_premise)
     {
-        BetterCondition aux;
-
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+        #ifdef USE_CUSTOM_SMART_PTRS
+            shared_ptr<BetterCondition> condition(new BetterCondition());
+        #else
+            shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+        #endif // USE_CUSTOM_SMART_PTRS
         condition->setQuantity(2);
         condition->setMode(BetterCondition::CONJUNCTION);
 
@@ -321,9 +332,11 @@ namespace JuNOCpp
     template <class OT>
     BetterCondition& BetterPremise<TYPE>::operator ||(BetterPremise<OT>& b_premise)
     {
-        BetterCondition aux;
-
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+        #ifdef USE_CUSTOM_SMART_PTRS
+            shared_ptr<BetterCondition> condition(new BetterCondition());
+        #else
+            shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+        #endif // USE_CUSTOM_SMART_PTRS
         condition->setQuantity(1);
         condition->setMode(BetterCondition::DISJUNCTION);
 
@@ -345,9 +358,11 @@ namespace JuNOCpp
     template <class OT>
     BetterCondition& BetterPremise<TYPE>::operator ||(BetterPremise<OT>&& b_premise)
     {
-        BetterCondition aux;
-
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+        #ifdef USE_CUSTOM_SMART_PTRS
+            shared_ptr<BetterCondition> condition(new BetterCondition());
+        #else
+            shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+        #endif // USE_CUSTOM_SMART_PTRS
         condition->setQuantity(1);
         condition->setMode(BetterCondition::DISJUNCTION);
 
@@ -376,11 +391,11 @@ namespace JuNOCpp
         }
         else
         {
-            BetterCondition aux;
-
-            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
-            condition->setQuantity(2);
-            condition->setMode(BetterCondition::CONJUNCTION);
+            #ifdef USE_CUSTOM_SMART_PTRS
+                shared_ptr<BetterCondition> condition(new BetterCondition());
+            #else
+                shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+            #endif // USE_CUSTOM_SMART_PTRS
 
             this->insert(condition);
             b_condition.insert(condition);
@@ -408,9 +423,11 @@ namespace JuNOCpp
         }
         else
         {
-            BetterCondition aux;
-
-            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+            #ifdef USE_CUSTOM_SMART_PTRS
+                shared_ptr<BetterCondition> condition(new BetterCondition());
+            #else
+                shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+            #endif // USE_CUSTOM_SMART_PTRS
             condition->setQuantity(2);
             condition->setMode(BetterCondition::CONJUNCTION);
 
@@ -439,9 +456,11 @@ namespace JuNOCpp
         }
         else
         {
-            BetterCondition aux;
-
-            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+            #ifdef USE_CUSTOM_SMART_PTRS
+                shared_ptr<BetterCondition> condition(new BetterCondition());
+            #else
+                shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+            #endif // USE_CUSTOM_SMART_PTRS
             condition->setQuantity(1);
             condition->setMode(BetterCondition::DISJUNCTION);
 
@@ -470,9 +489,11 @@ namespace JuNOCpp
         }
         else
         {
-            BetterCondition aux;
-
-            std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+            #ifdef USE_CUSTOM_SMART_PTRS
+                shared_ptr<BetterCondition> condition(new BetterCondition());
+            #else
+                shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+            #endif // USE_CUSTOM_SMART_PTRS
             condition->setQuantity(1);
             condition->setMode(BetterCondition::DISJUNCTION);
 
@@ -492,9 +513,11 @@ namespace JuNOCpp
     template <class TYPE>
     BetterPremise<TYPE>::operator JuNOCpp::BetterCondition&()
     {
-        BetterCondition aux;
-
-        std::shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(aux);
+        #ifdef USE_CUSTOM_SMART_PTRS
+            shared_ptr<BetterCondition> condition(new BetterCondition());
+        #else
+            shared_ptr<BetterCondition> condition = std::make_shared<BetterCondition>(*new BetterCondition());
+        #endif // USE_CUSTOM_SMART_PTRS
         condition->setQuantity(1);
         condition->setMode(BetterCondition::SINGLE);
 

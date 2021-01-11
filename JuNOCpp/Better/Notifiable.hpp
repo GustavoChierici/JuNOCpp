@@ -1,7 +1,17 @@
 #pragma once
 
+#include "../Definitions.hpp"
 #include <iostream>
-#include <memory>
+
+#ifdef USE_CUSTOM_SMART_PTRS
+    #include "../Utils/SmartPtr.hpp"
+    template <typename T>
+    using enable_shared_from_this = JuNOCpp::Utils::enable_shared_from_this<T>;
+#else
+    #include <memory>
+    template <typename T>
+    using enable_shared_from_this = std::enable_shared_from_this<T>;
+#endif // USE_CUSTOM_SMART_PTRS
 
 namespace JuNOCpp
 {
@@ -9,7 +19,7 @@ namespace JuNOCpp
      * Classe abstrata Notifiable
      * 
      */
-    class Notifiable: public std::enable_shared_from_this<Notifiable>
+    class Notifiable: public enable_shared_from_this<Notifiable>
     {
     public:
         Notifiable() = default;

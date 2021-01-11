@@ -1,5 +1,4 @@
 #include "Notifier.hpp"
-#include "BetterPremise.hpp"
 
 namespace JuNOCpp
 {
@@ -8,10 +7,10 @@ namespace JuNOCpp
      * 
      * @param notifiable 
      */
-    void Notifier::insert(std::shared_ptr<Notifiable>&& notifiable)
+    void Notifier::insert(shared_ptr<Notifiable>& notifiable)
     {
         this->notifiables.insertInfo(notifiable);
-        notfs.insert(notfs.end(), notifiable);
+        // notfs.insert(notfs.end(), notifiable);
     }
 
     /**
@@ -19,7 +18,27 @@ namespace JuNOCpp
      * 
      * @param notifiable 
      */
-    void Notifier::remove(std::shared_ptr<Notifiable>&& notifiable)
+    void Notifier::remove(shared_ptr<Notifiable>& notifiable)
+    {
+        this->notifiables.removeInfo(notifiable);
+    }
+    /**
+     * Insere um Notifiable na ED de notificações
+     * 
+     * @param notifiable 
+     */
+    void Notifier::insert(shared_ptr<Notifiable>&& notifiable)
+    {
+        this->notifiables.insertInfo(notifiable);
+        // notfs.insert(notfs.end(), notifiable);
+    }
+
+    /**
+     * Remove um Notifiable da ED de notificações
+     * 
+     * @param notifiable 
+     */
+    void Notifier::remove(shared_ptr<Notifiable>&& notifiable)
     {
         this->notifiables.removeInfo(notifiable);
     }
