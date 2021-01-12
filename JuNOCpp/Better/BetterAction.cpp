@@ -45,27 +45,44 @@ namespace JuNOCpp
      * @param renotify 
      */
     void BetterAction::notify(const bool renotify)
-    {
-        // for(auto notf : notfs)
-        // {
-        //     auto cond = dynamic_cast<BetterCondition*>(notf.get());
-        //     if(cond)
-        //     {
-        //         cond->update(false, true);
-        //         cond->update(false, false);
-        //     }    
-        //     else
-        //         notf->update(renotify);
-        // }
-
-        auto aux = this->notifiables.getFirst();
-
-        while(aux)
-        {   
-            aux->getInfo()->update(renotify, true);
-            
-            aux = aux->getNext();
-        }
+    {  
+        #ifdef FASTER_DATA_STRUCTURES
+            for(auto notifiable = notifiables.first; notifiable; notifiable = notifiable->next)
+            {
+                auto cond = dynamic_cast<BetterCondition*>(notifiable->element.get());
+                if(cond)
+                {
+                    cond->update(false, true);
+                    cond->update(false, false);
+                }
+                else
+                    notifiable->element->update(renotify);
+            }
+        #elif defined(USE_RANGED_FOR)
+            for(auto notifiable : notifiables)
+            {
+                auto cond = dynamic_cast<BetterCondition*>(notifiable.get());
+                if(cond)
+                {
+                    cond->update(false, true);
+                    cond->update(false, false);
+                }    
+                else
+                    notifiable->update(renotify);
+            }
+        #else
+            for(auto notifiable = notifiables.getFirst(); notifiable; notifiable = notifiable->next)
+            {
+                auto cond = dynamic_cast<BetterCondition*>(notifiable->element.get());
+                if(cond)
+                {
+                    cond->update(false, true);
+                    cond->update(false, false);
+                }
+                else
+                    notifiable->element->update(renotify);
+            }
+        #endif // FASTER_DATA_STRUCTURES 
     }
 
     /**
@@ -74,12 +91,12 @@ namespace JuNOCpp
      */
     void BetterAction::disapproveDependantRules()
     {
-        auto cond = this->dependant_rules.getFirst();
+        // auto cond = this->dependant_rules.getFirst();
 
-        while(cond)
-        {
-            cond->getInfo()->update(false, false);
-            cond = cond->getNext();
-        }
+        // while(cond)
+        // {
+        //     cond->getInfo()->update(false, false);
+        //     cond = cond->getNext();
+        // }
     }
 } // namespace JuNOCpp

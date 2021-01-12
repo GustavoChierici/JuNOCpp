@@ -1,5 +1,4 @@
 #pragma once
-#include "../List.hpp"
 #include "./BetterInstigation.hpp"
 #include "./NOPManager.hpp"
 #include "Notifier.hpp"
@@ -12,7 +11,7 @@ namespace JuNOCpp
     {
     public:
         BetterRule* rule;
-        List<BetterCondition*> dependant_rules;
+        Utils::forward_list<BetterCondition*> dependant_rules;
 
     public:
         BetterAction();

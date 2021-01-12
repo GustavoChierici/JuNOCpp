@@ -1,9 +1,9 @@
 #pragma once
 
 #include "./Table.hpp"
-#include "./List.hpp"
 #include "./CustomString.hpp"
 #include "./Utils/SmartPtr.hpp"
+// #include "./Utils/forward_list.hpp"
 
 #include "./Better/BetterAttribute.hpp"
 #include "./Better/BetterCondition.hpp"
@@ -14,6 +14,7 @@
 #include "./Better/NOPManager.hpp"
 
 using namespace JuNOCpp;
+using namespace Utils;
 using namespace Attributes;
 
 // #define RULE(expression)                NOPManager::Get().CreateRule(expression)

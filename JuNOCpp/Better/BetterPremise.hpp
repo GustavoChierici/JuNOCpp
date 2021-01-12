@@ -2,7 +2,6 @@
 #define BETTER_PREMISE_HPP
 #include <iostream>
 #include "../CustomString.hpp"
-#include "../List.hpp"
 #include "./BetterAttribute.hpp"
 #include "./BetterCondition.hpp"
 #include "./BasePremise.hpp"
@@ -17,7 +16,6 @@ namespace JuNOCpp
         TYPE value;
         bool status;
         bool previous_status;
-        List<BetterCondition> conditions;
         int operation;
         bool (*cmp)(TYPE, TYPE);
 
@@ -109,7 +107,6 @@ namespace JuNOCpp
         status{false}, 
         previous_status{false}
     {
-        this->conditions.setAutoDel(false);
     }
 
     /**

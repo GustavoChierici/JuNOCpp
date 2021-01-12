@@ -1,7 +1,5 @@
 #pragma once
 
-//#include "BetterPremise.hpp"
-#include "../List.hpp"
 #include <iostream>
 #include "Notifier.hpp"
 #include "./BasePremise.hpp"
@@ -22,7 +20,7 @@ namespace JuNOCpp
         int quantity;
         int count_approved;
         int count_impertinents;
-        List<BasePremise*> impertinents;
+        Utils::forward_list<BasePremise*> impertinents;
         bool persistant;
         int mode;
         bool is_impertinents_active {false};
@@ -51,7 +49,7 @@ namespace JuNOCpp
         void setMode(const int mode) { this->mode = mode; }
         const int getMode() { return this->mode; }
 
-        void addImpertinent(BasePremise* premise) { this->impertinents.insertInfo(premise); }
+        void addImpertinent(BasePremise* premise) { this->impertinents.push_back(premise); }
 
         void makePersistant() { this->persistant = true; }
         bool isPersistant() { return this->persistant; }

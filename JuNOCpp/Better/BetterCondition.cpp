@@ -65,7 +65,7 @@ void BetterCondition::update(const bool renotify, const bool status)
         this->previous_status = this->current_status;
         notify(renotify);
     }
-    if(this->count_approved + this->count_impertinents == this->quantity and this->impertinents.empty())
+    if(this->count_approved + this->count_impertinents == this->quantity and !this->impertinents.empty())
     {
         activateImpertinents();
         this->is_impertinents_active = true;
@@ -84,19 +84,47 @@ void BetterCondition::update(const bool renotify, const bool status)
  */
 void BetterCondition::notify(const bool renotify)
 {
-    auto aux = this->notifiables.getFirst();
+    // auto aux = this->notifiables.getFirst();
 
-    while(aux)
-    {
-        auto cond = dynamic_cast<BetterCondition*>(aux->getInfo().get());
-        if(cond)
-            cond->update(renotify, this->current_status);
-        else if(this->current_status)
-            aux->getInfo()->update(renotify);
+    // while(aux)
+    // {
+    //     auto cond = dynamic_cast<BetterCondition*>(aux->getInfo().get());
+    //     if(cond)
+    //         cond->update(renotify, this->current_status);
+    //     else if(this->current_status)
+    //         aux->getInfo()->update(renotify);
 
-        aux = aux->getNext();
-    }
-    
+    //     aux = aux->getNext();
+    // }
+
+    #ifdef FASTER_DATA_STRUCTURES
+        for(auto notifiable = notifiables.first; notifiable; notifiable = notifiable->next)
+        {
+            auto cond = dynamic_cast<BetterCondition*>(notifiable->element.get());
+            if(cond)
+                cond->update(renotify, this->current_status);
+            else if(this->current_status)
+                notifiable->element->update(renotify);
+        }
+    #elif defined(USE_RANGED_FOR)
+        for(auto notifiable : notifiables)
+        {
+            auto cond = dynamic_cast<BetterCondition*>(notifiable.get());
+            if(cond)
+                cond->update(renotify, this->current_status);
+            else if(this->current_status)
+                notifiable->update(renotify);
+        }
+    #else
+        for(auto notifiable = notifiables.getFirst(); notifiable; notifiable = notifiable->next)
+        {
+            auto cond = dynamic_cast<BetterCondition*>(notifiable->element.get());
+            if(cond)
+                cond->update(renotify, this->current_status);
+            else if(this->current_status)
+                notifiable->element->update(renotify);
+        }
+    #endif // FASTER_DATA_STRUCTURES    
 }
 
 /**
@@ -105,14 +133,17 @@ void BetterCondition::notify(const bool renotify)
  */
 void BetterCondition::activateImpertinents()
 {
-    auto aux = this->impertinents.getFirst();
+    // auto aux = this->impertinents.getFirst();
 
-    while(aux)
-    {
-        aux->getInfo()->activate();
+    // while(aux)
+    // {
+    //     aux->getInfo()->activate();
 
-        aux = aux->getNext();
-    }
+    //     aux = aux->getNext();
+    // }
+
+    for(auto impertinent : impertinents)
+        impertinent->activate();
 }
 
 /**
@@ -121,14 +152,17 @@ void BetterCondition::activateImpertinents()
  */
 void BetterCondition::deactivateImpertinents()
 {
-    auto aux = this->impertinents.getFirst();
+    // auto aux = this->impertinents.getFirst();
 
-    while(aux)
-    {
-        aux->getInfo()->deactivate();
+    // while(aux)
+    // {
+    //     aux->getInfo()->deactivate();
 
-        aux = aux->getNext();
-    }
+    //     aux = aux->getNext();
+    // }
+
+    for(auto impertinent : impertinents)
+        impertinent->deactivate();
 }
 
 /**

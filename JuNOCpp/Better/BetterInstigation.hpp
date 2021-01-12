@@ -1,15 +1,12 @@
-#pragma once 
-// #include "./BetterMethod.hpp"
+#pragma once
 #include "Notifier.hpp"
 #include <functional>
-#include <tuple>
 
 namespace JuNOCpp
 {
     class BetterInstigation: public Notifiable
     {
     public:
-        //BetterMethod* method;
         std::function<void()> method;
     public:
         BetterInstigation();

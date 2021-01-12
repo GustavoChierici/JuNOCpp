@@ -1,8 +1,8 @@
 #ifndef NOTIFIER_HPP
 #define NOTIFIER_HPP
 
-#include "../Definitions.hpp"
-#include "../List.hpp"
+#include "../.config.hpp"
+#include "../Utils/forward_list.hpp"
 #include "Notifiable.hpp"
 #include <iostream>
 
@@ -24,8 +24,8 @@ namespace JuNOCpp
 {
     class Notifier
     {
-    public:
-        List<shared_ptr<Notifiable>> notifiables;
+    protected:
+        Utils::forward_list<shared_ptr<Notifiable>> notifiables;
 
     public:
         Notifier() = default;

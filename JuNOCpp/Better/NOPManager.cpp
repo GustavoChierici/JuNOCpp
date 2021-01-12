@@ -7,7 +7,7 @@
 
 namespace JuNOCpp
 {
-    List<shared_ptr<BetterRule>> NOPManager::rule_list;
+    Utils::forward_list<shared_ptr<BetterRule>> NOPManager::rule_list;
     std::stack<shared_ptr<BetterRule>> NOPManager::rule_stack;
     BetterRule* NOPManager::current_rule = nullptr;
 
@@ -101,7 +101,7 @@ namespace JuNOCpp
             shared_rule->insert(shared_action);
             shared_rule->condition->makePersistant();
 
-            rule_list.insertInfo(shared_rule);
+            rule_list.push_back(shared_rule);
             rule_stack.push(shared_rule);
 
             // BetterRule rule;
@@ -117,7 +117,7 @@ namespace JuNOCpp
             // shared_rule->insert(shared_action);
             // shared_rule->condition->makePersistant();
 
-            // rule_list.insertInfo(shared_rule);
+            // rule_list.push_back(shared_rule);
             // rule_stack.push(shared_rule);
         }        
     }
@@ -154,7 +154,7 @@ namespace JuNOCpp
             dependant_rule_action->setBetterRule(dependant_rule.get());
             dependant_rule->condition->makePersistant();
 
-            master_rule->action->dependant_rules.insertInfo(resultant_condition.get());
+            master_rule->action->dependant_rules.push_back(resultant_condition.get());
 
             rule_stack.push(dependant_rule);
 
@@ -174,7 +174,7 @@ namespace JuNOCpp
             // dependant_rule_action->setBetterRule(dependant_rule.get());
             // dependant_rule->condition->makePersistant();
 
-            // master_rule->action->dependant_rules.insertInfo(resultant_condition.get());
+            // master_rule->action->dependant_rules.push_back(resultant_condition.get());
 
             // rule_stack.push(dependant_rule);
         }
@@ -197,7 +197,7 @@ namespace JuNOCpp
             shared_rule->insert(shared_action);
             shared_rule->condition->makePersistant();
 
-            rule_list.insertInfo(shared_rule);
+            rule_list.push_back(shared_rule);
             rule_stack.push(shared_rule);
 
             // BetterRule rule;
@@ -213,7 +213,7 @@ namespace JuNOCpp
             // shared_rule->insert(shared_action);
             // shared_rule->condition->makePersistant();
 
-            // rule_list.insertInfo(shared_rule);
+            // rule_list.push_back(shared_rule);
             // rule_stack.push(shared_rule);
         }        
     }
@@ -252,7 +252,7 @@ namespace JuNOCpp
             dependant_rule_action->setBetterRule(dependant_rule.get());
             dependant_rule->condition->makePersistant();
 
-            master_rule->action->dependant_rules.insertInfo(resultant_condition.get());
+            master_rule->action->dependant_rules.push_back(resultant_condition.get());
 
             rule_stack.push(dependant_rule);
             dependant_rule->name = name;
@@ -275,7 +275,7 @@ namespace JuNOCpp
             // dependant_rule_action->setBetterRule(dependant_rule.get());
             // dependant_rule->condition->makePersistant();
 
-            // master_rule->action->dependant_rules.insertInfo(resultant_condition.get());
+            // master_rule->action->dependant_rules.push_back(resultant_condition.get());
 
             // rule_stack.push(dependant_rule);
             // dependant_rule->name = name;
@@ -301,7 +301,7 @@ namespace JuNOCpp
             shared_rule->insert(shared_action);
             shared_rule->condition->makePersistant();
 
-            rule_list.insertInfo(shared_rule);
+            rule_list.push_back(shared_rule);
             rule_stack.push(shared_rule);
 
             // BetterRule rule;
@@ -317,7 +317,7 @@ namespace JuNOCpp
             
             // shared_rule->insert(shared_action);
 
-            // rule_list.insertInfo(shared_rule);
+            // rule_list.push_back(shared_rule);
             // rule_stack.push(shared_rule);
             // shared_rule->name = name;
 

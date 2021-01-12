@@ -2,7 +2,6 @@
 
 #include "./BetterCondition.hpp"
 #include "./BetterAction.hpp"
-#include "../List.hpp"
 
 namespace JuNOCpp
 {

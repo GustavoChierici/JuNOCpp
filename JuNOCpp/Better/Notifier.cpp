@@ -9,8 +9,9 @@ namespace JuNOCpp
      */
     void Notifier::insert(shared_ptr<Notifiable>& notifiable)
     {
-        this->notifiables.insertInfo(notifiable);
-        // notfs.insert(notfs.end(), notifiable);
+        // this->notifiables.insertInfo(notifiable);
+        notifiables.push_back(notifiable);
+        // notifiables.insert(notifiables.end(), notifiable);
     }
 
     /**
@@ -20,7 +21,8 @@ namespace JuNOCpp
      */
     void Notifier::remove(shared_ptr<Notifiable>& notifiable)
     {
-        this->notifiables.removeInfo(notifiable);
+        // this->notifiables.removeInfo(notifiable);
+        notifiables.remove(notifiable);
     }
     /**
      * Insere um Notifiable na ED de notificações
@@ -29,8 +31,9 @@ namespace JuNOCpp
      */
     void Notifier::insert(shared_ptr<Notifiable>&& notifiable)
     {
-        this->notifiables.insertInfo(notifiable);
-        // notfs.insert(notfs.end(), notifiable);
+        // this->notifiables.insertInfo(notifiable);
+        notifiables.push_back(notifiable);
+        // notifiables.insert(notifiables.end(), notifiable);
     }
 
     /**
@@ -40,7 +43,8 @@ namespace JuNOCpp
      */
     void Notifier::remove(shared_ptr<Notifiable>&& notifiable)
     {
-        this->notifiables.removeInfo(notifiable);
+        // this->notifiables.removeInfo(notifiable);
+        notifiables.remove(notifiable);
     }
 
     /**
@@ -49,20 +53,22 @@ namespace JuNOCpp
      */
     void Notifier::notify(const bool renotify /* = false */)
     {
-        auto aux = this->notifiables.getFirst();
-
-        while(aux)
-        {
-            aux->getInfo()->update(renotify);
-            // std::cout << a << std::endl;
-            aux = aux->getNext();
-        }
-
-        // for(auto notf : notfs)
-        // {
-        //     // std::cout << notf.lock().get() << std::endl ;
-        //     notf->update(renotify);
-        // }
+        #ifdef FASTER_DATA_STRUCTURES
+            for(auto notifiable = notifiables.first; notifiable; notifiable = notifiable->next)
+            {
+                // std::cout << notifiable.lock().get() << std::endl ;
+                notifiable->element->update(renotify);
+            }
+        #elif defined(USE_RANGED_FOR)
+            for(auto notifiable : notifiables)
+                notifiable->update(renotify);
+        #else
+            for(auto notifiable = notifiables.getFirst(); notifiable; notifiable = notifiable->next)
+            {
+                // std::cout << notifiable.lock().get() << std::endl ;
+                notifiable->element->update(renotify);
+            }
+        #endif // FASTER_DATA_STRUCTURES
     }
 
     /**
@@ -73,19 +79,21 @@ namespace JuNOCpp
      */
     void Notifier::notify(const bool renotify, const bool status)
     {
-        auto aux = this->notifiables.getFirst();
-
-        while(aux)
-        {
-            aux->getInfo()->update(renotify, status);
-            // std::cout << a << std::endl;
-            aux = aux->getNext();
-        }
-
-        // for(auto notf : notfs)
-        // {
-        //     // std::cout << notf.lock().get() << std::endl ;
-        //     notf->update(renotify);
-        // }
+        #ifdef FASTER_DATA_STRUCTURES
+            for(auto notifiable = notifiables.first; notifiable; notifiable = notifiable->next)
+            {
+                // std::cout << notifiable.lock().get() << std::endl ;
+                notifiable->element->update(renotify, status);
+            }
+        #elif defined(USE_RANGED_FOR)
+            for(auto notifiable : notifiables)
+                notifiable->update(renotify, status);
+        #else
+            for(auto notifiable = notifiables.getFirst(); notifiable; notifiable = notifiable->next)
+            {
+                // std::cout << notifiable.lock().get() << std::endl ;
+                notifiable->element->update(renotify, status);
+            }
+        #endif // FASTER_DATA_STRUCTURES
     }
 }

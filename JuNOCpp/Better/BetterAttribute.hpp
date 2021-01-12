@@ -1,6 +1,6 @@
 #ifndef BETTER_ATTRIBUTE_HPP
 #define BETTER_ATTRIBUTE_HPP
-#include "../List.hpp"
+
 #include "Notifier.hpp"
 #include "NOPManager.hpp"
 
@@ -19,7 +19,7 @@ namespace JuNOCpp
 
             TYPE (*updateOperation)(TYPE value1, TYPE value2);
 
-            List<shared_ptr<Notifiable>> _impertinents;
+            Utils::forward_list<shared_ptr<Notifiable>> _impertinents;
 
         public:
             BetterAttribute();
@@ -38,7 +38,7 @@ namespace JuNOCpp
 
             void addImpertinent(shared_ptr<Notifiable> impertinent)
             {
-                _impertinents.insertInfo(impertinent);
+                _impertinents.push_back(impertinent);
             }
 
             // BetterAttribute<TYPE> operator+(BetterAttribute<TYPE>& b_attr);

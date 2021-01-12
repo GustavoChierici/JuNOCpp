@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Definitions.hpp"
+#include "../.config.hpp"
 #include <iostream>
 
 #ifdef USE_CUSTOM_SMART_PTRS

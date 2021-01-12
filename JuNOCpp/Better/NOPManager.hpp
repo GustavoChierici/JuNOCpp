@@ -1,5 +1,4 @@
 #pragma once
-#include "../List.hpp"
 #include "./BetterInstigation.hpp"
 #include "Notifier.hpp"
 #include "../CustomString.hpp"
@@ -34,7 +33,7 @@ namespace JuNOCpp
     private:
         NOPManager();
 
-        static List<shared_ptr<BetterRule>> rule_list;
+        static Utils::forward_list<shared_ptr<BetterRule>> rule_list;
         static std::stack<shared_ptr<BetterRule>> rule_stack;
         // static List<shared_ptr<BetterCondition>> condition_list;
         // static List<BetterAction> action_list;
