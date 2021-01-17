@@ -6,7 +6,9 @@ namespace JuNOCpp
      * Construtor
      * 
      */
-    BetterInstigation::BetterInstigation() : method{nullptr}
+    BetterInstigation::BetterInstigation(CustomString name):
+    Notifiable(name),
+    method{nullptr}
     {
     }
 
@@ -35,8 +37,19 @@ namespace JuNOCpp
      */
     void BetterInstigation::update(const bool renotify)
     {
-        // std::cout << "INSTIGATION - " << this <<std::endl;
+        #ifdef SHOW_NOP_LOGGER
+            // std::cout << identation_control << "(*I) " << name << 
+            //     " (" << this << ") called. Executing" << std::endl;
+
+            // identation_control += "   ";
+        #endif // SHOW_NOP_LOGGER
         this->method();
+
+        #ifdef SHOW_NOP_LOGGER
+            // identation_control.pop_back();
+            // identation_control.pop_back();
+            // identation_control.pop_back();
+        #endif // SHOW_NOP_LOGGER
     }
 
     /**
@@ -47,7 +60,15 @@ namespace JuNOCpp
      */
     void BetterInstigation::update(const bool renotify, const bool status)
     {
-        // std::cout << "INSTIGATION - " << this <<std::endl;
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().writeInstigationExecuting(name , this);
+
+            Utils::NOPLogger::Get().incrementIdentation();
+        #endif // SHOW_NOP_LOGGER
         this->method();
+
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().decrementIdentation();
+        #endif // SHOW_NOP_LOGGER
     }
 }

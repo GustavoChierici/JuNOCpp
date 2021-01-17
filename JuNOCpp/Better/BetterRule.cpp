@@ -10,12 +10,12 @@ namespace JuNOCpp
     /**************************************** 
     * Construtores/Destrutores
     ****************************************/
-    BetterRule::BetterRule() :
+    BetterRule::BetterRule(CustomString name) :
+        Notifiable(name),
         condition{nullptr},
         action{nullptr},
         id{BetterRule::counter++},
-        is_approved{false},
-        name{"UnnamedRule"}
+        is_approved{false}
     {
     }
 
@@ -30,15 +30,33 @@ namespace JuNOCpp
     {
         // std::cout << "RULE " << this->id << " (" << this << ")" <<std::endl;
 
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().writeRuleApproved(name, this);
+
+            Utils::NOPLogger::Get().incrementIdentation();
+        #endif // SHOW_NOP_LOGGER
+
         this->notify();
         BetterRule::approved++;
+
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().decrementIdentation();
+        #endif // SHOW_NOP_LOGGER
     }
 
     void BetterRule::update(const bool renotify, const bool status)
     {
-        // std::cout << "RULE " << this->id << " (" << this << ")" <<std::endl;
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().writeRuleApproved(name, this);
+
+            Utils::NOPLogger::Get().incrementIdentation();
+        #endif // SHOW_NOP_LOGGER
 
         this->notify();
         BetterRule::approved++;
+
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().decrementIdentation();
+        #endif // SHOW_NOP_LOGGER
     }
 }

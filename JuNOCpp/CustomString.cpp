@@ -27,7 +27,8 @@ namespace JuNOCpp
         if (str)
             delete[] str;
 
-        this->str = new char[this->length + 1];
+        // this->str = (char*)malloc((strlen(s)) * sizeof(char));
+        this->str = new char[(strlen(s)) + 1];
         strcpy(this->str, s);
     }
 

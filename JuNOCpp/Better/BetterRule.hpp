@@ -15,14 +15,13 @@ namespace JuNOCpp
         
         int id;
         bool is_approved;
-        CustomString name;
 
     public:
         static int counter;
         static int approved;
 
     public:
-        BetterRule();
+        BetterRule(CustomString name = "UnnamedRule");
         ~BetterRule();
 
         void update(const bool renotify = false);

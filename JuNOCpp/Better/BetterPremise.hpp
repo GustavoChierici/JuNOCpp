@@ -4,11 +4,11 @@
 #include "../CustomString.hpp"
 #include "./BetterAttribute.hpp"
 #include "./BetterCondition.hpp"
-#include "./BasePremise.hpp"
+#include "./Impertinent.hpp"
 namespace JuNOCpp
 {
     template<class TYPE>
-    class BetterPremise: public BasePremise
+    class BetterPremise: public Impertinent, public Notifier, public Notifiable
     {
     private:
         Attributes::BetterAttribute<TYPE>* attr1;
@@ -20,18 +20,27 @@ namespace JuNOCpp
         bool (*cmp)(TYPE, TYPE);
 
     public:
-        const static int DIFFERENT = 0;
-        const static int EQUAL = 1;
-        const static int GREATER_THAN = 2;
-        const static int GREATER_OR_EQUAL_THAN = 3;
-        const static int LESS_THAN = 4;
-        const static int LESS_OR_EQUAL_THAN = 5;
+        enum Operation {
+            DIFFERENT = 0,
+            EQUAL,
+            GREATER_THAN,
+            GREATER_OR_EQUAL_THAN,
+            LESS_THAN,
+            LESS_OR_EQUAL_THAN
+        };
 
     public:
-        BetterPremise();
+        BetterPremise(CustomString name = "UnnamedPremise",
+            Attributes::BetterAttribute<TYPE>* at1 = nullptr,
+            Attributes::BetterAttribute<TYPE>* at2 = nullptr,
+            Operation operation = 1);
+        BetterPremise(CustomString name,
+            Attributes::BetterAttribute<TYPE>* at1,
+            const TYPE value,
+            Operation operation);
         ~BetterPremise();
 
-        void setOperation(const int op = BetterPremise::EQUAL);
+        void setOperation(Operation op = BetterPremise::EQUAL);
 
         void setBetterAttribute(Attributes::BetterAttribute<TYPE>* b_attr1, Attributes::BetterAttribute<TYPE>* b_attr2);
         void setBetterAttribute(Attributes::BetterAttribute<TYPE>* b_attr1, TYPE value);
@@ -48,11 +57,21 @@ namespace JuNOCpp
          */
         void activate() override
         {
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().writeImpertinentActivated(name, this);
+
+                Utils::NOPLogger::Get().incrementIdentation(); 
+            #endif // SHOW_NOP_LOGGER
+
             this->attr1->insert(this->shared_from_this());
             if(this->attr2)
                 this->attr2->insert(this->shared_from_this());
 
             update();
+
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().decrementIdentation();
+            #endif // SHOW_NOP_LOGGER 
         }
         /**
          * Desativa a Premise impertinente
@@ -60,11 +79,22 @@ namespace JuNOCpp
          */
         void deactivate() override
         {
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().writeImpertinentDeactivated(name, this);
+
+                Utils::NOPLogger::Get().incrementIdentation(); 
+            #endif // SHOW_NOP_LOGGER
+
             this->attr1->remove(this->shared_from_this());
             if(this->attr2)
                 this->attr2->remove(this->shared_from_this());
 
-            notify(false, false);
+            if(status)
+                notify(false, false);
+
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().decrementIdentation();
+            #endif // SHOW_NOP_LOGGER 
         }
 
         template <class OT>
@@ -101,12 +131,36 @@ namespace JuNOCpp
      * @tparam TYPE 
      */
     template <class TYPE>
-    BetterPremise<TYPE>::BetterPremise() : 
-        attr1{nullptr}, 
-        attr2{nullptr},
-        status{false}, 
-        previous_status{false}
+    BetterPremise<TYPE>::BetterPremise(CustomString name,
+        Attributes::BetterAttribute<TYPE>* at1,
+        Attributes::BetterAttribute<TYPE>* at2,
+        Operation operation) : 
+    Notifiable(name),
+    attr1{at1}, 
+    attr2{at2},
+    status{false}, 
+    previous_status{false}
     {
+        setOperation(operation);
+    }
+
+    /**
+     * Construtor
+     * 
+     * @tparam TYPE 
+     */
+    template <class TYPE>
+    BetterPremise<TYPE>::BetterPremise(CustomString name,
+        Attributes::BetterAttribute<TYPE>* at1,
+        const TYPE value,
+        Operation operation) : 
+    Notifiable(name),
+    attr1{at1}, 
+    value{value},
+    status{false}, 
+    previous_status{false}
+    {
+        setOperation(operation);
     }
 
     /**
@@ -125,9 +179,9 @@ namespace JuNOCpp
      * @tparam TYPE 
      */
     template <class TYPE>
-    void BetterPremise<TYPE>::setOperation(const int op /* = BetterPremise::EQUAL*/)
+    void BetterPremise<TYPE>::setOperation(Operation op /* = BetterPremise::EQUAL*/)
     {
-        this->operation = op;
+        operation = op;
 
         switch (op)
         {
@@ -222,15 +276,24 @@ namespace JuNOCpp
     template <class TYPE>
     void BetterPremise<TYPE>::update(const bool renotify)
     {
-        // std::cout << "PREMISE (" << this << ") - "; 
         if(this->attr2)
             this->status = this->cmp(this->attr1->getCurrentStatus(), this->attr2->getCurrentStatus());
         else
             this->status = this->cmp(this->attr1->getCurrentStatus(), this->value);
         if(renotify || this->status != this->previous_status)
         {
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().writeNotifying(name, this, status, renotify);
+                
+                Utils::NOPLogger::Get().incrementIdentation();
+            #endif // SHOW_NOP_LOGGER
+
             this->previous_status = this->status;
             this->notify(renotify, this->status);
+
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().decrementIdentation();
+            #endif // SHOW_NOP_LOGGER
         }
     }
 

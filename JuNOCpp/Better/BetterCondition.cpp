@@ -8,7 +8,8 @@ using namespace JuNOCpp;
  * Construtor
  * 
  */
-BetterCondition::BetterCondition() :
+BetterCondition::BetterCondition(CustomString name) :
+    Notifiable(name),
     quantity{0},
     count_approved{0},
     persistant{false},
@@ -51,29 +52,62 @@ void BetterCondition::update(const bool renotify, const bool status)
         {
             this->current_status = true;
         }
-        // std::cout << "(+) ";
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().writeIncrementCondition(name, this, count_approved, quantity);
+        #endif // SHOW_NOP_LOGGER
     }
-    else if(this->count_approved > 0)
+    else
     {
         this->count_approved--;
         this->current_status = false;
-        // std::cout << "(-) ";
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().writeDecrementCondition(name, this, count_approved, quantity);
+        #endif // SHOW_NOP_LOGGER
     }
     // std::cout << "CONDITION - " << this << " - " << this->count_approved << "/" << this->quantity <<std::endl;
     if(renotify || this->current_status != this->previous_status)
     {
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().writeNotifying(name, this, current_status, renotify);
+            
+            Utils::NOPLogger::Get().incrementIdentation();
+        #endif // SHOW_NOP_LOGGER
         this->previous_status = this->current_status;
         notify(renotify);
+
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().decrementIdentation();
+        #endif // SHOW_NOP_LOGGER
     }
     if(this->count_approved + this->count_impertinents == this->quantity and !this->impertinents.empty())
     {
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().writeActivatingImpertinents(name, this);
+
+            Utils::NOPLogger::Get().incrementIdentation();
+        #endif // SHOW_NOP_LOGGER
+
         activateImpertinents();
         this->is_impertinents_active = true;
+
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().decrementIdentation();
+        #endif // SHOW_NOP_LOGGER
     }
     else if(is_impertinents_active)
     {
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().writeDeactivatingImpertinents(name, this);
+
+            Utils::NOPLogger::Get().incrementIdentation();
+        #endif // SHOW_NOP_LOGGER
+
         is_impertinents_active = false;
         deactivateImpertinents();
+
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().decrementIdentation();
+        #endif // SHOW_NOP_LOGGER
     }
 }
 
@@ -100,29 +134,60 @@ void BetterCondition::notify(const bool renotify)
     #ifdef FASTER_DATA_STRUCTURES
         for(auto notifiable = notifiables.first; notifiable; notifiable = notifiable->next)
         {
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().writeNotification(notifiable->element->name, notifiable->element.get());
+
+                Utils::NOPLogger::Get().incrementIdentation();
+            #endif // SHOW_NOP_LOGGER
+
             auto cond = dynamic_cast<BetterCondition*>(notifiable->element.get());
             if(cond)
                 cond->update(renotify, this->current_status);
             else if(this->current_status)
                 notifiable->element->update(renotify);
+
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().decrementIdentation();
+            #endif // SHOW_NOP_LOGGER
         }
     #elif defined(USE_RANGED_FOR)
         for(auto notifiable : notifiables)
         {
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().writeNotification(notifiable->name, notifiable.get());
+
+                Utils::NOPLogger::Get().incrementIdentation();
+            #endif // SHOW_NOP_LOGGER
+
             auto cond = dynamic_cast<BetterCondition*>(notifiable.get());
             if(cond)
                 cond->update(renotify, this->current_status);
             else if(this->current_status)
                 notifiable->update(renotify);
+            
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().decrementIdentation();
+            #endif // SHOW_NOP_LOGGER
+
         }
     #else
         for(auto notifiable = notifiables.getFirst(); notifiable; notifiable = notifiable->next)
         {
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().writeNotification(notifiable->element->name, notifiable->element.get());
+
+                Utils::NOPLogger::Get().incrementIdentation();
+            #endif // SHOW_NOP_LOGGER
+
             auto cond = dynamic_cast<BetterCondition*>(notifiable->element.get());
             if(cond)
                 cond->update(renotify, this->current_status);
             else if(this->current_status)
                 notifiable->element->update(renotify);
+
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().decrementIdentation();
+            #endif // SHOW_NOP_LOGGER
         }
     #endif // FASTER_DATA_STRUCTURES    
 }

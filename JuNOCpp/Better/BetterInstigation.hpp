@@ -9,7 +9,7 @@ namespace JuNOCpp
     public:
         std::function<void()> method;
     public:
-        BetterInstigation();
+        BetterInstigation(CustomString name = "UnnamedInstigation");
         ~BetterInstigation();
 
         void setMt(std::function<void()>& func);

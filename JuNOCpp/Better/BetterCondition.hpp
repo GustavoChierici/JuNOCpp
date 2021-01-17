@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "Notifier.hpp"
-#include "./BasePremise.hpp"
+#include "./Impertinent.hpp"
 
 namespace JuNOCpp
 {
@@ -13,23 +13,25 @@ namespace JuNOCpp
     class BetterCondition: public Notifiable, public Notifier
     {
     public:
-        const static int CONJUNCTION = 0;
-        const static int DISJUNCTION = 1;
-        const static int SINGLE = 2;
+        enum LogicalOperator {
+            CONJUNCTION = 0,
+            DISJUNCTION,
+            SINGLE
+        };
     private:
         int quantity;
         int count_approved;
         int count_impertinents;
-        Utils::forward_list<BasePremise*> impertinents;
+        Utils::forward_list<Impertinent*> impertinents;
         bool persistant;
-        int mode;
+        LogicalOperator mode;
         bool is_impertinents_active {false};
     public:
         bool previous_status;
         bool current_status;
 
     public:
-        BetterCondition();
+        BetterCondition(CustomString name = "UnnamedCondition");
         ~BetterCondition();
 
         static BetterCondition& sharedCondition(BetterCondition& b_condition)
@@ -46,10 +48,10 @@ namespace JuNOCpp
         void activateImpertinents();
         void deactivateImpertinents();
 
-        void setMode(const int mode) { this->mode = mode; }
-        const int getMode() { return this->mode; }
+        void setMode(LogicalOperator mode) { this->mode = mode; }
+        LogicalOperator getMode() { return mode; }
 
-        void addImpertinent(BasePremise* premise) { this->impertinents.push_back(premise); }
+        void addImpertinent(Impertinent* premise) { this->impertinents.push_back(premise); }
 
         void makePersistant() { this->persistant = true; }
         bool isPersistant() { return this->persistant; }

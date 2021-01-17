@@ -1,5 +1,6 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
+#include <string>
 
 /**
  * @brief (EXPERIMENTAL) Constante que determina se o JuNOC++ usará
@@ -42,6 +43,16 @@
  * 
  */
 // #define USE_RANGED_FOR
+
+/**
+ * @brief (DEBUG) Constante que determina se o JuNOC++ irá mostrar no
+ * terminal o registro das notificações e mudanças nos estados das 
+ * entidades do PON
+ * 
+ * Default: undefined
+ * 
+ */
+// #define SHOW_NOP_LOGGER
 
 #endif // !CONFIG_HPP
  

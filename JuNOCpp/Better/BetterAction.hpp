@@ -14,7 +14,7 @@ namespace JuNOCpp
         Utils::forward_list<BetterCondition*> dependant_rules;
 
     public:
-        BetterAction();
+        BetterAction(CustomString name = "UnnamedAction");
         ~BetterAction();
         
         void setBetterRule(BetterRule* b_rule);

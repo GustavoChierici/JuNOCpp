@@ -1,5 +1,9 @@
 #include "Notifier.hpp"
 
+// #ifdef SHOW_NOP_LOGGER  
+//     std::string identation_control = "";
+// #endif // SHOW_NOP_LOGGER
+
 namespace JuNOCpp
 {
     /**
@@ -56,17 +60,47 @@ namespace JuNOCpp
         #ifdef FASTER_DATA_STRUCTURES
             for(auto notifiable = notifiables.first; notifiable; notifiable = notifiable->next)
             {
-                // std::cout << notifiable.lock().get() << std::endl ;
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeNotification(notifiable->element->name, notifiable->element.get());
+
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+                
                 notifiable->element->update(renotify);
+
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
             }
         #elif defined(USE_RANGED_FOR)
             for(auto notifiable : notifiables)
+            {
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeNotification(notifiable->name, notifiable.get());
+
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+
                 notifiable->update(renotify);
+
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+            }
         #else
             for(auto notifiable = notifiables.getFirst(); notifiable; notifiable = notifiable->next)
             {
-                // std::cout << notifiable.lock().get() << std::endl ;
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeNotification(notifiable->element->name, notifiable->element.get());
+
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+
                 notifiable->element->update(renotify);
+
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
             }
         #endif // FASTER_DATA_STRUCTURES
     }
@@ -82,17 +116,47 @@ namespace JuNOCpp
         #ifdef FASTER_DATA_STRUCTURES
             for(auto notifiable = notifiables.first; notifiable; notifiable = notifiable->next)
             {
-                // std::cout << notifiable.lock().get() << std::endl ;
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeNotification(notifiable->element->name, notifiable->element.get(), status);
+
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+                
                 notifiable->element->update(renotify, status);
+
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
             }
         #elif defined(USE_RANGED_FOR)
             for(auto notifiable : notifiables)
+            {
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeNotification(notifiable->name, notifiable.get(), status);
+
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+
                 notifiable->update(renotify, status);
+
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+            }
         #else
             for(auto notifiable = notifiables.getFirst(); notifiable; notifiable = notifiable->next)
             {
-                // std::cout << notifiable.lock().get() << std::endl ;
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeNotification(notifiable->element->name, notifiable->element.get(), status);
+
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+                
                 notifiable->element->update(renotify, status);
+
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
             }
         #endif // FASTER_DATA_STRUCTURES
     }

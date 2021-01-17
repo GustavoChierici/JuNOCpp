@@ -4,6 +4,7 @@
 #include "../.config.hpp"
 #include "../Utils/forward_list.hpp"
 #include "Notifiable.hpp"
+#include "../Utils/NOPLogger.hpp"
 #include <iostream>
 
 #ifdef USE_CUSTOM_SMART_PTRS
@@ -20,6 +21,7 @@
     using weak_ptr = std::weak_ptr<T>;
 #endif // USE_CUSTOM_SMART_PTRS
 
+
 namespace JuNOCpp
 {
     class Notifier
@@ -29,7 +31,8 @@ namespace JuNOCpp
 
     public:
         Notifier() = default;
-        ~Notifier() = default;
+        Notifier(Utils::forward_list<shared_ptr<Notifiable>> notfs): notifiables{notfs} {}
+        virtual ~Notifier() = default;
         
         void insert(shared_ptr<Notifiable>& notifiable);
         void remove(shared_ptr<Notifiable>& notifiable);

@@ -7,7 +7,9 @@ namespace JuNOCpp
      * Constutor
      * 
      */
-    BetterAction::BetterAction() : rule{nullptr}
+    BetterAction::BetterAction(CustomString name) :
+    Notifiable(name), 
+    rule{nullptr}
     {
     }
 
@@ -46,6 +48,12 @@ namespace JuNOCpp
      */
     void BetterAction::notify(const bool renotify)
     {  
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().writeActionExecuting(name, this);
+
+            Utils::NOPLogger::Get().incrementIdentation();
+        #endif // SHOW_NOP_LOGGER
+
         #ifdef FASTER_DATA_STRUCTURES
             for(auto notifiable = notifiables.first; notifiable; notifiable = notifiable->next)
             {
@@ -83,6 +91,10 @@ namespace JuNOCpp
                     notifiable->element->update(renotify);
             }
         #endif // FASTER_DATA_STRUCTURES 
+
+        #ifdef SHOW_NOP_LOGGER
+            Utils::NOPLogger::Get().decrementIdentation();
+        #endif // SHOW_NOP_LOGGER
     }
 
     /**

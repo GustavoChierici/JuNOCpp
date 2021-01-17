@@ -7,7 +7,7 @@ namespace JuNOCpp
     class CustomString
     {
     private:
-        int length;
+        size_t length;
         char* str;
     public:
         CustomString(const char* s = "");
@@ -16,6 +16,7 @@ namespace JuNOCpp
         ~CustomString();
 
         const char* getString() const;
+        char* get_str() { return str; }
 
         void operator=(const char* s);
         void operator=(const CustomString& s);
