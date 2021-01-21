@@ -11,7 +11,7 @@
 #define PREMISE_HPP
 #include <iostream>
 #include "../CustomString.hpp"
-#include "./BetterAttribute.hpp"
+#include "./Attribute.hpp"
 #include "./BetterCondition.hpp"
 #include "./Impertinent.hpp"
 #include "../Utils/NOPTraits/premise_traits.hpp"
@@ -29,7 +29,7 @@ namespace JuNOCpp
     class Premise: public Impertinent, public Notifier, public Notifiable
     {
     private:
-        Attributes::BetterAttribute<PrT>* attr1;
+        Attributes::Attribute<PrT>* attr1;
         RT rhs_value;
         bool status;
         bool previous_status;
@@ -37,14 +37,14 @@ namespace JuNOCpp
 
     public:
         Premise();
-        Premise(Attributes::BetterAttribute<PrT>* at1, 
+        Premise(Attributes::Attribute<PrT>* at1, 
                 RT rhs,
                 CmpOpT _op,
                 CustomString name = "UnnamedPremise"
         );
         ~Premise();
 
-        void setBetterAttribute(Attributes::BetterAttribute<PrT>* b_attr1, RT rhs_val)
+        void setAttribute(Attributes::Attribute<PrT>* b_attr1, RT rhs_val)
         {
             attr1 = b_attr1;
             rhs_value = rhs_val;
@@ -98,7 +98,7 @@ namespace JuNOCpp
      */
     template <class PrT, typename RT, typename CmpOpT>
     Premise<PrT, RT, CmpOpT>::Premise(
-        Attributes::BetterAttribute<PrT>* at1,
+        Attributes::Attribute<PrT>* at1,
         RT rhs_val, CmpOpT _op, CustomString name
     ) : 
     Notifiable(name),
@@ -147,9 +147,9 @@ namespace JuNOCpp
     void Premise<PrT, RT, CmpOpT>::update(const bool renotify)
     {
         if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::not_equal_t>) {
-            if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>, Attributes::BetterAttribute<RT>>)
+            if constexpr(std::is_same_v<Attributes::Attribute<PrT>, Attributes::Attribute<RT>>)
                 status = attr1->getCurrentStatus() != rhs_value;
-            else if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>*, RT>)
+            else if constexpr(std::is_same_v<Attributes::Attribute<PrT>*, RT>)
                 status = attr1->getCurrentStatus() != rhs_value->getCurrentStatus();
             else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
                 status = attr1->getCurrentStatus() != Utils::NOPTraits::eval(rhs_value);
@@ -159,9 +159,9 @@ namespace JuNOCpp
                 exit(1);
             }
         } else if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::equal_t>) {
-            if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>, Attributes::BetterAttribute<RT>>)
+            if constexpr(std::is_same_v<Attributes::Attribute<PrT>, Attributes::Attribute<RT>>)
                 status = attr1->getCurrentStatus() == rhs_value;
-            else if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>*, RT>)
+            else if constexpr(std::is_same_v<Attributes::Attribute<PrT>*, RT>)
                 status = attr1->getCurrentStatus() == rhs_value->getCurrentStatus();
             else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
                 status = attr1->getCurrentStatus() == Utils::NOPTraits::eval(rhs_value);
@@ -171,9 +171,9 @@ namespace JuNOCpp
                 exit(1);
             }
         } else if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::greater_t>) {
-            if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>, Attributes::BetterAttribute<RT>>)
+            if constexpr(std::is_same_v<Attributes::Attribute<PrT>, Attributes::Attribute<RT>>)
                 status = attr1->getCurrentStatus() > rhs_value;
-            else if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>*, RT>)
+            else if constexpr(std::is_same_v<Attributes::Attribute<PrT>*, RT>)
                 status = attr1->getCurrentStatus() > rhs_value->getCurrentStatus();
             else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
                 status = attr1->getCurrentStatus() > Utils::NOPTraits::eval(rhs_value);
@@ -183,9 +183,9 @@ namespace JuNOCpp
                 exit(1);
             }
         } else if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::greater_equal_t>) {
-            if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>, Attributes::BetterAttribute<RT>>)
+            if constexpr(std::is_same_v<Attributes::Attribute<PrT>, Attributes::Attribute<RT>>)
                 status = attr1->getCurrentStatus() >= rhs_value;
-            else if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>*, RT>)
+            else if constexpr(std::is_same_v<Attributes::Attribute<PrT>*, RT>)
                 status = attr1->getCurrentStatus() >= rhs_value->getCurrentStatus();
             else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
                 status = attr1->getCurrentStatus() >= Utils::NOPTraits::eval(rhs_value);
@@ -195,9 +195,9 @@ namespace JuNOCpp
                 exit(1);
             }
         } else if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::less_t>) {
-            if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>, Attributes::BetterAttribute<RT>>)
+            if constexpr(std::is_same_v<Attributes::Attribute<PrT>, Attributes::Attribute<RT>>)
                 status = attr1->getCurrentStatus() < rhs_value;
-            else if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>*, RT>)
+            else if constexpr(std::is_same_v<Attributes::Attribute<PrT>*, RT>)
                 status = attr1->getCurrentStatus() < rhs_value->getCurrentStatus();
             else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
                 status = attr1->getCurrentStatus() < Utils::NOPTraits::eval(rhs_value);
@@ -207,9 +207,9 @@ namespace JuNOCpp
                 exit(1);
             }
         } else if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::less_equal_t>) {
-            if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>, Attributes::BetterAttribute<RT>>)
+            if constexpr(std::is_same_v<Attributes::Attribute<PrT>, Attributes::Attribute<RT>>)
                 status = attr1->getCurrentStatus() <= rhs_value;
-            else if constexpr(std::is_same_v<Attributes::BetterAttribute<PrT>*, RT>)
+            else if constexpr(std::is_same_v<Attributes::Attribute<PrT>*, RT>)
                 status = attr1->getCurrentStatus() <= rhs_value->getCurrentStatus();
             else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
                 status = attr1->getCurrentStatus() <= Utils::NOPTraits::eval(rhs_value);
@@ -306,7 +306,10 @@ namespace JuNOCpp
             Utils::NOPTraits::removePremise(rhs_value, shared_from_this());
 
         if(status)
+        {
+            status = false;
             notify(false, false);
+        }
 
         #ifdef SHOW_NOP_LOGGER
             Utils::NOPLogger::Get().decrementIdentation();

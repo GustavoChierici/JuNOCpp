@@ -81,18 +81,20 @@ void BetterCondition::update(const bool renotify, const bool status)
     }
     if(this->count_approved + this->count_impertinents == this->quantity and !this->impertinents.empty())
     {
-        #ifdef SHOW_NOP_LOGGER
-            Utils::NOPLogger::Get().writeActivatingImpertinents(name, this);
+        if(!is_impertinents_active)
+        {
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().writeActivatingImpertinents(name, this);
 
-            Utils::NOPLogger::Get().incrementIdentation();
-        #endif // SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().incrementIdentation();
+            #endif // SHOW_NOP_LOGGER
+            this->is_impertinents_active = true;
+            activateImpertinents();
 
-        activateImpertinents();
-        this->is_impertinents_active = true;
-
-        #ifdef SHOW_NOP_LOGGER
-            Utils::NOPLogger::Get().decrementIdentation();
-        #endif // SHOW_NOP_LOGGER
+            #ifdef SHOW_NOP_LOGGER
+                Utils::NOPLogger::Get().decrementIdentation();
+            #endif // SHOW_NOP_LOGGER
+        }
     }
     else if(is_impertinents_active)
     {

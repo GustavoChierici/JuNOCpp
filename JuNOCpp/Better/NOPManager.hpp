@@ -9,7 +9,7 @@ namespace JuNOCpp
     namespace Attributes
     {
         template<class TYPE>
-        class BetterAttribute;
+        class Attribute;
     }
         class BetterCondition;
         class BetterAction;

@@ -4,8 +4,9 @@
 #include "./CustomString.hpp"
 #include "./Utils/SmartPtr.hpp"
 // #include "./Utils/forward_list.hpp"
-
-#include "./Better/BetterAttribute.hpp"
+#include "./Utils/tuple_helper.hpp"
+// #include "./Better/BetterAttribute.hpp"
+#include "./Better/Attribute.hpp"
 #include "./Better/BetterCondition.hpp"
 #include "./Better/Premise.hpp"
 #include "./Better/BetterRule.hpp"
@@ -29,7 +30,7 @@ using namespace Attributes;
 
 namespace NOP {
     #ifdef USE_CUSTOM_SMART_PTRS
-        #include "../Utils/SmartPtr.hpp"
+        #include "./Utils/SmartPtr.hpp"
         template <typename T>
         using shared_ptr = JuNOCpp::Utils::shared_ptr<T>;
         template <typename T>
@@ -45,9 +46,9 @@ namespace NOP {
 
 
     template<typename TYPE>
-    using Attribute = BetterAttribute<TYPE>;
+    using Attribute = Attribute<TYPE>;
     template<typename TYPE>
-    using AttributePtr = BetterAttribute<TYPE>*;
+    using AttributePtr = Attribute<TYPE>*;
 
 
 

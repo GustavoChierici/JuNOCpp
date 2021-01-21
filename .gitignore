@@ -70,6 +70,5 @@ GenericFBE.hpp
 Stack.hpp
 SmartSPtr.hpp
 NOPCollection.hpp
-Attribute.hpp
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,c++,cmake

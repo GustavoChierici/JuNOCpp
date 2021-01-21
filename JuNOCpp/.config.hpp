@@ -11,7 +11,7 @@
  * Default: undefined
  * 
  */
-// #define USE_CUSTOM_SMART_PTRS
+#define USE_CUSTOM_SMART_PTRS
 
 /**
  * @brief Constante que determina se o JuNOC++ utilizará suas EDs de

@@ -11,13 +11,20 @@
 #define ATTRIBUTE_TRAITS
 
 #include <type_traits>
+#include "../../.config.hpp"
+
+#ifdef USE_CUSTOM_SMART_PTRS
+    #include "../SmartPtr.hpp"
+#else
+    #include <memory>
+#endif // USE_CUSTOM_SMART_PTRS
 
 namespace JuNOCpp
 {
     namespace Attributes
     {
-        template<typename T>
-        class BetterAttribute;
+        template<class TYPE>
+        class Attribute;
     } // namespace Attributes
     
 
@@ -30,10 +37,10 @@ namespace JuNOCpp
             struct is_attribute_of: std::false_type {};
 
             template<typename Type>
-            struct is_attribute_of<Attributes::BetterAttribute<Type>, Type>: std::true_type {};
+            struct is_attribute_of<Attributes::Attribute<Type>, Type>: std::true_type {};
 
             template<typename Type>
-            struct is_attribute_of<Attributes::BetterAttribute<Type>*, Type>: std::true_type {};
+            struct is_attribute_of<Attributes::Attribute<Type>*, Type>: std::true_type {};
 
             template<typename AttrType, typename Type>
             inline constexpr bool is_attribute_of_v = is_attribute_of<AttrType, Type>::value;
@@ -45,7 +52,7 @@ namespace JuNOCpp
             /** + operator **/
 
             template<typename T>
-            auto at_add_val = [](Attributes::BetterAttribute<T>* attr, auto ... values) { return attr->getCurrentStatus() + (... + values); };
+            auto at_add_val = [](Attributes::Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() + (... + values); };
             template<typename T>
             using at_add_val_t = decltype(at_add_val<T>);
 
@@ -61,7 +68,7 @@ namespace JuNOCpp
             using at_sub_at_t = decltype(at_sub_at);
 
             template<typename T>
-            auto at_sub_val = [](Attributes::BetterAttribute<T>* attr, auto ... values) { return attr->getCurrentStatus() - (... - values); };
+            auto at_sub_val = [](Attributes::Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() - (... - values); };
             template<typename T>
             using at_sub_val_t = decltype(at_sub_val<T>);
 
@@ -77,7 +84,7 @@ namespace JuNOCpp
             using at_mult_at_t = decltype(at_mult_at);
 
             template<typename T>
-            auto at_mult_val = [](Attributes::BetterAttribute<T>* attr, auto ... values) { return attr->getCurrentStatus() * (... * values); };
+            auto at_mult_val = [](Attributes::Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() * (... * values); };
             template<typename T>
             using at_mult_val_t = decltype(at_mult_val<T>);
 
@@ -93,7 +100,7 @@ namespace JuNOCpp
             using at_div_at_t = decltype(at_div_at);
 
             template<typename T>
-            auto at_div_val = [](Attributes::BetterAttribute<T>* attr, auto ... values) { return attr->getCurrentStatus() / (... / values); };
+            auto at_div_val = [](Attributes::Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() / (... / values); };
             template<typename T>
             using at_div_val_t = decltype(at_div_val<T>);
 
@@ -103,22 +110,12 @@ namespace JuNOCpp
             auto val_div_val = [](auto... args) { return (... / args); };
             using val_div_val_t = decltype(val_div_val);
 
-
-            namespace detail {
-                template <typename ... Ts>
-                struct is_in_pack_impl : std::type_identity<Ts>... { };
-            }
-            template <typename TargetT, typename ... Ts>
-            using is_in_pack = std::is_base_of<std::type_identity<TargetT>, detail::is_in_pack_impl<Ts...>>;
-
             #ifdef USE_CUSTOM_SMART_PTRS
-                #include "../SmartPtr.hpp"
                 template <typename T>
                 using shared_ptr = JuNOCpp::Utils::shared_ptr<T>;
                 template <typename T>
                 using weak_ptr = JuNOCpp::Utils::weak_ptr<T>;
             #else
-                #include <memory>
                 template <typename T>
                 using shared_ptr = std::shared_ptr<T>;
                 template <typename T>
@@ -131,7 +128,7 @@ namespace JuNOCpp
             }
 
             template <typename T, typename PrT>
-            void insertPremise(Attributes::BetterAttribute<T>* attr, shared_ptr<PrT> premise)
+            void insertPremise(Attributes::Attribute<T>* attr, shared_ptr<PrT> premise)
             {
                 attr->insert(premise);
             }
@@ -148,7 +145,7 @@ namespace JuNOCpp
             }
 
             template <typename T, typename PrT>
-            void removePremise(Attributes::BetterAttribute<T>* attr, shared_ptr<PrT> premise)
+            void removePremise(Attributes::Attribute<T>* attr, shared_ptr<PrT> premise)
             {
                 attr->remove(premise);
             }
@@ -165,7 +162,7 @@ namespace JuNOCpp
             }
 
             template <typename T, typename PrT>
-            void addImpertinent(Attributes::BetterAttribute<T>* attr, shared_ptr<PrT> premise)
+            void addImpertinent(Attributes::Attribute<T>* attr, shared_ptr<PrT> premise)
             {
                 attr->addImpertinent(premise);
             }

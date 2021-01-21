@@ -133,7 +133,7 @@ namespace JuNOCpp
                 last = nullptr;
             }
 
-            bool empty() const { return first == last; }
+            bool empty() const { return first == nullptr; }
 
             #ifndef FASTER_DATA_STRUCTURES
                 node<T>* getFirst() { return first; }
@@ -175,7 +175,7 @@ namespace JuNOCpp
                     return;
                 }
 
-                node<T>* aux_node = first->next;
+                node<T>* aux_node = first;
 
                 while(aux_node)
                 {
@@ -184,6 +184,8 @@ namespace JuNOCpp
                     if(aux_node and aux_node->element == elem)
                     {
                         aux_node2->next = aux_node->next;
+                        if(last == aux_node)
+                            last = aux_node2;
                         delete aux_node;
 
                         break;

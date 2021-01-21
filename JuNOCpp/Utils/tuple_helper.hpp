@@ -1,13 +1,19 @@
 #ifndef TUPLE_HELPER_HPP
 #define TUPLE_HELPER_HPP
 #include <tuple>
-#include "../Better/Attribute.hpp"
 #include <algorithm>
+#include "./NOPTraits/attribute_traits.hpp"
 
 namespace JuNOCpp
-{
+{   
     namespace Utils
     {
+        template<typename Op, typename ... Args>
+        struct tuple_helper;
+
+        template<typename Op, typename ...Args>
+        tuple_helper<Op, Args...> make_tuple_h(std::tuple<Args...> tup, Op _op);
+
         template<typename Op, typename ... Args>
         struct tuple_helper
         {
@@ -28,7 +34,7 @@ namespace JuNOCpp
                     auto at_tup = std::make_tuple(&attr);
                     auto aux_tuple = std::tuple_cat(tup, at_tup);
                 
-                    auto th = tuple_helper(aux_tuple, NOPTraits::at_add_at);
+                    auto th = make_tuple_h(aux_tuple, NOPTraits::at_add_at);
 
                     return th;
                 }
@@ -152,8 +158,7 @@ namespace JuNOCpp
                     auto th = make_tuple_h(aux_tuple, NOPTraits::val_sub_val);
 
                     return th;
-                }
-                
+                } 
             }
 
             template<typename ...T>
@@ -313,6 +318,13 @@ namespace JuNOCpp
             }
 
         };
+
+        template<typename Op, typename ...Args>
+        tuple_helper<Op, Args...> make_tuple_h(std::tuple<Args...> tup, Op _op)
+        {
+            return {tup};
+        }
+
     } // namespace Utils
     
 } // namespace JuNOCpp

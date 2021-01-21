@@ -1,6 +1,6 @@
 #include "./NOPManager.hpp"
 #include "./BetterCondition.hpp"
-#include "./BetterAttribute.hpp"
+#include "./Attribute.hpp"
 #include "./Premise.hpp"
 #include "./BetterRule.hpp"
 #include "./BetterAction.hpp"
