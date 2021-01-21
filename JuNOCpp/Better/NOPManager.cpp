@@ -1,7 +1,7 @@
 #include "./NOPManager.hpp"
 #include "./BetterCondition.hpp"
 #include "./BetterAttribute.hpp"
-#include "./BetterPremise.hpp"
+#include "./Premise.hpp"
 #include "./BetterRule.hpp"
 #include "./BetterAction.hpp"
 

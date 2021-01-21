@@ -1,5 +1,5 @@
 #include "BetterCondition.hpp"
-#include "BetterPremise.hpp"
+#include "./Premise.hpp"
 #include "BetterRule.hpp"
 using namespace JuNOCpp;
 

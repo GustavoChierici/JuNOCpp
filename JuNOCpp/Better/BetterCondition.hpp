@@ -6,8 +6,8 @@
 
 namespace JuNOCpp
 {
-    template<class TYPE>
-    class BetterPremise;
+    template<class PrT, typename RT, typename CmpOpT>
+    class Premise;
 
     class BetterRule;
     class BetterCondition: public Notifiable, public Notifier
@@ -41,6 +41,9 @@ namespace JuNOCpp
         }
 
         void setQuantity(const int quant);
+        const int getQuantity() const { return quantity; }
+        void incQuantity() { ++quantity; }
+        void decQuantity() { --quantity; }
 
         void update(const bool renotify = false);
         void update(const bool renotify, const bool status);
@@ -60,21 +63,23 @@ namespace JuNOCpp
         void decCountApproved() { this->count_approved--; } 
         void incCountImpertinents() { this->count_impertinents++; }
         void decCountImpertinents() { this->count_impertinents--; } 
-    
+        
         /**
-         * Cria e retorna uma Condition do tipo CONJUNCTION
+         * @brief Cria e retorna uma Condition do tipo CONJUNCTION
          * 
-         * @tparam TYPE 
+         * @tparam PrT 
+         * @tparam RT 
+         * @tparam CmpOpT 
          * @param b_premise 
          * @return BetterCondition& 
          */
-        template <class TYPE>
-        BetterCondition& operator &&(BetterPremise<TYPE>& b_premise)
+        template <class PrT, typename RT, typename CmpOpT>
+        BetterCondition& operator &&(Premise<PrT, RT, CmpOpT>& b_premise)
         {
             if((this->mode == BetterCondition::CONJUNCTION or this->mode == BetterCondition::SINGLE) and !this->persistant)
             {
-                b_premise.insert(this->shared_from_this());
-                this->setQuantity(this->quantity + 1);
+                b_premise.insert(shared_from_this());
+                incQuantity();
 
                 return *this;
             }
@@ -96,19 +101,21 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Condition do tipo CONJUNCTION
+         * @brief Cria e retorna uma Condition do tipo CONJUNCTION
          * 
-         * @tparam TYPE 
+         * @tparam PrT 
+         * @tparam RT 
+         * @tparam CmpOpT 
          * @param b_premise 
          * @return BetterCondition& 
          */
-        template <class TYPE>
-        BetterCondition& operator &&(BetterPremise<TYPE>&& b_premise)
+        template <class PrT, typename RT, typename CmpOpT>
+        BetterCondition& operator &&(Premise<PrT, RT, CmpOpT>&& b_premise)
         {
             if((this->mode == BetterCondition::CONJUNCTION or this->mode == BetterCondition::SINGLE) and !this->persistant)
             {
-                b_premise.insert(this->shared_from_this());
-                this->setQuantity(this->quantity + 1);
+                b_premise.insert(shared_from_this());
+                incQuantity();
 
                 return *this;
             }
@@ -130,18 +137,20 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Condition do tipo DISJUNCTION
+         * @brief Cria e retorna uma Condition do tipo DISJUNCTION
          * 
-         * @tparam TYPE 
+         * @tparam PrT 
+         * @tparam RT 
+         * @tparam CmpOpT 
          * @param b_premise 
          * @return BetterCondition& 
          */
-        template <class TYPE>
-        BetterCondition& operator ||(BetterPremise<TYPE>& b_premise)
+        template <class PrT, typename RT, typename CmpOpT>
+        BetterCondition& operator ||(Premise<PrT, RT, CmpOpT>& b_premise)
         {
             if((this->mode == BetterCondition::DISJUNCTION or this->mode == BetterCondition::SINGLE) and !this->persistant)
             {
-                b_premise.insert(this->shared_from_this());
+                b_premise.insert(shared_from_this());
 
                 return *this;
             }
@@ -163,14 +172,16 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Condition do tipo DISJUNCTION
+         * @brief Cria e retorna uma Condition do tipo DISJUNCTION
          * 
-         * @tparam TYPE 
+         * @tparam PrT 
+         * @tparam RT 
+         * @tparam CmpOpT 
          * @param b_premise 
          * @return BetterCondition& 
          */
-        template <class TYPE>
-        BetterCondition& operator ||(BetterPremise<TYPE>&& b_premise)
+        template <class PrT, typename RT, typename CmpOpT>
+        BetterCondition& operator ||(Premise<PrT, RT, CmpOpT>&& b_premise)
         {
             if((this->mode == BetterCondition::DISJUNCTION or this->mode == BetterCondition::SINGLE) and !this->persistant)
             {

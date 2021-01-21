@@ -6,6 +6,7 @@
 #include "Notifiable.hpp"
 #include "../Utils/NOPLogger.hpp"
 #include <iostream>
+#include "../Utils/NOPTraits/common_traits.hpp"
 
 #ifdef USE_CUSTOM_SMART_PTRS
     #include "../Utils/SmartPtr.hpp"

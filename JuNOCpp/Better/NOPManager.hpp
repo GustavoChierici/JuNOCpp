@@ -11,8 +11,6 @@ namespace JuNOCpp
         template<class TYPE>
         class BetterAttribute;
     }
-        template<class TYPE>
-        class BetterPremise;
         class BetterCondition;
         class BetterAction;
         class BetterRule;

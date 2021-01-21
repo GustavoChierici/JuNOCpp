@@ -3,11 +3,13 @@
 
 #include "Notifier.hpp"
 #include "NOPManager.hpp"
+#include "../Utils/NOPTraits/attribute_traits.hpp"
+#include "../Utils/NOPTraits/premise_traits.hpp"
 
 namespace JuNOCpp
 {
-    template <class TYPE>
-    class BetterPremise;
+    template <class PrT, typename RT, typename CmpOpT>
+    class Premise;
     namespace Attributes
     {
         template<class TYPE>
@@ -52,30 +54,30 @@ namespace JuNOCpp
 
             void operator=(TYPE value);
 
-            BetterPremise<TYPE>& operator==(BetterAttribute<TYPE>& b_attr);
-            BetterPremise<TYPE>& operator==(BetterAttribute<TYPE>&& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>& operator==(BetterAttribute<TYPE>& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>& operator==(BetterAttribute<TYPE>&& b_attr);
 
-            BetterPremise<TYPE>& operator!=(BetterAttribute<TYPE>& b_attr);
-            BetterPremise<TYPE>& operator!=(BetterAttribute<TYPE>&& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>& operator!=(BetterAttribute<TYPE>& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>& operator!=(BetterAttribute<TYPE>&& b_attr);
 
-            BetterPremise<TYPE>& operator>(BetterAttribute<TYPE>& b_attr);
-            BetterPremise<TYPE>& operator>(BetterAttribute<TYPE>&& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>& operator>(BetterAttribute<TYPE>& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>& operator>(BetterAttribute<TYPE>&& b_attr);
 
-            BetterPremise<TYPE>& operator>=(BetterAttribute<TYPE>& b_attr);
-            BetterPremise<TYPE>& operator>=(BetterAttribute<TYPE>&& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& operator>=(BetterAttribute<TYPE>& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& operator>=(BetterAttribute<TYPE>&& b_attr);
 
-            BetterPremise<TYPE>& operator<(BetterAttribute<TYPE>& b_attr);
-            BetterPremise<TYPE>& operator<(BetterAttribute<TYPE>&& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>& operator<(BetterAttribute<TYPE>& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>& operator<(BetterAttribute<TYPE>&& b_attr);
 
-            BetterPremise<TYPE>& operator<=(BetterAttribute<TYPE>& b_attr);
-            BetterPremise<TYPE>& operator<=(BetterAttribute<TYPE>&& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>& operator<=(BetterAttribute<TYPE>& b_attr);
+            Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>& operator<=(BetterAttribute<TYPE>&& b_attr);
 
-            BetterPremise<TYPE>& operator==(const TYPE value);
-            BetterPremise<TYPE>& operator!=(const TYPE value);
-            BetterPremise<TYPE>& operator>(const TYPE value);
-            BetterPremise<TYPE>& operator>=(const TYPE value);
-            BetterPremise<TYPE>& operator<(const TYPE value);
-            BetterPremise<TYPE>& operator<=(const TYPE value);
+            Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>& operator==(const TYPE value);
+            Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>& operator!=(const TYPE value);
+            Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>& operator>(const TYPE value);
+            Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>& operator>=(const TYPE value);
+            Premise<TYPE, TYPE, Utils::NOPTraits::less_t>& operator<(const TYPE value);
+            Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>& operator<=(const TYPE value);
         };
 
         /**
@@ -238,27 +240,28 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo EQUAL
+         * @brief Cria e retorna uma Premise do tipo equal
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator==(BetterAttribute<TYPE>& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>& BetterAttribute<TYPE>::operator==(BetterAttribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "Equals";
             pr_name += b_attr.name.getString(); 
 
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::EQUAL));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>
+                        (this, &b_attr, Utils::NOPTraits::equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::EQUAL));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>(this, &b_attr, Utils::NOPTraits::equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-
-            // premise->setOperation(BetterPremise<TYPE>::EQUAL);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -267,26 +270,28 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo EQUAL
+         * @brief Cria e retorna uma Premise do tipo equal
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>&
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator==(BetterAttribute<TYPE>&& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>& BetterAttribute<TYPE>::operator==(BetterAttribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "Equals";
-            pr_name += b_attr.name.getString();
+            pr_name += b_attr.name.getString(); 
 
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::EQUAL));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>
+                        (this, &b_attr, Utils::NOPTraits::equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::EQUAL));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::equal_t>(this, &b_attr, Utils::NOPTraits::equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::EQUAL);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -295,26 +300,28 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo DIFFERENT
+         * @brief Cria e retorna uma Premise do tipo not_equal
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator!=(BetterAttribute<TYPE>& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>& BetterAttribute<TYPE>::operator!=(BetterAttribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
-            pr_name += "DoesNotEqual";
-            pr_name += b_attr.name.getString();
+            pr_name += "NotEqual";
+            pr_name += b_attr.name.getString(); 
 
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::DIFFERENT));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>
+                        (this, &b_attr, Utils::NOPTraits::not_equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::DIFFERENT));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>(this, &b_attr, Utils::NOPTraits::not_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::DIFFERENT);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -323,26 +330,28 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo DIFFERENT
+         * @brief Cria e retorna uma Premise do tipo not_equal
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator!=(BetterAttribute<TYPE>&& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>& BetterAttribute<TYPE>::operator!=(BetterAttribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
-            pr_name += "DoesNotEqual";
-            pr_name += b_attr.name.getString();
+            pr_name += "NotEqual";
+            pr_name += b_attr.name.getString(); 
 
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::DIFFERENT));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>
+                        (this, &b_attr, Utils::NOPTraits::not_equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::DIFFERENT));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::not_equal_t>(this, &b_attr, Utils::NOPTraits::not_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::DIFFERENT);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -351,54 +360,28 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo GREATER_THAN
+         * @brief Cria e retorna uma Premise do tipo greater
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>(BetterAttribute<TYPE>& b_attr)
-        {
-            std::string pr_name = name.getString();
-            pr_name += "IsGreaterThan";
-            pr_name += b_attr.name.getString();
-
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::GREATER_THAN));
-            #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::GREATER_THAN));
-            #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::GREATER_THAN);
-            // premise->setBetterAttribute(this, &b_attr);
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            return *premise;
-        }
-
-        /**
-         * Cria e retorna uma Premise do tipo GREATER_THAN
-         * 
-         * @tparam TYPE 
-         * @param b_attr 
-         * @return BetterPremise<TYPE>& 
-         */
-        template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>(BetterAttribute<TYPE>&& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>& BetterAttribute<TYPE>::operator>(BetterAttribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterThan";
             pr_name += b_attr.name.getString(); 
 
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::GREATER_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>
+                        (this, &b_attr, Utils::NOPTraits::greater, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::GREATER_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>(this, &b_attr, Utils::NOPTraits::greater, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::GREATER_THAN);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -407,26 +390,28 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo GREATER_OR_EQUAL_THAN
+         * @brief Cria e retorna uma Premise do tipo greater
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>=(BetterAttribute<TYPE>& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>& BetterAttribute<TYPE>::operator>(BetterAttribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
-            pr_name += "IsGreaterOrEqualThan";
-            pr_name += b_attr.name.getString();
+            pr_name += "IsGreaterThan";
+            pr_name += b_attr.name.getString(); 
 
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::GREATER_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>
+                        (this, &b_attr, Utils::NOPTraits::greater, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::GREATER_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_t>(this, &b_attr, Utils::NOPTraits::greater, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::GREATER_OR_THAN_EQUAL);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -435,26 +420,28 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo GREATER_OR_EQUAL_THAN
+         * @brief Cria e retorna uma Premise do tipo greater_equal
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>=(BetterAttribute<TYPE>&& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& BetterAttribute<TYPE>::operator>=(BetterAttribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
-            pr_name += "IsGreaterOrEqualThan";
-            pr_name += b_attr.name.getString();
-        
+            pr_name += "IsGreaterOrEqual";
+            pr_name += b_attr.name.getString(); 
+
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::GREATER_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>
+                        (this, &b_attr, Utils::NOPTraits::greater_equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::GREATER_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>(this, &b_attr, Utils::NOPTraits::greater_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::GREATER_OR_THAN_EQUAL);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -463,26 +450,58 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo LESS_THAN
+         * @brief Cria e retorna uma Premise do tipo greater_equal
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<(BetterAttribute<TYPE>& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& BetterAttribute<TYPE>::operator>=(BetterAttribute<TYPE>&& b_attr)
+        {
+            std::string pr_name = name.getString();
+            pr_name += "IsGreaterOrEqual";
+            pr_name += b_attr.name.getString(); 
+
+            #ifdef USE_CUSTOM_SMART_PTRS
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>
+                        (this, &b_attr, Utils::NOPTraits::greater_equal, pr_name));
+            #else
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::greater_equal_t>(this, &b_attr, Utils::NOPTraits::greater_equal, pr_name));
+            #endif // USE_CUSTOM_SMART_PTRS
+
+            this->insert(premise);
+            b_attr.insert(premise);
+
+            return *premise;
+        }
+
+        /**
+         * @brief Cria e retorna uma Premise do tipo less
+         * 
+         * @tparam TYPE 
+         * @param b_attr 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>& 
+         */
+        template <class TYPE>
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>& BetterAttribute<TYPE>::operator<(BetterAttribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessThan";
-            pr_name += b_attr.name.getString();
+            pr_name += b_attr.name.getString(); 
 
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::LESS_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>
+                        (this, &b_attr, Utils::NOPTraits::less, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::LESS_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>(this, &b_attr, Utils::NOPTraits::less, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::LESS_THAN);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -491,26 +510,28 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo LESS_THAN
+         * @brief Cria e retorna uma Premise do tipo less
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<(BetterAttribute<TYPE>&& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>& BetterAttribute<TYPE>::operator<(BetterAttribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessThan";
-            pr_name += b_attr.name.getString();
+            pr_name += b_attr.name.getString(); 
 
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::LESS_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>
+                        (this, &b_attr, Utils::NOPTraits::less, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::LESS_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_t>(this, &b_attr, Utils::NOPTraits::less, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::LESS_THAN);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -519,26 +540,28 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo LESS_OR_EQUAL_THAN
+         * @brief Cria e retorna uma Premise do tipo less_equal
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<=(BetterAttribute<TYPE>& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>& BetterAttribute<TYPE>::operator<=(BetterAttribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
-            pr_name += "IsLessOrEqualThan";
-            pr_name += b_attr.name.getString();
+            pr_name += "IsLessOrEqual";
+            pr_name += b_attr.name.getString(); 
 
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::LESS_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>
+                        (this, &b_attr, Utils::NOPTraits::less_equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::LESS_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>(this, &b_attr, Utils::NOPTraits::less_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::LESS_OR_EQUAL_THAN);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -547,26 +570,28 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo LESS_OR_EQUAL_THAN
+         * @brief Cria e retorna uma Premise do tipo less_equal
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<=(BetterAttribute<TYPE>&& b_attr)
+        Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>& BetterAttribute<TYPE>::operator<=(BetterAttribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
-            pr_name += "IsLessOrEqualThan";
-            pr_name += b_attr.name.getString();
+            pr_name += "IsLessOrEqual";
+            pr_name += b_attr.name.getString(); 
 
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::LESS_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>> premise
+                    (new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>
+                        (this, &b_attr, Utils::NOPTraits::less_equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, &b_attr, BetterPremise<TYPE>::LESS_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>>
+                        (*new Premise<TYPE, BetterAttribute<TYPE>*, Utils::NOPTraits::less_equal_t>(this, &b_attr, Utils::NOPTraits::less_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::LESS_OR_EQUAL_THAN);
-            // premise->setBetterAttribute(this, &b_attr);
 
             this->insert(premise);
             b_attr.insert(premise);
@@ -632,26 +657,26 @@ namespace JuNOCpp
         // }
     
         /**
-         * Cria e retorna uma Premise do tipo EQUAL (com valor constante)
+         * Cria e retorna uma Premise do tipo equal (com valor constante)
          * 
          * @tparam TYPE 
          * @param value 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator==(const TYPE value)
+        Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>& BetterAttribute<TYPE>::operator==(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "Equals";
             pr_name += std::to_string(value);
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::EQUAL));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>> premise
+                    (new Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>(this, value, Utils::NOPTraits::equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::EQUAL));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>>
+                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>(this, value, Utils::NOPTraits::equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-
-            // premise->setOperation(BetterPremise<TYPE>::EQUAL);
-            // premise->setBetterAttribute(this, value);
 
             this->insert(premise);
 
@@ -659,53 +684,53 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo DIFFERENT (com valor constante)
+         * Cria e retorna uma Premise do tipo not_equal (com valor constante)
          * 
          * @tparam TYPE 
          * @param value 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator!=(const TYPE value)
+        Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>& BetterAttribute<TYPE>::operator!=(const TYPE value)
         {
             std::string pr_name = name.getString();
-            pr_name += "DoesNotEqual";
+            pr_name += "NotEqual";
             pr_name += std::to_string(value);
-
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::DIFFERENT));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>> premise
+                    (new Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>(this, value, Utils::NOPTraits::not_equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::DIFFERENT));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>>
+                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>(this, value, Utils::NOPTraits::not_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::DIFFERENT);
-            // premise->setBetterAttribute(this, value);
 
             this->insert(premise);
 
             return *premise;
         }
 
-        /**
-         * Cria e retorna uma Premise do tipo GREATER_THAN (com valor constante)
+       /**
+         * Cria e retorna uma Premise do tipo greater (com valor constante)
          * 
          * @tparam TYPE 
          * @param value 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>(const TYPE value)
+        Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>& BetterAttribute<TYPE>::operator>(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterThan";
             pr_name += std::to_string(value);
-
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::GREATER_THAN));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>> premise
+                    (new Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>(this, value, Utils::NOPTraits::greater, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::GREATER_THAN));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>> premise = 
+                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>>
+                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>(this, value, Utils::NOPTraits::greater, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::GREATER_THAN);
-            // premise->setBetterAttribute(this, value);
 
             this->insert(premise);
 
@@ -713,26 +738,26 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo GREATER_OR_EQUAL_THAN (com valor constante)
+         * Cria e retorna uma Premise do tipo greater_equal (com valor constante)
          * 
          * @tparam TYPE 
          * @param value 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator>=(const TYPE value)
+        Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>& BetterAttribute<TYPE>::operator>=(const TYPE value)
         {
             std::string pr_name = name.getString();
-            pr_name += "IsGreaterOrEqualThan";
+            pr_name += "IsGreaterOrEqual";
             pr_name += std::to_string(value);
-
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::GREATER_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>> premise
+                    (new Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>(this, value, Utils::NOPTraits::greater_equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::GREATER_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>>
+                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>(this, value, Utils::NOPTraits::greater_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::GREATER_OR_EQUAL_THAN);
-            // premise->setBetterAttribute(this, value);
 
             this->insert(premise);
 
@@ -740,25 +765,26 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo LESS_THAN (com valor constante)
+         * Cria e retorna uma Premise do tipo less (com valor constante)
          * 
          * @tparam TYPE 
          * @param value 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, TYPE, Utils::NOPTraits::less_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<(const TYPE value)
+        Premise<TYPE, TYPE, Utils::NOPTraits::less_t>& BetterAttribute<TYPE>::operator<(const TYPE value)
         {
-            std::string pr_name = strcat(name.get_str(), "IsLessThan");
+            std::string pr_name = name.getString();
+            pr_name += "IsLessThan";
             pr_name += std::to_string(value);
-            
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::LESS_THAN));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::less_t>> premise
+                    (new Premise<TYPE, TYPE, Utils::NOPTraits::less_t>(this, value, Utils::NOPTraits::less, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::LESS_THAN));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::less_t>> premise = 
+                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::less_t>>
+                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::less_t>(this, value, Utils::NOPTraits::less, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::LESS_THAN);
-            // premise->setBetterAttribute(this, value);
 
             this->insert(premise);
 
@@ -766,25 +792,26 @@ namespace JuNOCpp
         }
 
         /**
-         * Cria e retorna uma Premise do tipo LESS_OR_EQUAL_THAN (com valor constante)
+         * Cria e retorna uma Premise do tipo less_equal (com valor constante)
          * 
          * @tparam TYPE 
          * @param value 
-         * @return BetterPremise<TYPE>& 
+         * @return Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>& 
          */
         template <class TYPE>
-        BetterPremise<TYPE>& BetterAttribute<TYPE>::operator<=(const TYPE value)
+        Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>& BetterAttribute<TYPE>::operator<=(const TYPE value)
         {
-            std::string pr_name = strcat(name.get_str(), "IsLessOrEqualThan");
+            std::string pr_name = name.getString();
+            pr_name += "IsLessOrEqual";
             pr_name += std::to_string(value);
-
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<BetterPremise<TYPE>> premise(new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::LESS_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>> premise
+                    (new Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>(this, value, Utils::NOPTraits::less_equal, pr_name));
             #else
-                shared_ptr<BetterPremise<TYPE>> premise = std::make_shared<BetterPremise<TYPE>>(*new BetterPremise<TYPE>(pr_name, this, value, BetterPremise<TYPE>::LESS_OR_EQUAL_THAN));
+                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>> premise = 
+                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>>
+                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>(this, value, Utils::NOPTraits::less_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
-            // premise->setOperation(BetterPremise<TYPE>::LESS_OR_EQUAL_THAN);
-            // premise->setBetterAttribute(this, value);
 
             this->insert(premise);
 
