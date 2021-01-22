@@ -1,5 +1,6 @@
 #pragma once
 #include "Notifier.hpp"
+#include "../Utils/NOPTraits/instigation_traits.hpp"
 #include <functional>
 
 namespace JuNOCpp
@@ -9,7 +10,7 @@ namespace JuNOCpp
     public:
         std::function<void()> method;
     public:
-        BetterInstigation(CustomString name = "UnnamedInstigation");
+        BetterInstigation(CustomString name = "UnnamedInstigation", std::function<void()> func = nullptr);
         ~BetterInstigation();
 
         void setMt(std::function<void()>& func);

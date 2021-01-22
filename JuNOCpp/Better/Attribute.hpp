@@ -342,7 +342,7 @@ namespace JuNOCpp
         template<class TYPE>
         void Attribute<TYPE>::operator=(TYPE value)
         {
-            this->setStatus(value);
+            setStatus(value);
         }
 
         /**

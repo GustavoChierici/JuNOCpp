@@ -351,14 +351,16 @@ namespace JuNOCpp
         rule_stack.top()->action->insert(shared_instigation);
 
         shared_instigation->setMt(func);
+    }
 
-        // BetterInstigation aux;
+    void NOPManager::AddInstigation(BetterInstigation& inst)
+    {
+        #ifdef USE_CUSTOM_SMART_PTRS
+            shared_ptr<BetterInstigation> shared_instigation(&inst);
+        #else
+            shared_ptr<BetterInstigation> shared_instigation = std::make_shared<BetterInstigation>(&inst);
+        #endif 
 
-        // shared_ptr<std::function<void()>> shared_method = std::make_shared<std::function<void()>>(func);
-        // shared_ptr<BetterInstigation> shared_instigation = std::make_shared<BetterInstigation>(aux);
-
-        // rule_stack.top()->action->insert(shared_instigation);
-
-        // shared_instigation->setMt(*shared_method);
+        rule_stack.top()->action->insert(shared_instigation);
     }
 }

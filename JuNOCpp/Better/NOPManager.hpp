@@ -27,6 +27,8 @@ namespace JuNOCpp
         static void EndRule();
 
         static void CreateInstigation(std::function<void()> func);
+        static void AddInstigation(BetterInstigation& inst);
+        static void AddInstigation(BetterInstigation&& inst);
 
     private:
         NOPManager();

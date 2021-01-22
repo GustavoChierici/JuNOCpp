@@ -7,8 +7,8 @@
  * @copyright Copyright (c) 2021
  * 
  */
-#ifndef ATTRIBUTE_TRAITS
-#define ATTRIBUTE_TRAITS
+#ifndef ATTRIBUTE_TRAITS_HPP
+#define ATTRIBUTE_TRAITS_HPP
 
 #include <type_traits>
 #include "../../.config.hpp"
@@ -179,4 +179,4 @@ namespace JuNOCpp
     
 } // namespace JuNOCpp
 
-#endif // !ATTRIBUTE_TRAITS
+#endif // !ATTRIBUTE_TRAITS_HPP

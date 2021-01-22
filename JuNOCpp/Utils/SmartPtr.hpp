@@ -106,6 +106,11 @@ namespace JuNOCpp
 				return m_element_ptr != nullptr;
 			}
 
+			bool operator==(shared_ptr& rhs)
+			{
+				return m_element_ptr == rhs.m_element_ptr;
+			}
+
 			ElementType& operator*()
 			{
 				if (m_element_ptr)
@@ -133,7 +138,7 @@ namespace JuNOCpp
 			}
 
 			template <typename Type, typename Type2 = typename std::remove_cv_t<ElementType>>
-			std::enable_if<has_esft_base<Type>::value>::type enable_shared_from_this_with(Type* obj)
+			std::enable_if_t<has_esft_base<Type>::value> enable_shared_from_this_with(Type* obj)
 			{
 				// std::cout << m_element_ptr << " - ";
 				if (auto __base = enable_shared_from_this_base(obj))
@@ -141,7 +146,7 @@ namespace JuNOCpp
 			}
 			
 			template <typename Type>
-			std::enable_if<!has_esft_base<Type>::value>::type enable_shared_from_this_with(Type* obj)
+			std::enable_if_t<!has_esft_base<Type>::value> enable_shared_from_this_with(Type* obj)
 			{
 			}
 
