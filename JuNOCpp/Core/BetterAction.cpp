@@ -4,17 +4,17 @@
 namespace JuNOCpp
 {   
     /**
-     * Constutor
+     * @brief Constutor
      * 
      */
-    BetterAction::BetterAction(CustomString name) :
+    BetterAction::BetterAction(Utils::CustomString name) :
     Notifiable(name), 
     rule{nullptr}
     {
     }
 
     /**
-     * Destrutor
+     *@brief Destrutor
      * 
      */
     BetterAction::~BetterAction()
@@ -22,7 +22,7 @@ namespace JuNOCpp
     }
 
     /**
-     * Define a Rule da qual a Action pertence
+     *@brief Define a Rule da qual a Action pertence
      * 
      * @param b_rule 
      */

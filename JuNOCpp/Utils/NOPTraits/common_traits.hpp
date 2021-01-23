@@ -7,8 +7,8 @@
  * 
  */
 
-#ifndef COMMON_TRAITS_HPP
-#define COMMON_TRAITS_HPP
+#ifndef JUNOCPP_COMMON_TRAITS_HPP
+#define JUNOCPP_COMMON_TRAITS_HPP
 
 #include <type_traits>
 #include <tuple>
@@ -49,4 +49,4 @@ namespace JuNOCpp
 } // namespace JuNOCpp
 
 
-#endif // !COMMON_TRAITS_HPP
+#endif // !JUNOCPP_COMMON_TRAITS_HPP

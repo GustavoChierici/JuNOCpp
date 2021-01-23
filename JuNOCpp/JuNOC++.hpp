@@ -1,22 +1,21 @@
-#pragma once
+#ifndef JUNOCPP
+#define JUNOCPP
 
 #include "./Table.hpp"
-#include "./CustomString.hpp"
-#include "./Utils/SmartPtr.hpp"
+#include "./Utils/CustomString.hpp"
+#include "./Utils/smart_ptr.hpp"
 // #include "./Utils/forward_list.hpp"
 #include "./Utils/tuple_helper.hpp"
-// #include "./Better/BetterAttribute.hpp"
-#include "./Better/Attribute.hpp"
-#include "./Better/BetterCondition.hpp"
-#include "./Better/Premise.hpp"
-#include "./Better/BetterRule.hpp"
-#include "./Better/BetterAction.hpp"
-#include "./Better/BetterInstigation.hpp"
-#include "./Better/NOPManager.hpp"
+#include "./Core/Attribute.hpp"
+#include "./Core/BetterCondition.hpp"
+#include "./Core/Premise.hpp"
+#include "./Core/BetterRule.hpp"
+#include "./Core/BetterAction.hpp"
+#include "./Core/BetterInstigation.hpp"
+#include "./Core/NOPManager.hpp"
 
 using namespace JuNOCpp;
 using namespace Utils;
-using namespace Attributes;
 
 #define RULE_1(expression)                                                              NOPManager::Get().CreateRule(expression);
 #define RULE_2(expression, name)                                                        NOPManager::Get().CreateRule(expression, #name);
@@ -29,7 +28,7 @@ using namespace Attributes;
 
 namespace NOP {
     #ifdef USE_CUSTOM_SMART_PTRS
-        #include "./Utils/SmartPtr.hpp"
+        #include "./Utils/smart_ptr.hpp"
         template <typename T>
         using shared_ptr = JuNOCpp::Utils::shared_ptr<T>;
         template <typename T>
@@ -85,3 +84,5 @@ namespace NOP {
     using RulePtr = BetterRule*;
     using Instigation = BetterInstigation;
 }
+
+#endif // !JUNOCPP

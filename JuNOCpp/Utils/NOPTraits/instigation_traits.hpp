@@ -7,8 +7,8 @@
  * 
  */
 
-#ifndef INSTIGATION_TRAITS_HPP
-#define INSTIGATION_TRAITS_HPP
+#ifndef JUNOCPP_INSTIGATION_TRAITS_HPP
+#define JUNOCPP_INSTIGATION_TRAITS_HPP
 
 #include <type_traits>
 
@@ -35,4 +35,4 @@ namespace JuNOCpp
 } // namespace JuNOCpp
 
 
-#endif // !INSTIGATION_TRAITS_HPP
+#endif // !JUNOCPP_INSTIGATION_TRAITS_HPP

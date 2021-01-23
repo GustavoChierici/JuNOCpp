@@ -7,26 +7,22 @@
  * @copyright Copyright (c) 2021
  * 
  */
-#ifndef ATTRIBUTE_TRAITS_HPP
-#define ATTRIBUTE_TRAITS_HPP
+#ifndef JUNOCPP_ATTRIBUTE_TRAITS_HPP
+#define JUNOCPP_ATTRIBUTE_TRAITS_HPP
 
 #include <type_traits>
 #include "../../.config.hpp"
 
 #ifdef USE_CUSTOM_SMART_PTRS
-    #include "../SmartPtr.hpp"
+    #include "../smart_ptr.hpp"
 #else
     #include <memory>
 #endif // USE_CUSTOM_SMART_PTRS
 
 namespace JuNOCpp
 {
-    namespace Attributes
-    {
-        template<class TYPE>
-        class Attribute;
-    } // namespace Attributes
-    
+    template<class TYPE>
+    class Attribute;
 
     namespace Utils
     {
@@ -37,10 +33,10 @@ namespace JuNOCpp
             struct is_attribute_of: std::false_type {};
 
             template<typename Type>
-            struct is_attribute_of<Attributes::Attribute<Type>, Type>: std::true_type {};
+            struct is_attribute_of<Attribute<Type>, Type>: std::true_type {};
 
             template<typename Type>
-            struct is_attribute_of<Attributes::Attribute<Type>*, Type>: std::true_type {};
+            struct is_attribute_of<Attribute<Type>*, Type>: std::true_type {};
 
             template<typename AttrType, typename Type>
             inline constexpr bool is_attribute_of_v = is_attribute_of<AttrType, Type>::value;
@@ -52,7 +48,7 @@ namespace JuNOCpp
             /** + operator **/
 
             template<typename T>
-            auto at_add_val = [](Attributes::Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() + (... + values); };
+            auto at_add_val = [](Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() + (... + values); };
             template<typename T>
             using at_add_val_t = decltype(at_add_val<T>);
 
@@ -68,7 +64,7 @@ namespace JuNOCpp
             using at_sub_at_t = decltype(at_sub_at);
 
             template<typename T>
-            auto at_sub_val = [](Attributes::Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() - (... - values); };
+            auto at_sub_val = [](Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() - (... - values); };
             template<typename T>
             using at_sub_val_t = decltype(at_sub_val<T>);
 
@@ -84,7 +80,7 @@ namespace JuNOCpp
             using at_mult_at_t = decltype(at_mult_at);
 
             template<typename T>
-            auto at_mult_val = [](Attributes::Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() * (... * values); };
+            auto at_mult_val = [](Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() * (... * values); };
             template<typename T>
             using at_mult_val_t = decltype(at_mult_val<T>);
 
@@ -100,7 +96,7 @@ namespace JuNOCpp
             using at_div_at_t = decltype(at_div_at);
 
             template<typename T>
-            auto at_div_val = [](Attributes::Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() / (... / values); };
+            auto at_div_val = [](Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() / (... / values); };
             template<typename T>
             using at_div_val_t = decltype(at_div_val<T>);
 
@@ -128,7 +124,7 @@ namespace JuNOCpp
             }
 
             template <typename T, typename PrT>
-            void insertPremise(Attributes::Attribute<T>* attr, shared_ptr<PrT> premise)
+            void insertPremise(Attribute<T>* attr, shared_ptr<PrT> premise)
             {
                 attr->insert(premise);
             }
@@ -145,7 +141,7 @@ namespace JuNOCpp
             }
 
             template <typename T, typename PrT>
-            void removePremise(Attributes::Attribute<T>* attr, shared_ptr<PrT> premise)
+            void removePremise(Attribute<T>* attr, shared_ptr<PrT> premise)
             {
                 attr->remove(premise);
             }
@@ -162,7 +158,7 @@ namespace JuNOCpp
             }
 
             template <typename T, typename PrT>
-            void addImpertinent(Attributes::Attribute<T>* attr, shared_ptr<PrT> premise)
+            void addImpertinent(Attribute<T>* attr, shared_ptr<PrT> premise)
             {
                 attr->addImpertinent(premise);
             }
@@ -179,4 +175,4 @@ namespace JuNOCpp
     
 } // namespace JuNOCpp
 
-#endif // !ATTRIBUTE_TRAITS_HPP
+#endif // !JUNOCPP_ATTRIBUTE_TRAITS_HPP

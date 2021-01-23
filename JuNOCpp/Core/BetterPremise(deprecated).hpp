@@ -2,8 +2,8 @@
 #define BETTER_PREMISE_HPP
 #include <iostream>
 #include "../CustomString.hpp"
-#include "./BetterAttribute.hpp"
-#include "./BetterCondition.hpp"
+#include "./CoreAttribute.hpp"
+#include "./CoreCondition.hpp"
 #include "./Impertinent.hpp"
 namespace JuNOCpp
 {

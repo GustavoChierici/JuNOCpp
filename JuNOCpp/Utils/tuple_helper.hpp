@@ -1,6 +1,5 @@
-#ifndef TUPLE_HELPER_HPP
-#define TUPLE_HELPER_HPP
-#include <tuple>
+#ifndef JUNOCPP_TUPLE_HELPER_HPP
+#define JUNOCPP_TUPLE_HELPER_HPP
 #include <algorithm>
 #include "./NOPTraits/attribute_traits.hpp"
 
@@ -27,7 +26,7 @@ namespace JuNOCpp
             ~tuple_helper() {}
 
             template<typename T>
-            auto operator+(Attributes::Attribute<T>& attr)
+            auto operator+(Attribute<T>& attr)
             {
                 if constexpr(std::is_same_v<Op, NOPTraits::at_add_at_t>)
                 {
@@ -100,7 +99,7 @@ namespace JuNOCpp
             }
 
             template<typename T>
-            auto operator-(Attributes::Attribute<T>& attr)
+            auto operator-(Attribute<T>& attr)
             {
                 if constexpr(std::is_same_v<Op, NOPTraits::at_sub_at_t>)
                 {
@@ -172,7 +171,7 @@ namespace JuNOCpp
             }
 
             template<typename T>
-            auto operator*(Attributes::Attribute<T>& attr)
+            auto operator*(Attribute<T>& attr)
             {
                 if constexpr(std::is_same_v<Op, NOPTraits::at_mult_at_t>)
                 {
@@ -245,7 +244,7 @@ namespace JuNOCpp
             }
 
             template<typename T>
-            auto operator/(Attributes::Attribute<T>& attr)
+            auto operator/(Attribute<T>& attr)
             {
                 if constexpr(std::is_same_v<Op, NOPTraits::at_div_at_t>)
                 {
@@ -329,4 +328,4 @@ namespace JuNOCpp
     
 } // namespace JuNOCpp
 
-#endif // !TUPLE_HELPER_HPP
+#endif // !JUNOCPP_TUPLE_HELPER_HPP

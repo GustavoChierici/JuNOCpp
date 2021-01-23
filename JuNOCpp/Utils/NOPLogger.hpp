@@ -1,9 +1,9 @@
-#ifndef NOP_LOGGER_HPP
-#define NOP_LOGGER_HPP
+#ifndef JUNOCPP_NOP_LOGGER_HPP
+#define JUNOCPP_NOP_LOGGER_HPP
 
 #include <string>
 #include <iostream>
-#include "../Better/Notifiable.hpp"
+#include "../Core/Notifiable.hpp"
 
 namespace JuNOCpp
 {
@@ -113,4 +113,4 @@ namespace JuNOCpp
 } // namespace JuNOCpp
 
 
-#endif // !NOP_LOGGER_HPP
+#endif // !JUNOCPP_NOP_LOGGER_HPP

@@ -50,7 +50,7 @@ namespace JuNOCpp
             // BetterAttribute<TYPE> operator*(BetterAttribute<TYPE>& b_attr);
             // BetterAttribute<TYPE> operator/(BetterAttribute<TYPE>& b_attr);
 
-            //BetterAttribute<TYPE> operator=(BetterAttribute<TYPE>& b_attr);
+            //CoreAttribute<TYPE> operator=(BetterAttribute<TYPE>& b_attr);
 
             void operator=(TYPE value);
 

@@ -6,7 +6,7 @@ namespace JuNOCpp
      * Construtor
      * 
      */
-    BetterInstigation::BetterInstigation(CustomString name, std::function<void()> func):
+    BetterInstigation::BetterInstigation(Utils::CustomString name, std::function<void()> func):
     Notifiable(name),
     method{func}
     {

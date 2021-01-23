@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JUNOCPP_RULE_HPP
+#define JUNOCPP_RULE_HPP
 
 #include "./BetterCondition.hpp"
 #include "./BetterAction.hpp"
@@ -21,7 +22,7 @@ namespace JuNOCpp
         static int approved;
 
     public:
-        BetterRule(CustomString name = "UnnamedRule");
+        BetterRule(Utils::CustomString name = "UnnamedRule");
         ~BetterRule();
 
         void update(const bool renotify = false);
@@ -29,3 +30,5 @@ namespace JuNOCpp
     };
 }
 
+
+#endif // !JUNOCPP_RULE_HPP

@@ -7,8 +7,8 @@
  * 
  */
 
-#ifndef PREMISE_TRAITS_HPP
-#define PREMISE_TRAITS_HPP
+#ifndef JUNOCPP_PREMISE_TRAITS_HPP
+#define JUNOCPP_PREMISE_TRAITS_HPP
 
 #include <type_traits>
 
@@ -118,4 +118,4 @@ namespace JuNOCpp
     
 } // namespace JuNOCpp
 
-#endif // !PREMISE_TRAITS_HPP
+#endif // !JUNOCPP_PREMISE_TRAITS_HPP

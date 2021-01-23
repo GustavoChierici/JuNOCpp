@@ -1,5 +1,5 @@
-#ifndef FORWARD_LIST_HPP
-#define FORWARD_LIST_HPP
+#ifndef JUNOCPP_FORWARD_LIST_HPP
+#define JUNOCPP_FORWARD_LIST_HPP
 
 #include "../.config.hpp"
 
@@ -84,7 +84,7 @@ namespace JuNOCpp
         public:
         #else
         private:
-        #endif // DEBUG
+        #endif // FASTER_DATA_STRUCTURES
             node<T>* first;
             node<T>* last;
             const bool delete_elements_on_destroy;
@@ -196,4 +196,4 @@ namespace JuNOCpp
     } // namespace Utils
 } // namespace JuNOCpp
 
-#endif // !FORWARD_LIST_HPP
+#endif // !JUNOCPP_FORWARD_LIST_HPP

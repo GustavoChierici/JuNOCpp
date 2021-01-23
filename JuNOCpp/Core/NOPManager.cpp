@@ -225,7 +225,7 @@ namespace JuNOCpp
      * @param name 
      * @return BetterRule& 
      */
-    BetterRule& NOPManager::CreateRule(BetterCondition& b_cond, CustomString name)
+    BetterRule& NOPManager::CreateRule(BetterCondition& b_cond, Utils::CustomString name)
     {
         if(!rule_stack.empty())
         {
@@ -358,7 +358,7 @@ namespace JuNOCpp
         #ifdef USE_CUSTOM_SMART_PTRS
             shared_ptr<BetterInstigation> shared_instigation(&inst);
         #else
-            shared_ptr<BetterInstigation> shared_instigation = std::make_shared<BetterInstigation>(&inst);
+            shared_ptr<BetterInstigation> shared_instigation = std::make_shared<BetterInstigation>(inst);
         #endif 
 
         rule_stack.top()->action->insert(shared_instigation);

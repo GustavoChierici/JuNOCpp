@@ -1,5 +1,5 @@
-#ifndef NOTIFIER_HPP
-#define NOTIFIER_HPP
+#ifndef JUNOCPP_NOTIFIER_HPP
+#define JUNOCPP_NOTIFIER_HPP
 
 #include "../.config.hpp"
 #include "../Utils/forward_list.hpp"
@@ -9,7 +9,7 @@
 #include "../Utils/NOPTraits/common_traits.hpp"
 
 #ifdef USE_CUSTOM_SMART_PTRS
-    #include "../Utils/SmartPtr.hpp"
+    #include "../Utils/smart_ptr.hpp"
     template <typename T>
     using shared_ptr = JuNOCpp::Utils::shared_ptr<T>;
     template <typename T>
@@ -28,11 +28,11 @@ namespace JuNOCpp
     class Notifier
     {
     protected:
-        Utils::forward_list<shared_ptr<Notifiable>> notifiables;
+        NOPCollection<shared_ptr<Notifiable>> notifiables;
 
     public:
         Notifier() = default;
-        Notifier(Utils::forward_list<shared_ptr<Notifiable>> notfs): notifiables{notfs} {}
+        Notifier(NOPCollection<shared_ptr<Notifiable>> notfs): notifiables{notfs} {}
         virtual ~Notifier() = default;
         
         void insert(shared_ptr<Notifiable>& notifiable);
@@ -45,4 +45,4 @@ namespace JuNOCpp
     };
 }
 
-#endif // !NOTIFIER_HPP
+#endif // !JUNOCPP_NOTIFIER_HPP

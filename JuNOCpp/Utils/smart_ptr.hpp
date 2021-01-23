@@ -1,4 +1,15 @@
-#pragma once
+/**
+ * @file smart_ptr.hpp
+ * @author Gustavo Brunholi Chierici (gustavobchierici@gmail.com)
+ * @brief Smart Pointers customizados, baseados no vídeo de Thomas Kim:
+ * https://www.youtube.com/watch?v=MZ79lFtxLGk
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
+#ifndef JUNOCPP_SMART_PTR_HPP
+#define JUNOCPP_SMART_PTR_HPP
 
 #include <iostream>
 #include <type_traits>
@@ -177,7 +188,6 @@ namespace JuNOCpp
 			shared_ptr(shared_ptr&& rhs) noexcept:
 				base_t{ rhs.m_element_ptr, rhs.m_count_ptr }
 			{
-				// std::cout << "sp - " << &*m_element_ptr << std::endl;
 				rhs.m_element_ptr = nullptr;
 			}
 
@@ -430,5 +440,7 @@ namespace JuNOCpp
 			}
 		};
 		
-	} // Utils
-} // JuNOCpp
+	} // namespace Utils
+} // namespace JuNOCpp
+
+#endif // !JUNOCPP_SMART_PTR_HPP

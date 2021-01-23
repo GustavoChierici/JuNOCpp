@@ -10,7 +10,7 @@ namespace JuNOCpp
     /**************************************** 
     * Construtores/Destrutores
     ****************************************/
-    BetterRule::BetterRule(CustomString name) :
+    BetterRule::BetterRule(Utils::CustomString name) :
         Notifiable(name),
         condition{nullptr},
         action{nullptr},

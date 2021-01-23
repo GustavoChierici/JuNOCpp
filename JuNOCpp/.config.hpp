@@ -1,6 +1,6 @@
-#ifndef CONFIG_HPP
-#define CONFIG_HPP
-#include <string>
+#ifndef JUNOCPP_CONFIG_HPP
+#define JUNOCPP_CONFIG_HPP
+#include "./Utils/vector.hpp"
 
 /**
  * @brief (EXPERIMENTAL) Constante que determina se o JuNOC++ usará
@@ -42,7 +42,22 @@
  * Default: undefined
  * 
  */
-// #define USE_RANGED_FOR
+#define USE_RANGED_FOR
+
+namespace JuNOCpp
+{
+    namespace Utils
+    {
+        template<class T>
+        class forward_list;
+    } // namespace Utils
+    
+    template<typename T>
+    using NOPCollection = Utils::forward_list<T>;
+
+    // template<typename T>
+    // using NOPCollection = Utils::vector<T>;
+} // namespace JuNOCpp
 
 /**
  * @brief (DEBUG) Constante que determina se o JuNOC++ irá mostrar no
@@ -54,5 +69,5 @@
  */
 // #define SHOW_NOP_LOGGER
 
-#endif // !CONFIG_HPP
+#endif // !JUNOCPP_CONFIG_HPP
  

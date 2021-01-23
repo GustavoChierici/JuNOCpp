@@ -64,11 +64,13 @@ build/
 *.code-workspace
 settings.json
 
-#test files
+### test files ###
 teste.cpp
 GenericFBE.hpp
 Stack.hpp
 SmartSPtr.hpp
 NOPCollection.hpp
+base_notifier_tuple.hpp
+notifier_tuple.hpp
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,c++,cmake

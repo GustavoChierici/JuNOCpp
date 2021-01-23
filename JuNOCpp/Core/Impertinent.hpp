@@ -1,5 +1,5 @@
-#ifndef IMPERTINENT_HPP
-#define IMPERTINENT_HPP
+#ifndef JUNOCPP_IMPERTINENT_HPP
+#define JUNOCPP_IMPERTINENT_HPP
 
 namespace JuNOCpp
 {
@@ -17,4 +17,4 @@ namespace JuNOCpp
         virtual void deactivate() = 0;
     };
 }
-#endif // !IMPERTINENT_HPP
+#endif // !JUNOCPP_IMPERTINENT_HPP

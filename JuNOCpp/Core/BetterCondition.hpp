@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JUNOCPP_CONDITION_HPP
+#define JUNOCPP_CONDITION_HPP
 
 #include <iostream>
 #include "Notifier.hpp"
@@ -31,7 +32,7 @@ namespace JuNOCpp
         bool current_status;
 
     public:
-        BetterCondition(CustomString name = "UnnamedCondition");
+        BetterCondition(Utils::CustomString name = "UnnamedCondition");
         ~BetterCondition();
 
         static BetterCondition& sharedCondition(BetterCondition& b_condition)
@@ -212,3 +213,4 @@ namespace JuNOCpp
         BetterCondition& operator ||(BetterCondition&& b_condition);
     };
 }
+#endif // !JUNOCPP_CONDITION_HPP

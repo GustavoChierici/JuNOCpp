@@ -3,7 +3,7 @@
 #include <iostream>
 #include <math.h>
 #include <climits>
-#include "CustomString.hpp"
+#include "./Utils/CustomString.hpp"
 
 namespace JuNOCpp
 {
@@ -53,7 +53,7 @@ namespace JuNOCpp
             insert(hashing(key), key, value);
         }
 
-        void insertValue(CustomString key, ValueType *value)
+        void insertValue(Utils::CustomString key, ValueType *value)
         {
 
             insert(hashing(key.getString()), key, value);
@@ -133,7 +133,7 @@ namespace JuNOCpp
     template <class ValueType>
     using IntTable = Table<ValueType, int>;
     template <class ValueType>
-    using StringTable = Table<ValueType, CustomString>;
+    using StringTable = Table<ValueType, Utils::CustomString>;
     template <class ValueType>
     using DoubleTable = Table<ValueType, double>;
 
