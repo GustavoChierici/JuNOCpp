@@ -1,4 +1,4 @@
-#include "../JuNOCpp/includes/JuNOC++.hpp"
+#include "JuNOC++.hpp"
 #include "Apple.hpp"
 #include "Archer.hpp"
 #include <iostream>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../JuNOCpp/includes/JuNOC++.hpp"
+#include "JuNOC++.hpp"
 
 class NOPDoor
 {
