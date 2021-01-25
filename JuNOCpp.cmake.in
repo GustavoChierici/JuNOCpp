@@ -1,0 +1,11 @@
+get_filename_component(JUNOCPP_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+set(JuNOCpp_INCLUDE_DIRS @JUNOCPP_INCLUDE_DIRS@)
+
+if(NOT TARGET JuNOCpp AND NOT JuNOCpp_BINARY_DIR)
+    include("${JUNOCPP_CMAKE_DIR}/JuNOCppTargets.cmake")
+endif()
+
+set(JuNOCpp_LIBRARIES
+    JuNOCpp
+)
