@@ -25,24 +25,27 @@
 
 namespace JuNOCpp
 {
-    class Notifier
+    namespace Core
     {
-    protected:
-        NOPCollection<shared_ptr<Notifiable>> notifiables;
+        class Notifier
+        {
+        protected:
+            NOPCollection<shared_ptr<Notifiable>> notifiables;
 
-    public:
-        Notifier() = default;
-        Notifier(NOPCollection<shared_ptr<Notifiable>> notfs): notifiables{notfs} {}
-        virtual ~Notifier() = default;
-        
-        void insert(shared_ptr<Notifiable>& notifiable);
-        void remove(shared_ptr<Notifiable>& notifiable);
-        void insert(shared_ptr<Notifiable>&& notifiable);
-        void remove(shared_ptr<Notifiable>&& notifiable);
+        public:
+            Notifier() = default;
+            Notifier(NOPCollection<shared_ptr<Notifiable>> notfs): notifiables{notfs} {}
+            virtual ~Notifier() = default;
+            
+            void insert(shared_ptr<Notifiable>& notifiable);
+            void remove(shared_ptr<Notifiable>& notifiable);
+            void insert(shared_ptr<Notifiable>&& notifiable);
+            void remove(shared_ptr<Notifiable>&& notifiable);
 
-        virtual void notify(const bool renotify = false);
-        virtual void notify(const bool renotify, const bool status);
-    };
+            virtual void notify(const bool renotify = false);
+            virtual void notify(const bool renotify, const bool status);
+        };
+    } // namespace Core
 }
 
 #endif // !JUNOCPP_NOTIFIER_HPP

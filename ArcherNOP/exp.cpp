@@ -1,4 +1,4 @@
-#include "../JuNOCpp/JuNOC++.hpp"
+#include "../JuNOCpp/includes/JuNOC++.hpp"
 #include "Apple.hpp"
 #include "Archer.hpp"
 #include <iostream>
@@ -47,7 +47,7 @@ int main()
     }
     finish = clock();
 
-    std::cout << "O tempo total do JuNOC++ foi de: " << (finish - start )/CLOCKS_PER_SEC << " s - Regras aprovadas: " << BetterRule::approved << std::endl;
+    std::cout << "O tempo total do JuNOC++ foi de: " << (finish - start )/CLOCKS_PER_SEC << " s - Regras aprovadas: " << Core::Rule::approved << std::endl;
 
     apple_list.clear();
 

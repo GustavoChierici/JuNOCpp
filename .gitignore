@@ -72,5 +72,7 @@ SmartSPtr.hpp
 NOPCollection.hpp
 base_notifier_tuple.hpp
 notifier_tuple.hpp
+*.cmake
+
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,c++,cmake

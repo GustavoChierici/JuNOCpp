@@ -1,4 +1,4 @@
-#include "./CustomString.hpp"
+#include "../../includes/Utils/CustomString.hpp"
 
 namespace JuNOCpp
 {

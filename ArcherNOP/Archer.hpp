@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../JuNOCpp/JuNOC++.hpp"
+#include "../JuNOCpp/includes/JuNOC++.hpp"
 
 class Archer
 {

@@ -32,34 +32,32 @@ int main()
         NOPSensor* sensor = new NOPSensor();
 
         //Init shared Premises
-        NOP::Premise<bool> prPersonOnDoorFront = person->at_pos_door_front == true;
-
-        NOP::Premise<bool> prIsDoorOpen = door->at_is_open == true;
-
-        NOP::Premise<double> prIsPersonMoving = person->at_velocity >= 0.0;
+        NOP::PremiseEqual<bool, bool> prPersonOnDoorFront = person->at_pos_door_front == true;
+        NOP::PremiseEqual<bool, bool> prIsDoorOpen = door->at_is_open == true;
+        NOP::PremiseGreaterEqual<double, double> prIsPersonMoving = person->at_velocity >= 0.0;
 
         //Init Rules
-        RULE(prPersonOnDoorFront and prIsPersonMoving and door->at_is_open == false and sensor->at_person_detected == true)
+        RULE(prPersonOnDoorFront and prIsPersonMoving and door->at_is_open == false and sensor->at_person_detected == true, rlOpenDoor)
             INSTIGATE([=](){door->at_is_open = true;})
         END_RULE
 
-        RULE(prPersonOnDoorFront and prIsDoorOpen and prIsPersonMoving)
+        door->at_is_open.setStatus(false, true);
+
+        RULE(prPersonOnDoorFront and prIsDoorOpen and prIsPersonMoving, rlPersonPassDoor)
             INSTIGATE([=](){person->at_pos_door_front = false;})
             INSTIGATE([=](){sensor->at_person_detected = false;})
         END_RULE
 
-        RULE(person->at_pos_door_front == false and prIsDoorOpen and sensor->at_person_detected == false)
+        RULE(person->at_pos_door_front == false and prIsDoorOpen and sensor->at_person_detected == false, rlCloseDoor)
             INSTIGATE([=](){door->at_is_open = false;})
         END_RULE
 
-        //Init initial Attributes status
+        //Init Attributes status
 
         person->at_pos_door_front = false;
         person->at_velocity = 1.5;
 
         sensor->at_person_detected = false;
-
-        door->at_is_open.setStatus(false, true);
 
         NOPpersons.push_back(person);
         NOPdoors.push_back(door);
@@ -78,7 +76,7 @@ int main()
     }
     finish = clock();
 
-    std::cout << "O tempo total do JuNOC++ foi de: " << (finish - start)/CLOCKS_PER_SEC << " s - Regras aprovadas: "<< BetterRule::approved << std::endl;
+    std::cout << "O tempo total do JuNOC++ foi de: " << (finish - start)/CLOCKS_PER_SEC << " s - Regras aprovadas: "<< Core::Rule::approved << std::endl;
 
     NOPdoors.clear();
     NOPsensors.clear();
@@ -151,14 +149,14 @@ int main()
         NOPSensor* sensor = new NOPSensor();
 
         //Init shared Premises
-        NOP::Premise<bool> prPersonOnDoorFront = person->at_pos_door_front == true;
+        NOP::PremiseEqual<bool, bool> prPersonOnDoorFront = person->at_pos_door_front == true;
 
-        NOP::Premise<bool> prIsDoorOpen = door->at_is_open == true;
+        NOP::PremiseEqual<bool, bool> prIsDoorOpen = door->at_is_open == true;
 
-        NOP::Premise<double> prIsPersonMoving = person->at_velocity >= 0.0;
+        NOP::PremiseGreaterEqual<double, double> prIsPersonMoving = person->at_velocity >= 0.0;
 
         //Init Rules
-        RULE((prPersonOnDoorFront and prIsPersonMoving) and (door->at_is_open == false and sensor->at_person_detected == true))
+        RULE(prPersonOnDoorFront and prIsPersonMoving and (door->at_is_open == false and sensor->at_person_detected == true), rlPersonPassDoor2)
             INSTIGATE([=](){door->at_is_open = true;})
             INSTIGATE([=](){person->at_pos_door_front = false;})
             INSTIGATE([=](){sensor->at_person_detected = false;})
@@ -171,14 +169,13 @@ int main()
         sensor->at_person_detected = false;
 
         door->at_is_open.setStatus(false, true);
-        
 
         NOPpersons.push_back(person);
         NOPdoors.push_back(door);
         NOPsensors.push_back(sensor);
     }
 
-    BetterRule::approved = 0;
+    Core::Rule::approved = 0;
     start = clock();
 
     for(int i = 0; i < iterations; i++)
@@ -191,7 +188,7 @@ int main()
     }
     finish = clock();
 
-    std::cout << "O tempo total do JuNOC++ em uma unica regra foi de: " << (finish - start)/CLOCKS_PER_SEC << " s - Regras aprovadas: " << BetterRule::approved << std::endl;
+    std::cout << "O tempo total do JuNOC++ em uma unica regra foi de: " << (finish - start)/CLOCKS_PER_SEC << " s - Regras aprovadas: " << Core::Rule::approved << std::endl;
 
     return 0;
 }
