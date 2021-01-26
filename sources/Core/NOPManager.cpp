@@ -1,9 +1,9 @@
-#include "../../includes/Core/NOPManager.hpp"
-#include "../../includes/Core/Condition.hpp"
-#include "../../includes/Core/Attribute.hpp"
-#include "../../includes/Core/Premise.hpp"
-#include "../../includes/Core/Rule.hpp"
-#include "../../includes/Core/Action.hpp"
+#include "NOPManager.hpp"
+#include "Condition.hpp"
+#include "Attribute.hpp"
+#include "Premise.hpp"
+#include "Rule.hpp"
+#include "Action.hpp"
 
 namespace JuNOCpp
 {

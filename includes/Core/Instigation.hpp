@@ -2,7 +2,7 @@
 #define JUNOCPP_INSTIGATION_HPP
 
 #include "Notifier.hpp"
-#include "../Utils/NOPTraits/instigation_traits.hpp"
+#include "instigation_traits.hpp"
 #include <functional>
 
 namespace JuNOCpp

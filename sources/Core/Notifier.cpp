@@ -1,4 +1,4 @@
-#include "../../includes/Core/Notifier.hpp"
+#include "Notifier.hpp"
 
 namespace JuNOCpp
 {

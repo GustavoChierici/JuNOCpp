@@ -1,6 +1,6 @@
-#include "../../includes/Core/Condition.hpp"
-#include "../../includes/Core/Premise.hpp"
-#include "../../includes/Core/Rule.hpp"
+#include "Condition.hpp"
+#include "Premise.hpp"
+#include "Rule.hpp"
 
 
 namespace JuNOCpp

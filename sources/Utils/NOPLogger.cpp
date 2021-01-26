@@ -1,4 +1,4 @@
-#include "../../includes/Utils/NOPLogger.hpp"
+#include "NOPLogger.hpp"
 
 namespace JuNOCpp
 {

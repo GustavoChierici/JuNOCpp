@@ -3,9 +3,9 @@
 
 #include "Notifier.hpp"
 #include "NOPManager.hpp"
-#include "../Utils/tuple_helper.hpp"
-#include "../Utils/NOPTraits/premise_traits.hpp"
-#include "../Utils/NOPTraits/attribute_traits.hpp"
+#include "tuple_helper.hpp"
+#include "premise_traits.hpp"
+#include "attribute_traits.hpp"
 
 namespace JuNOCpp
 {

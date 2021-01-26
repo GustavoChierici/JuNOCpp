@@ -1,9 +1,9 @@
 #ifndef JUNOCPP_NOP_MANAGER_HPP
 #define JUNOCPP_NOP_MANAGER_HPP
 
-#include "./Instigation.hpp"
+#include "Instigation.hpp"
 #include "Notifier.hpp"
-#include "../Utils/CustomString.hpp"
+#include "CustomString.hpp"
 #include <stack>
 
 namespace JuNOCpp

@@ -1,4 +1,4 @@
-#include "../../includes/Core/Instigation.hpp"
+#include "Instigation.hpp"
 
 namespace JuNOCpp
 {

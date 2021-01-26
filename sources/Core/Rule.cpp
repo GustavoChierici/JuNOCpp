@@ -1,5 +1,5 @@
-#include "../../includes/Core/Rule.hpp"
-#include "../../includes/Core/NOPManager.hpp"
+#include "Rule.hpp"
+#include "NOPManager.hpp"
 #include <iostream>
 
 namespace JuNOCpp

@@ -1,8 +1,8 @@
 #ifndef JUNOCPP_ACTION_HPP
 #define JUNOCPP_ACTION_HPP
 
-#include "./Instigation.hpp"
-#include "./NOPManager.hpp"
+#include "Instigation.hpp"
+#include "NOPManager.hpp"
 #include "Notifier.hpp"
 #include "Condition.hpp"
 

@@ -1,8 +1,8 @@
 #ifndef JUNOCPP_RULE_HPP
 #define JUNOCPP_RULE_HPP
 
-#include "./Condition.hpp"
-#include "./Action.hpp"
+#include "Condition.hpp"
+#include "Action.hpp"
 
 namespace JuNOCpp
 {

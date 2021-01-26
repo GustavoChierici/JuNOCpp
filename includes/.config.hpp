@@ -1,6 +1,6 @@
 #ifndef JUNOCPP_CONFIG_HPP
 #define JUNOCPP_CONFIG_HPP
-#include "./Utils/vector.hpp"
+#include "vector.hpp"
 
 /**
  * @brief (EXPERIMENTAL) Constante que determina se o JuNOC++ usará

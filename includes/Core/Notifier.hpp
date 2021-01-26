@@ -1,15 +1,15 @@
 #ifndef JUNOCPP_NOTIFIER_HPP
 #define JUNOCPP_NOTIFIER_HPP
 
-#include "../.config.hpp"
-#include "../Utils/forward_list.hpp"
+#include ".config.hpp"
+#include "forward_list.hpp"
 #include "Notifiable.hpp"
-#include "../Utils/NOPLogger.hpp"
+#include "NOPLogger.hpp"
 #include <iostream>
-#include "../Utils/NOPTraits/common_traits.hpp"
+#include "common_traits.hpp"
 
 #ifdef USE_CUSTOM_SMART_PTRS
-    #include "../Utils/smart_ptr.hpp"
+    #include "smart_ptr.hpp"
     template <typename T>
     using shared_ptr = JuNOCpp::Utils::shared_ptr<T>;
     template <typename T>

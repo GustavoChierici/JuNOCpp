@@ -1,5 +1,5 @@
-#include "../../includes/Core/Action.hpp"
-#include "../../includes/Core/Rule.hpp"
+#include "Action.hpp"
+#include "Rule.hpp"
 
 namespace JuNOCpp
 {   

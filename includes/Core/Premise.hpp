@@ -10,10 +10,10 @@
 #ifndef JUNOCPP_PREMISE_HPP
 #define JUNOCPP_PREMISE_HPP
 #include <iostream>
-#include "./Attribute.hpp"
-#include "./Condition.hpp"
-#include "./Impertinent.hpp"
-#include "../Utils/NOPTraits/premise_traits.hpp"
+#include "Attribute.hpp"
+#include "Condition.hpp"
+#include "Impertinent.hpp"
+#include "premise_traits.hpp"
 namespace JuNOCpp
 {
     namespace Core

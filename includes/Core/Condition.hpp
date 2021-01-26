@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "Notifier.hpp"
-#include "./Impertinent.hpp"
+#include "Impertinent.hpp"
 
 namespace JuNOCpp
 {

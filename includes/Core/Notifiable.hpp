@@ -1,12 +1,12 @@
 #ifndef JUNOCPP_NOTIFIABLE_HPP
 #define JUNOCPP_NOTIFIABLE_HPP
 
-#include "../.config.hpp"
+#include ".config.hpp"
 #include <iostream>
-#include "../Utils/CustomString.hpp"
+#include "CustomString.hpp"
 
 #ifdef USE_CUSTOM_SMART_PTRS
-    #include "../Utils/smart_ptr.hpp"
+    #include "smart_ptr.hpp"
     template <typename T>
     using enable_shared_from_this = JuNOCpp::Utils::enable_shared_from_this<T>;
 #else
