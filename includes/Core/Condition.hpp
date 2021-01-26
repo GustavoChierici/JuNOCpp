@@ -38,7 +38,7 @@ namespace JuNOCpp
             Condition(Utils::CustomString name = "UnnamedCondition");
             ~Condition();
 
-            static Condition& sharedCondition(Condition& b_condition)
+            static Condition& persistantCondition(Condition& b_condition)
             {
                 b_condition.makePersistant();
                 return b_condition;

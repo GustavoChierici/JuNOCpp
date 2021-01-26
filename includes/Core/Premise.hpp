@@ -51,6 +51,11 @@ namespace JuNOCpp
             void update(const bool renotify, const bool status) {}
 
             void makeImpertinent();
+            Premise& impertinentThis()
+            {
+                this.makeImpertinent();
+                return *this;
+            }
             void activate() override;
             void deactivate() override;
 
