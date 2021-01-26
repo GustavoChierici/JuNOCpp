@@ -74,7 +74,7 @@ namespace NOP {
 
     using Condition = Core::Condition&;
     using ConditionPtr = shared_ptr<Core::Condition>;
-    using Rule = Core::Rule&;
+    using Rule = Core::Rule;
     using RulePtr = shared_ptr<Core::Rule>;
     using Instigation = Core::Instigation;
 }
