@@ -25,7 +25,7 @@ using namespace Utils;
 #define CALL(instigation)                                                               Core::NOPManager::Get().AddInstigation(instigation);
 #define END_RULE                                                                        Core::NOPManager::Get().EndRule();
 #define PERSISTANT(expression)                                                          Core::Condition::sharedCondition(expression)
-#define IMPERTINENT(premise)                                                            premise.ImpertinentThis()
+#define IMPERTINENT(premise)                                                            premise.impertinentThis()
 
 namespace NOP {
     #ifdef USE_CUSTOM_SMART_PTRS
