@@ -176,22 +176,21 @@ namespace JuNOCpp
         /**
          * Cria e retorna uma Rule nomeada
          * 
+         * @param rule 
          * @param b_cond 
-         * @param name 
-         * @return Rule& 
          */
-        Rule& NOPManager::CreateRule(Condition& b_cond, Utils::CustomString name)
+        void NOPManager::CreateRule(Rule& rule, Condition& b_cond)
         {
             if(!rule_stack.empty())
             {
                 shared_ptr<Rule> master_rule = rule_stack.top();
                 
                 #ifdef USE_CUSTOM_SMART_PTRS
-                    shared_ptr<Rule> dependant_rule(new Rule());
+                    shared_ptr<Rule> dependant_rule(&rule);
                     shared_ptr<Action> dependant_rule_action(new Action());
                     shared_ptr<Condition> resultant_condition(new Condition());
                 #else
-                    shared_ptr<Rule> dependant_rule = std::make_shared<Rule>(*new Rule());
+                    shared_ptr<Rule> dependant_rule = std::make_shared<Rule>(rule);
                     shared_ptr<Action> dependant_rule_action = std::make_shared<Action>(*new Action());
                     shared_ptr<Condition> resultant_condition = std::make_shared<Condition>(*new Condition());
                 #endif // USE_CUSTOM_SMART_PTRS
@@ -211,22 +210,19 @@ namespace JuNOCpp
 
                 rule_stack.push(dependant_rule);
                 rule_list.push_back(dependant_rule);
-                dependant_rule->name = name;
 
                 std::string cond_name = dependant_rule->getName().get_str();
                 cond_name += "Condition";
 
                 dependant_rule->condition->setName(cond_name);
-                
-                return *dependant_rule;
             }
             else
             {
                 #ifdef USE_CUSTOM_SMART_PTRS
-                    shared_ptr<Rule> shared_rule(new Rule());
+                    shared_ptr<Rule> shared_rule(&rule);
                     shared_ptr<Action> shared_action(new Action());
                 #else
-                    shared_ptr<Rule> shared_rule = std::make_shared<Rule>(*new Rule());
+                    shared_ptr<Rule> shared_rule = std::make_shared<Rule>(rule);
                     shared_ptr<Action> shared_action = std::make_shared<Action>(*new Action());
                 #endif // USE_CUSTOM_SMART_PTRS
 
@@ -238,7 +234,6 @@ namespace JuNOCpp
                 
                 shared_rule->insert(shared_action);
                 shared_rule->condition->makePersistant();
-                shared_rule->setName(name);
 
                 std::string cond_name = shared_rule->getName().get_str();
                 cond_name += "Condition";
@@ -247,8 +242,6 @@ namespace JuNOCpp
 
                 rule_list.push_back(shared_rule);
                 rule_stack.push(shared_rule);
-
-                return *shared_rule;
             }        
         }
 

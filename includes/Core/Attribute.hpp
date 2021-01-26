@@ -902,7 +902,12 @@ namespace JuNOCpp
         {
             std::string pr_name = name.getString();
             pr_name += "Equals";
-            pr_name += std::to_string(value);
+            if constexpr(Utils::NOPTraits::is_string_v<TYPE>)
+                pr_name += value;
+            else if constexpr( std::is_integral_v<TYPE> or std::is_floating_point_v<TYPE>)
+                pr_name += std::to_string(value);
+            else
+                pr_name += "Value";
             #ifdef USE_CUSTOM_SMART_PTRS
                 shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>> premise
                     (new Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>(this, value, Utils::NOPTraits::equal, pr_name));
@@ -929,7 +934,12 @@ namespace JuNOCpp
         {
             std::string pr_name = name.getString();
             pr_name += "NotEqual";
-            pr_name += std::to_string(value);
+            if constexpr(Utils::NOPTraits::is_string_v<TYPE>)
+                pr_name += value;
+            else if constexpr( std::is_integral_v<TYPE> or std::is_floating_point_v<TYPE>)
+                pr_name += std::to_string(value);
+            else
+                pr_name += "Value";
             #ifdef USE_CUSTOM_SMART_PTRS
                 shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>> premise
                     (new Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>(this, value, Utils::NOPTraits::not_equal, pr_name));
@@ -956,7 +966,12 @@ namespace JuNOCpp
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterThan";
-            pr_name += std::to_string(value);
+            if constexpr(Utils::NOPTraits::is_string_v<TYPE>)
+                pr_name += value;
+            else if constexpr( std::is_integral_v<TYPE> or std::is_floating_point_v<TYPE>)
+                pr_name += std::to_string(value);
+            else
+                pr_name += "Value";
             #ifdef USE_CUSTOM_SMART_PTRS
                 shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>> premise
                     (new Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>(this, value, Utils::NOPTraits::greater, pr_name));
@@ -983,7 +998,12 @@ namespace JuNOCpp
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterOrEqual";
-            pr_name += std::to_string(value);
+            if constexpr(Utils::NOPTraits::is_string_v<TYPE>)
+                pr_name += value;
+            else if constexpr( std::is_integral_v<TYPE> or std::is_floating_point_v<TYPE>)
+                pr_name += std::to_string(value);
+            else
+                pr_name += "Value";
             #ifdef USE_CUSTOM_SMART_PTRS
                 shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>> premise
                     (new Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>(this, value, Utils::NOPTraits::greater_equal, pr_name));
@@ -1010,7 +1030,12 @@ namespace JuNOCpp
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessThan";
-            pr_name += std::to_string(value);
+            if constexpr(Utils::NOPTraits::is_string_v<TYPE>)
+                pr_name += value;
+            else if constexpr( std::is_integral_v<TYPE> or std::is_floating_point_v<TYPE>)
+                pr_name += std::to_string(value);
+            else
+                pr_name += "Value";
             #ifdef USE_CUSTOM_SMART_PTRS
                 shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::less_t>> premise
                     (new Premise<TYPE, TYPE, Utils::NOPTraits::less_t>(this, value, Utils::NOPTraits::less, pr_name));
@@ -1037,7 +1062,12 @@ namespace JuNOCpp
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessOrEqual";
-            pr_name += std::to_string(value);
+            if constexpr(Utils::NOPTraits::is_string_v<TYPE>)
+                pr_name += value;
+            else if constexpr( std::is_integral_v<TYPE> or std::is_floating_point_v<TYPE>)
+                pr_name += std::to_string(value);
+            else
+                pr_name += "Value";
             #ifdef USE_CUSTOM_SMART_PTRS
                 shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>> premise
                     (new Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>(this, value, Utils::NOPTraits::less_equal, pr_name));

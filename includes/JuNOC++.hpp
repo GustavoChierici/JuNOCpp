@@ -18,7 +18,7 @@ using namespace JuNOCpp;
 using namespace Utils;
 
 #define RULE_1(expression)                                                              Core::NOPManager::Get().CreateRule(expression);
-#define RULE_2(expression, name)                                                        Core::NOPManager::Get().CreateRule(expression, #name);
+#define RULE_2(rule, expression)                                                        Core::NOPManager::Get().CreateRule(rule, expression);
 #define GET_MACRO(_1,_2, NAME,...) NAME
 #define RULE(...) GET_MACRO(__VA_ARGS__, RULE_2, RULE_1)(__VA_ARGS__)
 #define INSTIGATE(instigation)                                                          Core::NOPManager::Get().CreateInstigation(instigation);

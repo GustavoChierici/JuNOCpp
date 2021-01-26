@@ -41,6 +41,20 @@ namespace JuNOCpp
                 return std::apply([](auto... args){ return std::invoke(eval(args)...); }, tuple);
             }
 
+            template<typename T>
+            struct is_string: std::is_same<std::remove_cv_t<std::remove_reference_t<T>>, std::string>
+            {};
+
+            template<>
+            struct is_string<char*>: std::true_type
+            {};
+
+            template<>
+            struct is_string<const char*>: std::true_type
+            {};
+
+            template<typename T>
+            inline constexpr bool is_string_v= is_string<T>::value;
 
         } // namespace NOPTraits
         

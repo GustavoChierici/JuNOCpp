@@ -22,7 +22,8 @@ namespace JuNOCpp
 
             static void CreateRule(Condition&& b_cond);
             static void CreateRule(Condition& b_cond);
-            static Rule& CreateRule(Condition& b_cond, Utils::CustomString name);
+            static void CreateRule(Rule& rule, Condition& b_cond);
+            static void CreateRule(Rule&& rule, Condition&& b_cond);
             static void EndRule();
 
             static void CreateInstigation(std::function<void()> func);
