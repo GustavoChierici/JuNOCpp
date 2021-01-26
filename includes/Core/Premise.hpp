@@ -53,7 +53,7 @@ namespace JuNOCpp
             void makeImpertinent();
             Premise& impertinentThis()
             {
-                this.makeImpertinent();
+                this->makeImpertinent();
                 return *this;
             }
             void activate() override;
