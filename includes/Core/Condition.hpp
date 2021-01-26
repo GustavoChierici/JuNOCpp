@@ -86,7 +86,7 @@ namespace JuNOCpp
                     incQuantity();
 
                     if(b_premise.status and !b_premise.impertinent)
-                        update(b_premise.status);
+                        update(false, b_premise.status);
 
                     return *this;
                 }
@@ -104,9 +104,9 @@ namespace JuNOCpp
                     b_premise.insert(condition);
 
                     if(b_premise.status and !b_premise.impertinent)
-                        condition->update(b_premise.status);
+                        condition->update(false, b_premise.status);
                     if(this->current_status)
-                        condition->update(this->current_status);
+                        condition->update(false, this->current_status);
                     
                     return *condition;
                 }
@@ -130,7 +130,7 @@ namespace JuNOCpp
                     incQuantity();
 
                     if(b_premise.status and !b_premise.impertinent)
-                        update(b_premise.status);
+                        update(false, b_premise.status);
 
                     return *this;
                 }
@@ -148,9 +148,9 @@ namespace JuNOCpp
                     b_premise.insert(condition);
 
                     if(b_premise.status and !b_premise.impertinent)
-                        condition->update(b_premise.status);
+                        condition->update(false, b_premise.status);
                     if(this->current_status)
-                        condition->update(this->current_status);
+                        condition->update(false, this->current_status);
                     
                     return *condition;
                 }
@@ -173,7 +173,7 @@ namespace JuNOCpp
                     b_premise.insert(shared_from_this());
 
                     if(b_premise.status and !b_premise.impertinent)
-                        update(b_premise.status);
+                        update(false, b_premise.status);
 
                     return *this;
                 }
@@ -191,9 +191,9 @@ namespace JuNOCpp
                     b_premise.insert(condition);
 
                     if(b_premise.status and !b_premise.impertinent)
-                        condition->update(b_premise.status);
+                        condition->update(false, b_premise.status);
                     if(this->current_status)
-                        condition->update(this->current_status);
+                        condition->update(false, this->current_status);
                     
                     return *condition;
                 }
@@ -215,6 +215,9 @@ namespace JuNOCpp
                 {
                     b_premise.insert(this->shared_from_this());
 
+                    if(b_premise.status and !b_premise.impertinent)
+                        update(false, b_premise.status);
+
                     return *this;
                 }
                 else
@@ -229,6 +232,11 @@ namespace JuNOCpp
 
                     this->insert(condition);
                     b_premise.insert(condition);
+
+                    if(b_premise.status and !b_premise.impertinent)
+                        condition->update(false, b_premise.status);
+                    if(this->current_status)
+                        condition->update(false, this->current_status);
                     
                     return *condition;
                 }
