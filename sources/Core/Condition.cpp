@@ -122,19 +122,6 @@ namespace JuNOCpp
          */
         void Condition::notify(const bool renotify)
         {
-            // auto aux = this->notifiables.getFirst();
-
-            // while(aux)
-            // {
-            //     auto cond = dynamic_cast<Condition*>(aux->getInfo().get());
-            //     if(cond)
-            //         cond->update(renotify, this->current_status);
-            //     else if(this->current_status)
-            //         aux->getInfo()->update(renotify);
-
-            //     aux = aux->getNext();
-            // }
-
             #ifdef FASTER_DATA_STRUCTURES
                 for(auto notifiable = notifiables.first; notifiable; notifiable = notifiable->next)
                 {
@@ -202,17 +189,16 @@ namespace JuNOCpp
          */
         void Condition::activateImpertinents()
         {
-            // auto aux = this->impertinents.getFirst();
-
-            // while(aux)
-            // {
-            //     aux->getInfo()->activate();
-
-            //     aux = aux->getNext();
-            // }
-
-            for(auto impertinent : impertinents)
-                impertinent->activate();
+            #ifdef FASTER_DATA_STRUCTURES
+                for(auto impertinent = impertinents.first; impertinent; impertinent = impertinent->next)
+                    impertinent->element->activate();
+            #elif defined(USE_RANGED_FOR)
+                for(auto impertinent : impertinents)
+                    impertinent->activate();
+            #else
+                for(auto impertinent = impertinents.getFirst(); impertinent; impertinent = impertinent->next)
+                    impertinent->element->activate();
+            #endif // USE_FASTER_DATA_STRUCTURES
         }
 
         /**
@@ -221,17 +207,16 @@ namespace JuNOCpp
          */
         void Condition::deactivateImpertinents()
         {
-            // auto aux = this->impertinents.getFirst();
-
-            // while(aux)
-            // {
-            //     aux->getInfo()->deactivate();
-
-            //     aux = aux->getNext();
-            // }
-
-            for(auto impertinent : impertinents)
-                impertinent->deactivate();
+            #ifdef FASTER_DATA_STRUCTURES
+                for(auto impertinent = impertinents.first; impertinent; impertinent = impertinent->next)
+                    impertinent->element->deactivate();
+            #elif defined(USE_RANGED_FOR)
+                for(auto impertinent : impertinents)
+                    impertinent->deactivate();
+            #else
+                for(auto impertinent = impertinents.getFirst(); impertinent; impertinent = impertinent->next)
+                    impertinent->element->deactivate();
+            #endif // USE_FASTER_DATA_STRUCTURES
         }
 
         /**
@@ -259,20 +244,28 @@ namespace JuNOCpp
                 b_condition.insert(this->shared_from_this());
                 this->setQuantity(this->quantity + 1);
 
+                if(b_condition.current_status)
+                    update(b_condition.current_status);
+
                 return *this;
             }
             else
             {
-                shared_ptr<Condition> condition(new Condition());
-
-                // Condition aux;
-
-                // shared_ptr<Condition> condition = std::make_shared<Condition>(aux);
+                #ifdef USE_CUSTOM_SMART_PTRS
+                    shared_ptr<Condition> condition(new Condition());
+                #else
+                    shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
+                #endif // USE_CUSTOM_SMART_PTRS
                 condition->setQuantity(2);
                 condition->mode = Condition::CONJUNCTION;
 
                 this->insert(condition);
                 b_condition.insert(condition);
+
+                if(this->current_status)
+                    condition->update(this->current_status);
+                if(b_condition.current_status)
+                    condition->update(b_condition.current_status);
                 
                 return *condition;
             }
@@ -293,6 +286,9 @@ namespace JuNOCpp
                 b_condition.insert(this->shared_from_this());
                 this->setQuantity(this->quantity + 1);
 
+                if(b_condition.current_status)
+                    update(b_condition.current_status);
+
                 return *this;
             }
             else
@@ -307,6 +303,11 @@ namespace JuNOCpp
 
                 this->insert(condition);
                 b_condition.insert(condition);
+
+                if(this->current_status)
+                    condition->update(this->current_status);
+                if(b_condition.current_status)
+                    condition->update(b_condition.current_status);
                 
                 return *condition;
             }
@@ -326,6 +327,9 @@ namespace JuNOCpp
             {
                 b_condition.insert(this->shared_from_this());
 
+                if(b_condition.current_status)
+                    update(b_condition.current_status);
+
                 return *this;
             }
             else
@@ -340,6 +344,11 @@ namespace JuNOCpp
 
                 this->insert(condition);
                 b_condition.insert(condition);
+
+                if(this->current_status)
+                    condition->update(this->current_status);
+                if(b_condition.current_status)
+                    condition->update(b_condition.current_status);
                 
                 return *condition;
             }
@@ -359,6 +368,9 @@ namespace JuNOCpp
             {
                 b_condition.insert(this->shared_from_this());
 
+                if(b_condition.current_status)
+                    update(b_condition.current_status);
+
                 return *this;
             }
             else
@@ -373,6 +385,11 @@ namespace JuNOCpp
 
                 this->insert(condition);
                 b_condition.insert(condition);
+
+                if(this->current_status)
+                    condition->update(this->current_status);
+                if(b_condition.current_status)
+                    condition->update(b_condition.current_status);
                 
                 return *condition;
             }

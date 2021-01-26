@@ -21,6 +21,7 @@ namespace JuNOCpp
         template<class PrT, typename RT, typename CmpOpT>
         class Premise: public Impertinent, public Notifier, public Notifiable
         {
+        friend class Condition;
         private:
             Attribute<PrT>* attr1;
             RT rhs_value;
@@ -351,8 +352,8 @@ namespace JuNOCpp
 
             if(this->status and !this->impertinent)
                 condition->update(this->status);
-            if(b_premise.status and !b_premise->impertinent)
-                condition->update(b_premise->status);
+            if(b_premise.status and !b_premise.impertinent)
+                condition->update(b_premise.status);
             
             return *condition;
         }
@@ -382,8 +383,8 @@ namespace JuNOCpp
 
             if(this->status and !this->impertinent)
                 condition->update(this->status);
-            if(b_premise.status and !b_premise->impertinent)
-                condition->update(b_premise->status);
+            if(b_premise.status and !b_premise.impertinent)
+                condition->update(b_premise.status);
             
             return *condition;
         }
@@ -413,8 +414,8 @@ namespace JuNOCpp
 
             if(this->status and !this->impertinent)
                 condition->update(this->status);
-            if(b_premise.status and !b_premise->impertinent)
-                condition->update(b_premise->status);
+            if(b_premise.status and !b_premise.impertinent)
+                condition->update(b_premise.status);
             
             return *condition;
         }
@@ -444,8 +445,8 @@ namespace JuNOCpp
 
             if(this->status and !this->impertinent)
                 condition->update(this->status);
-            if(b_premise.status and !b_premise->impertinent)
-                condition->update(b_premise->status);
+            if(b_premise.status and !b_premise.impertinent)
+                condition->update(b_premise.status);
             
             return *condition;
         }

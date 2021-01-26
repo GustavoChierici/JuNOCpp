@@ -98,21 +98,6 @@ namespace JuNOCpp
                 Utils::NOPLogger::Get().decrementIdentation();
             #endif // SHOW_NOP_LOGGER
         }
-
-        /**
-         * Desaprova as Conditions das Rules dependentes
-         * 
-         */
-        void Action::disapproveDependantRules()
-        {
-            // auto cond = this->dependant_rules.getFirst();
-
-            // while(cond)
-            // {
-            //     cond->getInfo()->update(false, false);
-            //     cond = cond->getNext();
-            // }
-        }
     } // namespace Core
     
 } // namespace JuNOCpp

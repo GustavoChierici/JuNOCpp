@@ -26,7 +26,6 @@ namespace JuNOCpp
             void update(const bool renotify = false);
             void update(const bool renotify, const bool status) {}
             void notify(const bool renotify = false);
-            void disapproveDependantRules();
         };
     } // namespace Core
 
