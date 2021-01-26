@@ -244,8 +244,8 @@ namespace JuNOCpp
                 b_condition.insert(this->shared_from_this());
                 this->setQuantity(this->quantity + 1);
 
-                if(b_condition.current_status)
-                    update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    update(false, b_condition.getCurrentStatus());
 
                 return *this;
             }
@@ -264,8 +264,8 @@ namespace JuNOCpp
 
                 if(this->current_status)
                     condition->update(false, this->current_status);
-                if(b_condition.current_status)
-                    condition->update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    condition->update(false, b_condition.getCurrentStatus());
                 
                 return *condition;
             }
@@ -286,8 +286,8 @@ namespace JuNOCpp
                 b_condition.insert(this->shared_from_this());
                 this->setQuantity(this->quantity + 1);
 
-                if(b_condition.current_status)
-                    update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    update(false, b_condition.getCurrentStatus());
 
                 return *this;
             }
@@ -306,8 +306,8 @@ namespace JuNOCpp
 
                 if(this->current_status)
                     condition->update(false, this->current_status);
-                if(b_condition.current_status)
-                    condition->update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    condition->update(false, b_condition.getCurrentStatus());
                 
                 return *condition;
             }
@@ -327,8 +327,8 @@ namespace JuNOCpp
             {
                 b_condition.insert(this->shared_from_this());
 
-                if(b_condition.current_status)
-                    update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    update(false, b_condition.getCurrentStatus());
 
                 return *this;
             }
@@ -347,8 +347,8 @@ namespace JuNOCpp
 
                 if(this->current_status)
                     condition->update(false, this->current_status);
-                if(b_condition.current_status)
-                    condition->update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    condition->update(false, b_condition.getCurrentStatus());
                 
                 return *condition;
             }
@@ -368,8 +368,8 @@ namespace JuNOCpp
             {
                 b_condition.insert(this->shared_from_this());
 
-                if(b_condition.current_status)
-                    update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    update(false, b_condition.getCurrentStatus());
 
                 return *this;
             }
@@ -388,8 +388,8 @@ namespace JuNOCpp
 
                 if(this->current_status)
                     condition->update(false, this->current_status);
-                if(b_condition.current_status)
-                    condition->update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    condition->update(false, b_condition.getCurrentStatus());
                 
                 return *condition;
             }

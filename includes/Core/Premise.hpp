@@ -44,6 +44,7 @@ namespace JuNOCpp
             }
 
             void referenceCondition(Condition* b_cond);
+            const bool getCurrentStatus() const { return status; }
 
             void update(const bool renotify = false);
 
@@ -352,8 +353,8 @@ namespace JuNOCpp
 
             if(this->status and !this->impertinent)
                 condition->update(false, this->status);
-            if(b_premise.status and !b_premise.impertinent)
-                condition->update(false, b_premise.status);
+            if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                condition->update(false, b_premise.getCurrentStatus());
             
             return *condition;
         }
@@ -383,8 +384,8 @@ namespace JuNOCpp
 
             if(this->status and !this->impertinent)
                 condition->update(false, this->status);
-            if(b_premise.status and !b_premise.impertinent)
-                condition->update(false, b_premise.status);
+            if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                condition->update(false, b_premise.getCurrentStatus());
             
             return *condition;
         }
@@ -414,8 +415,8 @@ namespace JuNOCpp
 
             if(this->status and !this->impertinent)
                 condition->update(false, this->status);
-            if(b_premise.status and !b_premise.impertinent)
-                condition->update(false, b_premise.status);
+            if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                condition->update(false, b_premise.getCurrentStatus());
             
             return *condition;
         }
@@ -445,8 +446,8 @@ namespace JuNOCpp
 
             if(this->status and !this->impertinent)
                 condition->update(false, this->status);
-            if(b_premise.status and !b_premise.impertinent)
-                condition->update(false, b_premise.status);
+            if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                condition->update(false, b_premise.getCurrentStatus());
             
             return *condition;
         }
@@ -486,8 +487,8 @@ namespace JuNOCpp
 
                 if(this->status and !this->impertinent)
                     condition->update(false, this->status);
-                if(b_condition.current_status)
-                    condition->update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    condition->update(false, b_condition.getCurrentStatus());
                 
                 
                 return *condition;
@@ -529,8 +530,8 @@ namespace JuNOCpp
 
                 if(this->status and !this->impertinent)
                     condition->update(false, this->status);
-                if(b_condition.current_status)
-                    condition->update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    condition->update(false, b_condition.getCurrentStatus());
                 
                 return *condition;
             }
@@ -570,8 +571,8 @@ namespace JuNOCpp
 
                 if(this->status and !this->impertinent)
                     condition->update(false, this->status);
-                if(b_condition.current_status)
-                    condition->update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    condition->update(false, b_condition.getCurrentStatus());
                 
                 return *condition;
             }
@@ -611,8 +612,8 @@ namespace JuNOCpp
 
                 if(this->status and !this->impertinent)
                     condition->update(false, this->status);
-                if(b_condition.current_status)
-                    condition->update(false, b_condition.current_status);
+                if(b_condition.getCurrentStatus())
+                    condition->update(false, b_condition.getCurrentStatus());
                 
                 return *condition;
             }

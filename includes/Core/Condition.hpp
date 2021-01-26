@@ -49,6 +49,8 @@ namespace JuNOCpp
             void incQuantity() { ++quantity; }
             void decQuantity() { --quantity; }
 
+            const bool getCurrentStatus() const { return current_status; }
+
             void update(const bool renotify = false);
             void update(const bool renotify, const bool status);
             void notify(const bool renotify = false);
@@ -85,8 +87,8 @@ namespace JuNOCpp
                     b_premise.insert(shared_from_this());
                     incQuantity();
 
-                    if(b_premise.status and !b_premise.impertinent)
-                        update(false, b_premise.status);
+                    if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                        update(false, b_premise.getCurrentStatus());
 
                     return *this;
                 }
@@ -103,8 +105,8 @@ namespace JuNOCpp
                     this->insert(condition);
                     b_premise.insert(condition);
 
-                    if(b_premise.status and !b_premise.impertinent)
-                        condition->update(false, b_premise.status);
+                    if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                        condition->update(false, b_premise.getCurrentStatus());
                     if(this->current_status)
                         condition->update(false, this->current_status);
                     
@@ -129,8 +131,8 @@ namespace JuNOCpp
                     b_premise.insert(shared_from_this());
                     incQuantity();
 
-                    if(b_premise.status and !b_premise.impertinent)
-                        update(false, b_premise.status);
+                    if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                        update(false, b_premise.getCurrentStatus());
 
                     return *this;
                 }
@@ -147,8 +149,8 @@ namespace JuNOCpp
                     this->insert(condition);
                     b_premise.insert(condition);
 
-                    if(b_premise.status and !b_premise.impertinent)
-                        condition->update(false, b_premise.status);
+                    if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                        condition->update(false, b_premise.getCurrentStatus());
                     if(this->current_status)
                         condition->update(false, this->current_status);
                     
@@ -172,8 +174,8 @@ namespace JuNOCpp
                 {
                     b_premise.insert(shared_from_this());
 
-                    if(b_premise.status and !b_premise.impertinent)
-                        update(false, b_premise.status);
+                    if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                        update(false, b_premise.getCurrentStatus());
 
                     return *this;
                 }
@@ -190,8 +192,8 @@ namespace JuNOCpp
                     this->insert(condition);
                     b_premise.insert(condition);
 
-                    if(b_premise.status and !b_premise.impertinent)
-                        condition->update(false, b_premise.status);
+                    if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                        condition->update(false, b_premise.getCurrentStatus());
                     if(this->current_status)
                         condition->update(false, this->current_status);
                     
@@ -215,8 +217,8 @@ namespace JuNOCpp
                 {
                     b_premise.insert(this->shared_from_this());
 
-                    if(b_premise.status and !b_premise.impertinent)
-                        update(false, b_premise.status);
+                    if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                        update(false, b_premise.getCurrentStatus());
 
                     return *this;
                 }
@@ -233,8 +235,8 @@ namespace JuNOCpp
                     this->insert(condition);
                     b_premise.insert(condition);
 
-                    if(b_premise.status and !b_premise.impertinent)
-                        condition->update(false, b_premise.status);
+                    if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
+                        condition->update(false, b_premise.getCurrentStatus());
                     if(this->current_status)
                         condition->update(false, this->current_status);
                     
