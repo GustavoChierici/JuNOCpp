@@ -348,6 +348,11 @@ namespace JuNOCpp
             // std::cout << condition->count_impertinents << std::endl;
             this->insert(condition);
             b_premise.insert(condition);
+
+            if(this->status and !this->impertinent)
+                condition->update(this->status);
+            if(b_premise.status and !b_premise->impertinent)
+                condition->update(b_premise->status);
             
             return *condition;
         }
@@ -374,6 +379,11 @@ namespace JuNOCpp
 
             this->insert(condition);
             b_premise.insert(condition);
+
+            if(this->status and !this->impertinent)
+                condition->update(this->status);
+            if(b_premise.status and !b_premise->impertinent)
+                condition->update(b_premise->status);
             
             return *condition;
         }
@@ -400,6 +410,11 @@ namespace JuNOCpp
 
             this->insert(condition);
             b_premise.insert(condition);
+
+            if(this->status and !this->impertinent)
+                condition->update(this->status);
+            if(b_premise.status and !b_premise->impertinent)
+                condition->update(b_premise->status);
             
             return *condition;
         }
@@ -426,6 +441,11 @@ namespace JuNOCpp
 
             this->insert(condition);
             b_premise.insert(condition);
+
+            if(this->status and !this->impertinent)
+                condition->update(this->status);
+            if(b_premise.status and !b_premise->impertinent)
+                condition->update(b_premise->status);
             
             return *condition;
         }
@@ -444,6 +464,9 @@ namespace JuNOCpp
             {
                 this->insert(b_condition.shared_from_this());
                 b_condition.incQuantity();
+
+                if(this->status and !this->impertinent)
+                    b_condition.update(this->status);
                 
                 return b_condition;
             }
@@ -459,6 +482,12 @@ namespace JuNOCpp
 
                 this->insert(condition);
                 b_condition.insert(condition);
+
+                if(this->status and !this->impertinent)
+                    condition->update(this->status);
+                if(b_condition.current_status)
+                    condition->update(b_condition.current_status);
+                
                 
                 return *condition;
             }
@@ -478,6 +507,9 @@ namespace JuNOCpp
             {
                 this->insert(b_condition.shared_from_this());
                 b_condition.incQuantity();
+
+                if(this->status and !this->impertinent)
+                    b_condition.update(this->status);
                 
                 return b_condition;
             }
@@ -493,6 +525,11 @@ namespace JuNOCpp
 
                 this->insert(condition);
                 b_condition.insert(condition);
+
+                if(this->status and !this->impertinent)
+                    condition->update(this->status);
+                if(b_condition.current_status)
+                    condition->update(b_condition.current_status);
                 
                 return *condition;
             }
@@ -512,6 +549,9 @@ namespace JuNOCpp
             {
                 this->insert(b_condition.shared_from_this());
 
+                if(this->status and !this->impertinent)
+                    b_condition.update(this->status);
+
                 return b_condition;
             }
             else
@@ -526,6 +566,11 @@ namespace JuNOCpp
 
                 this->insert(condition);
                 b_condition.insert(condition);
+
+                if(this->status and !this->impertinent)
+                    condition->update(this->status);
+                if(b_condition.current_status)
+                    condition->update(b_condition.current_status);
                 
                 return *condition;
             }
@@ -545,6 +590,9 @@ namespace JuNOCpp
             {
                 this->insert(b_condition.shared_from_this());
 
+                if(this->status and !this->impertinent)
+                    b_condition.update(this->status);
+
                 return b_condition;
             }
             else
@@ -559,6 +607,11 @@ namespace JuNOCpp
 
                 this->insert(condition);
                 b_condition.insert(condition);
+
+                if(this->status and !this->impertinent)
+                    condition->update(this->status);
+                if(b_condition.current_status)
+                    condition->update(b_condition.current_status);
                 
                 return *condition;
             }
@@ -582,6 +635,9 @@ namespace JuNOCpp
             condition->setMode(Condition::SINGLE);
 
             this->insert(condition);
+
+            if(this->status and !this->impertinent)
+                condition->update(this->status);
             
             return *condition;
         }

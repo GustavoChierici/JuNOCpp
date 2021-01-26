@@ -15,6 +15,8 @@ namespace JuNOCpp
         class Rule;
         class Condition: public Notifiable, public Notifier
         {
+        template<class PrT, typename RT, typename CmpOpT>
+        friend class Premise;
         public:
             enum LogicalOperator {
                 CONJUNCTION = 0,
@@ -29,7 +31,6 @@ namespace JuNOCpp
             bool persistant;
             LogicalOperator mode;
             bool is_impertinents_active {false};
-        public:
             bool previous_status;
             bool current_status;
 

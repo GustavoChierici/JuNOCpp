@@ -365,6 +365,8 @@ namespace JuNOCpp
             this->insert(premise);
             b_attr.insert(premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -394,6 +396,8 @@ namespace JuNOCpp
 
             this->insert(premise);
             b_attr.insert(premise);
+
+            premise->update();
 
             return *premise;
         }
@@ -427,6 +431,8 @@ namespace JuNOCpp
             this->insert(premise);
             Utils::NOPTraits::insertPremise(tup_h.tup, premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -457,6 +463,8 @@ namespace JuNOCpp
             this->insert(premise);
             b_attr.insert(premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -486,6 +494,8 @@ namespace JuNOCpp
 
             this->insert(premise);
             b_attr.insert(premise);
+
+            premise->update();
 
             return *premise;
         }
@@ -519,6 +529,8 @@ namespace JuNOCpp
             this->insert(premise);
             Utils::NOPTraits::insertPremise(tup_h.tup, premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -549,6 +561,8 @@ namespace JuNOCpp
             this->insert(premise);
             b_attr.insert(premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -578,6 +592,8 @@ namespace JuNOCpp
 
             this->insert(premise);
             b_attr.insert(premise);
+
+            premise->update();
 
             return *premise;
         }
@@ -611,6 +627,8 @@ namespace JuNOCpp
             this->insert(premise);
             Utils::NOPTraits::insertPremise(tup_h.tup, premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -641,6 +659,8 @@ namespace JuNOCpp
             this->insert(premise);
             b_attr.insert(premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -670,6 +690,8 @@ namespace JuNOCpp
 
             this->insert(premise);
             b_attr.insert(premise);
+
+            premise->update();
 
             return *premise;
         }
@@ -703,6 +725,8 @@ namespace JuNOCpp
             this->insert(premise);
             Utils::NOPTraits::insertPremise(tup_h.tup, premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -733,6 +757,8 @@ namespace JuNOCpp
             this->insert(premise);
             b_attr.insert(premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -762,6 +788,8 @@ namespace JuNOCpp
 
             this->insert(premise);
             b_attr.insert(premise);
+
+            premise->update();
 
             return *premise;
         }
@@ -795,6 +823,8 @@ namespace JuNOCpp
             this->insert(premise);
             Utils::NOPTraits::insertPremise(tup_h.tup, premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -824,6 +854,8 @@ namespace JuNOCpp
 
             this->insert(premise);
             b_attr.insert(premise);
+
+            premise->update();
 
             return *premise;
         }
@@ -855,6 +887,8 @@ namespace JuNOCpp
             this->insert(premise);
             b_attr.insert(premise);
 
+            premise->update();
+
             return *premise;
         }
 
@@ -884,8 +918,9 @@ namespace JuNOCpp
                         (*new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_equal_t>(this, tup_h.tup, Utils::NOPTraits::less_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
 
-            this->insert(premise);
+            insert(premise);
             Utils::NOPTraits::insertPremise(tup_h.tup, premise);
+            premise->update();
 
             return *premise;
         }
@@ -917,7 +952,8 @@ namespace JuNOCpp
                         (*new Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>(this, value, Utils::NOPTraits::equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
 
-            this->insert(premise);
+            insert(premise);
+            premise->update();
 
             return *premise;
         }
@@ -949,7 +985,8 @@ namespace JuNOCpp
                         (*new Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>(this, value, Utils::NOPTraits::not_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
 
-            this->insert(premise);
+            insert(premise);
+            premise->update();
 
             return *premise;
         }
@@ -981,7 +1018,8 @@ namespace JuNOCpp
                         (*new Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>(this, value, Utils::NOPTraits::greater, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
 
-            this->insert(premise);
+            insert(premise);
+            premise->update();
 
             return *premise;
         }
@@ -1013,7 +1051,8 @@ namespace JuNOCpp
                         (*new Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>(this, value, Utils::NOPTraits::greater_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
 
-            this->insert(premise);
+            insert(premise);
+            premise->update();
 
             return *premise;
         }
@@ -1045,7 +1084,8 @@ namespace JuNOCpp
                         (*new Premise<TYPE, TYPE, Utils::NOPTraits::less_t>(this, value, Utils::NOPTraits::less, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
 
-            this->insert(premise);
+            insert(premise);
+            premise->update();
 
             return *premise;
         }
@@ -1077,7 +1117,8 @@ namespace JuNOCpp
                         (*new Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>(this, value, Utils::NOPTraits::less_equal, pr_name));
             #endif // USE_CUSTOM_SMART_PTRS
 
-            this->insert(premise);
+            insert(premise);
+            notify();
 
             return *premise;
         }
