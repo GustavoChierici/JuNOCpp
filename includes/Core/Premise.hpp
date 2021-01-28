@@ -228,7 +228,7 @@ namespace JuNOCpp
                 exit(1);
             }
 
-            if(renotify || this->status != this->previous_status)
+            if(status != previous_status)
             {
                 #ifdef SHOW_NOP_LOGGER
                     Utils::NOPLogger::Get().writeNotifying(name, this, status, renotify);
@@ -236,8 +236,22 @@ namespace JuNOCpp
                     Utils::NOPLogger::Get().incrementIdentation();
                 #endif // SHOW_NOP_LOGGER
 
-                this->previous_status = this->status;
-                this->notify(renotify, this->status);
+                previous_status = status;
+                notify(renotify, status);
+
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+            }
+            else if(renotify)
+            {
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeNotifying(name, this, status, renotify);
+                    
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+
+                notify(renotify);
 
                 #ifdef SHOW_NOP_LOGGER
                     Utils::NOPLogger::Get().decrementIdentation();

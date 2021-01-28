@@ -31,50 +31,36 @@ namespace JuNOCpp
         }
 
         /**
-         * Sobrecarga do update inútil para uma Condition
+         * @brief Analisa se a Condition foi aprovada ou não
+         * (obs: essa sobrecarga é utilizada para renotificações)
          * 
          * @param renotify 
          */
         void Condition::update(const bool renotify)
         {
-        }
-
-        /**
-         * Analisa se a Condition foi aprovada ou não
-         * 
-         * @param renotify 
-         * @param status 
-         */
-        void Condition::update(const bool renotify, const bool status)
-        {
-            if(status)
-            {
-                this->count_approved++;
-
-                if(this->count_approved == this->quantity)
-                {
-                    this->current_status = true;
-                }
-                #ifdef SHOW_NOP_LOGGER
-                    Utils::NOPLogger::Get().writeIncrementCondition(name, this, count_approved, quantity);
-                #endif // SHOW_NOP_LOGGER
-            }
-            else
-            {
-                this->count_approved--;
-                this->current_status = false;
-                #ifdef SHOW_NOP_LOGGER
-                    Utils::NOPLogger::Get().writeDecrementCondition(name, this, count_approved, quantity);
-                #endif // SHOW_NOP_LOGGER
-            }
-            if(this->current_status != this->previous_status)
+            if(count_approved == quantity)
+                current_status = true;
+            if(current_status != previous_status)
             {
                 #ifdef SHOW_NOP_LOGGER
                     Utils::NOPLogger::Get().writeNotifying(name, this, current_status, renotify);
                     
                     Utils::NOPLogger::Get().incrementIdentation();
                 #endif // SHOW_NOP_LOGGER
-                this->previous_status = this->current_status;
+                previous_status = current_status;
+                notify(renotify, current_status);
+
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+            }
+            else if(renotify)
+            {
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeNotifying(name, this, current_status, renotify);
+                    
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
                 notify(renotify);
 
                 #ifdef SHOW_NOP_LOGGER
@@ -116,71 +102,92 @@ namespace JuNOCpp
         }
 
         /**
-         * Notifica as demais Conditions e Rules que dependem da Condition
+         * @brief Analisa se a Condition foi aprovada ou não
          * 
          * @param renotify 
+         * @param status 
          */
-        void Condition::notify(const bool renotify)
+        void Condition::update(const bool renotify, const bool status)
         {
-            #ifdef FASTER_DATA_STRUCTURES
-                for(auto notifiable = notifiables.first; notifiable; notifiable = notifiable->next)
+            if(status)
+            {
+                this->count_approved++;
+
+                if(this->count_approved == this->quantity)
                 {
-                    #ifdef SHOW_NOP_LOGGER
-                        Utils::NOPLogger::Get().writeNotification(notifiable->element->getName(), notifiable->element.get());
-
-                        Utils::NOPLogger::Get().incrementIdentation();
-                    #endif // SHOW_NOP_LOGGER
-
-                    auto cond = dynamic_cast<Condition*>(notifiable->element.get());
-                    if(cond)
-                        cond->update(renotify, this->current_status);
-                    else if(this->current_status)
-                        notifiable->element->update(renotify);
-
-                    #ifdef SHOW_NOP_LOGGER
-                        Utils::NOPLogger::Get().decrementIdentation();
-                    #endif // SHOW_NOP_LOGGER
+                    this->current_status = true;
                 }
-            #elif defined(USE_RANGED_FOR)
-                for(auto notifiable : notifiables)
-                {
-                    #ifdef SHOW_NOP_LOGGER
-                        Utils::NOPLogger::Get().writeNotification(notifiable->name, notifiable.get());
-
-                        Utils::NOPLogger::Get().incrementIdentation();
-                    #endif // SHOW_NOP_LOGGER
-
-                    auto cond = dynamic_cast<Condition*>(notifiable.get());
-                    if(cond)
-                        cond->update(renotify, this->current_status);
-                    else if(this->current_status)
-                        notifiable->update(renotify);
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeIncrementCondition(name, this, count_approved, quantity);
+                #endif // SHOW_NOP_LOGGER
+            }
+            else
+            {
+                this->count_approved--;
+                this->current_status = false;
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeDecrementCondition(name, this, count_approved, quantity);
+                #endif // SHOW_NOP_LOGGER
+            }
+            if(current_status != previous_status)
+            {
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeNotifying(name, this, current_status, renotify);
                     
-                    #ifdef SHOW_NOP_LOGGER
-                        Utils::NOPLogger::Get().decrementIdentation();
-                    #endif // SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+                previous_status = current_status;
+                notify(renotify, current_status);
 
-                }
-            #else
-                for(auto notifiable = notifiables.getFirst(); notifiable; notifiable = notifiable->next)
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+            }
+            else if(renotify)
+            {
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeNotifying(name, this, current_status, renotify);
+                    
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER=
+                notify(renotify);
+
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+            }
+            if(count_approved + count_impertinents == quantity and !impertinents.empty())
+            {
+                if(!is_impertinents_active)
                 {
                     #ifdef SHOW_NOP_LOGGER
-                        Utils::NOPLogger::Get().writeNotification(notifiable->element->name, notifiable->element.get());
+                        Utils::NOPLogger::Get().writeActivatingImpertinents(name, this);
 
                         Utils::NOPLogger::Get().incrementIdentation();
                     #endif // SHOW_NOP_LOGGER
-
-                    auto cond = dynamic_cast<Condition*>(notifiable->element.get());
-                    if(cond)
-                        cond->update(renotify, this->current_status);
-                    else if(this->current_status)
-                        notifiable->element->update(renotify);
+                    is_impertinents_active = true;
+                    activateImpertinents();
 
                     #ifdef SHOW_NOP_LOGGER
                         Utils::NOPLogger::Get().decrementIdentation();
                     #endif // SHOW_NOP_LOGGER
                 }
-            #endif // FASTER_DATA_STRUCTURES    
+            }
+            else if(is_impertinents_active)
+            {
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeDeactivatingImpertinents(name, this);
+
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+
+                is_impertinents_active = false;
+                deactivateImpertinents();
+
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+            }
         }
 
         /**
@@ -226,7 +233,7 @@ namespace JuNOCpp
          */
         void Condition::setQuantity(const int quant)
         {
-            this->quantity = quant;
+            quantity = quant;
         }
 
         /**

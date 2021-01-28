@@ -40,20 +40,21 @@ namespace JuNOCpp
          */
         void Rule::update(const bool renotify)
         {
-            // std::cout << "RULE " << this->id << " (" << this << ")" <<std::endl;
+            if(condition->getCurrentStatus())
+            {
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeRuleApproved(name, this);
 
-            #ifdef SHOW_NOP_LOGGER
-                Utils::NOPLogger::Get().writeRuleApproved(name, this);
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
 
-                Utils::NOPLogger::Get().incrementIdentation();
-            #endif // SHOW_NOP_LOGGER
+                this->notify();
+                Rule::approved++;
 
-            this->notify();
-            Rule::approved++;
-
-            #ifdef SHOW_NOP_LOGGER
-                Utils::NOPLogger::Get().decrementIdentation();
-            #endif // SHOW_NOP_LOGGER
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+            }
         }
 
         /**
@@ -64,18 +65,21 @@ namespace JuNOCpp
          */
         void Rule::update(const bool renotify, const bool status)
         {
-            #ifdef SHOW_NOP_LOGGER
-                Utils::NOPLogger::Get().writeRuleApproved(name, this);
+            if(status)
+            {
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().writeRuleApproved(name, this);
 
-                Utils::NOPLogger::Get().incrementIdentation();
-            #endif // SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().incrementIdentation();
+                #endif // SHOW_NOP_LOGGER
 
-            this->notify();
-            Rule::approved++;
+                this->notify();
+                Rule::approved++;
 
-            #ifdef SHOW_NOP_LOGGER
-                Utils::NOPLogger::Get().decrementIdentation();
-            #endif // SHOW_NOP_LOGGER
+                #ifdef SHOW_NOP_LOGGER
+                    Utils::NOPLogger::Get().decrementIdentation();
+                #endif // SHOW_NOP_LOGGER
+            }
         }   
     } // namespace Core
 }
