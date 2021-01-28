@@ -59,12 +59,12 @@ namespace JuNOCpp
             template<typename T>
             auto operator+(T value)
             {
-                if constexpr(std::is_same_v<Op, NOPTraits::at_add_val_t<T>>)
+                if constexpr(std::is_same_v<Op, NOPTraits::at_add_val_t>)
                 {
                     auto val_tup = std::make_tuple(value);
                     auto aux_tuple = std::tuple_cat(tup, val_tup);
 
-                    auto th = make_tuple_h(aux_tuple, NOPTraits::at_add_val<T>);
+                    auto th = make_tuple_h(aux_tuple, NOPTraits::at_add_val);
 
                     return th;
                 }
@@ -132,12 +132,12 @@ namespace JuNOCpp
             template<typename T>
             auto operator-(T value)
             {
-                if constexpr(std::is_same_v<Op, NOPTraits::at_sub_val_t<T>>)
+                if constexpr(std::is_same_v<Op, NOPTraits::at_sub_val_t>)
                 {
                     auto val_tup = std::make_tuple(value);
                     auto aux_tuple = std::tuple_cat(tup, val_tup);
 
-                    auto th = make_tuple_h(aux_tuple, NOPTraits::at_sub_val<T>);
+                    auto th = make_tuple_h(aux_tuple, NOPTraits::at_sub_val);
 
                     return th;
                 }
@@ -204,12 +204,12 @@ namespace JuNOCpp
             template<typename T>
             auto operator*(T value)
             {
-                if constexpr(std::is_same_v<Op, NOPTraits::at_mult_val_t<T>>)
+                if constexpr(std::is_same_v<Op, NOPTraits::at_mult_val_t>)
                 {
                     auto val_tup = std::make_tuple(value);
                     auto aux_tuple = std::tuple_cat(tup, val_tup);
 
-                    auto th = make_tuple_h(aux_tuple, NOPTraits::at_mult_val<T>);
+                    auto th = make_tuple_h(aux_tuple, NOPTraits::at_mult_val);
 
                     return th;
                 }
@@ -277,12 +277,12 @@ namespace JuNOCpp
             template<typename T>
             auto operator/(T value)
             {
-                if constexpr(std::is_same_v<Op, NOPTraits::at_div_val_t<T>>)
+                if constexpr(std::is_same_v<Op, NOPTraits::at_div_val_t>)
                 {
                     auto val_tup = std::make_tuple(value);
                     auto aux_tuple = std::tuple_cat(tup, val_tup);
 
-                    auto th = make_tuple_h(aux_tuple, NOPTraits::at_div_val<T>);
+                    auto th = make_tuple_h(aux_tuple, NOPTraits::at_div_val);
 
                     return th;
                 }

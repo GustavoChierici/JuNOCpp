@@ -250,14 +250,14 @@ namespace JuNOCpp
         auto Attribute<TYPE>::operator+(Utils::tuple_helper<T...> tup_h)
         {
             return Utils::make_tuple_h(std::make_tuple
-                (Utils::NOPTraits::at_add_val<TYPE>, this, tup_h.tup), Utils::NOPTraits::at_add_val<TYPE>);
+                (Utils::NOPTraits::at_add_val, this, tup_h.tup), Utils::NOPTraits::at_add_val);
         }
 
         template <class TYPE>
         auto Attribute<TYPE>::operator+(TYPE value)
         {
             return Utils::make_tuple_h(std::make_tuple
-                (Utils::NOPTraits::at_add_val<TYPE>, this, value), Utils::NOPTraits::at_add_val<TYPE>);
+                (Utils::NOPTraits::at_add_val, this, value), Utils::NOPTraits::at_add_val);
         }
 
         template <class TYPE>
@@ -272,14 +272,14 @@ namespace JuNOCpp
         auto Attribute<TYPE>::operator-(Utils::tuple_helper<T...> tup_h)
         {
             return Utils::make_tuple_h(std::make_tuple
-                (Utils::NOPTraits::at_sub_val<TYPE>, this, tup_h.tup), Utils::NOPTraits::at_sub_val<TYPE>);
+                (Utils::NOPTraits::at_sub_val, this, tup_h.tup), Utils::NOPTraits::at_sub_val);
         }
 
         template <class TYPE>
         auto Attribute<TYPE>::operator-(TYPE value)
         {
             return Utils::make_tuple_h(std::make_tuple
-                (Utils::NOPTraits::at_sub_val<TYPE>, this, value), Utils::NOPTraits::at_sub_val<TYPE>);
+                (Utils::NOPTraits::at_sub_val, this, value), Utils::NOPTraits::at_sub_val);
         }
 
         template <class TYPE>
@@ -294,14 +294,14 @@ namespace JuNOCpp
         auto Attribute<TYPE>::operator*(Utils::tuple_helper<T...> tup_h)
         {
             return Utils::make_tuple_h(std::make_tuple
-                (Utils::NOPTraits::at_mult_val<TYPE>, this, tup_h.tup), Utils::NOPTraits::at_mult_val<TYPE>);
+                (Utils::NOPTraits::at_mult_val, this, tup_h.tup), Utils::NOPTraits::at_mult_val);
         }
 
         template <class TYPE>
         auto Attribute<TYPE>::operator*(TYPE value)
         {
             return Utils::make_tuple_h(std::make_tuple
-                (Utils::NOPTraits::at_mult_val<TYPE>, this, value), Utils::NOPTraits::at_mult_val<TYPE>);
+                (Utils::NOPTraits::at_mult_val, this, value), Utils::NOPTraits::at_mult_val);
         }
 
         template <class TYPE>
@@ -316,14 +316,14 @@ namespace JuNOCpp
         auto Attribute<TYPE>::operator/(Utils::tuple_helper<T...> tup_h)
         {
             return Utils::make_tuple_h(std::make_tuple
-                (Utils::NOPTraits::at_div_val<TYPE>, this, tup_h.tup), Utils::NOPTraits::at_div_val<TYPE>);
+                (Utils::NOPTraits::at_div_val, this, tup_h.tup), Utils::NOPTraits::at_div_val);
         }
 
         template <class TYPE>
         auto Attribute<TYPE>::operator/(TYPE value)
         {
             return Utils::make_tuple_h(std::make_tuple
-                (Utils::NOPTraits::at_div_val<TYPE>, this, value), Utils::NOPTraits::at_div_val<TYPE>);
+                (Utils::NOPTraits::at_div_val, this, value), Utils::NOPTraits::at_div_val);
         }
 
         /**

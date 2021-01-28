@@ -47,10 +47,8 @@ namespace JuNOCpp
             /** Attribute opertions (used in tuples) **/
             /** + operator **/
 
-            template<typename T>
-            auto at_add_val = [](Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() + (... + values); };
-            template<typename T>
-            using at_add_val_t = decltype(at_add_val<T>);
+            auto at_add_val = [](auto attr, auto ... values) { return attr->getCurrentStatus() + (... + values); };
+            using at_add_val_t = decltype(at_add_val);
 
             auto val_add_at = [](auto value, auto ... attrs) { return value + (... + attrs->getCurrentStatus()); };
             using val_add_at_t = decltype(val_add_at);
@@ -63,10 +61,8 @@ namespace JuNOCpp
             auto at_sub_at = [](auto ... args) { return (... - args->getCurrentStatus()); };
             using at_sub_at_t = decltype(at_sub_at);
 
-            template<typename T>
-            auto at_sub_val = [](Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() - (... - values); };
-            template<typename T>
-            using at_sub_val_t = decltype(at_sub_val<T>);
+            auto at_sub_val = [](auto attr, auto ... values) { return attr->getCurrentStatus() - (... - values); };
+            using at_sub_val_t = decltype(at_sub_val);
 
             auto val_sub_at = [](auto value, auto ... attrs) { return value - (... - attrs->getCurrentStatus()); };
             using val_sub_at_t = decltype(val_sub_at);
@@ -79,10 +75,8 @@ namespace JuNOCpp
             auto at_mult_at = [](auto ... args) { return (... * args->getCurrentStatus()); };
             using at_mult_at_t = decltype(at_mult_at);
 
-            template<typename T>
-            auto at_mult_val = [](Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() * (... * values); };
-            template<typename T>
-            using at_mult_val_t = decltype(at_mult_val<T>);
+            auto at_mult_val = [](auto attr, auto ... values) { return attr->getCurrentStatus() * (... * values); };
+            using at_mult_val_t = decltype(at_mult_val);
 
             auto val_mult_at = [](auto value, auto ... attrs) { return value * (... * attrs->getCurrentStatus()); };
             using val_mult_at_t = decltype(val_mult_at);
@@ -95,10 +89,8 @@ namespace JuNOCpp
             auto at_div_at = [](auto ... args) { return (... / args->getCurrentStatus()); };
             using at_div_at_t = decltype(at_div_at);
 
-            template<typename T>
-            auto at_div_val = [](Attribute<T>* attr, auto ... values) { return attr->getCurrentStatus() / (... / values); };
-            template<typename T>
-            using at_div_val_t = decltype(at_div_val<T>);
+            auto at_div_val = [](auto attr, auto ... values) { return attr->getCurrentStatus() / (... / values); };
+            using at_div_val_t = decltype(at_div_val);
 
             auto val_div_at = [](auto value, auto ... attrs) { return value / (... / attrs->getCurrentStatus()); };
             using val_div_at_t = decltype(val_div_at);
