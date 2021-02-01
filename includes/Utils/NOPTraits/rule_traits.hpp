@@ -14,17 +14,18 @@
 
 namespace JuNOCpp
 {
-    class BetterRule;
+    namespace Core
+    {
+        class Rule;
+    } // namespace Core
 
     namespace Utils
     {
         namespace NOPTraits
         {
             template<typename RuleType>
-            struct is_rule: std::false_type{};
-
-            template<>
-            struct is_rule<BetterRule>: std::true_type{};
+            struct is_rule: std::is_same<std::remove_pointer_t<std::remove_reference_t<std::remove_cv_t<RuleType>>>, Core::Rule>
+            {};
 
             template<typename RuleType>
             inline constexpr bool is_rule_v = is_rule<RuleType>::value;

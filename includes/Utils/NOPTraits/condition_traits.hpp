@@ -14,17 +14,19 @@
 
 namespace JuNOCpp
 {
-    class BetterCondition;
+    namespace Core
+    {
+        class Condition;
+    } // namespace Core
+    
 
     namespace Utils
     {
         namespace NOPTraits
         {
             template<typename CondType>
-            struct is_condition: std::false_type{};
-
-            template<>
-            struct is_condition<BetterCondition>: std::true_type{};
+            struct is_condition: std::is_same<std::remove_pointer_t<std::remove_reference_t<std::remove_cv_t<CondType>>>, Core::Condition>
+            {};
 
             template<typename CondType>
             inline constexpr bool is_condition_v = is_condition<CondType>::value;

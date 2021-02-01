@@ -14,17 +14,19 @@
 
 namespace JuNOCpp
 {
-    class BetterInstigation;
+    namespace Core
+    {
+        class Instigation;
+    } // namespace Core
+    
 
     namespace Utils
     {
         namespace NOPTraits
         {
             template<typename InstType>
-            struct is_instigation: std::false_type{};
-
-            template<>
-            struct is_instigation<BetterInstigation>: std::true_type{};
+            struct is_instigation: std::is_same<std::remove_pointer_t<std::remove_reference_t<std::remove_cv_t<InstType>>>, Core::Instigation>
+            {};
 
             template<typename InstType>
             inline constexpr bool is_instigation_v = is_instigation<InstType>::value;

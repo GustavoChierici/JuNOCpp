@@ -26,7 +26,7 @@ namespace JuNOCpp
             ~tuple_helper() {}
 
             template<typename T>
-            auto operator+(Attribute<T>& attr)
+            auto operator+(Core::Attribute<T>& attr)
             {
                 if constexpr(std::is_same_v<Op, NOPTraits::at_add_at_t>)
                 {
@@ -99,7 +99,7 @@ namespace JuNOCpp
             }
 
             template<typename T>
-            auto operator-(Attribute<T>& attr)
+            auto operator-(Core::Attribute<T>& attr)
             {
                 if constexpr(std::is_same_v<Op, NOPTraits::at_sub_at_t>)
                 {
@@ -171,7 +171,7 @@ namespace JuNOCpp
             }
 
             template<typename T>
-            auto operator*(Attribute<T>& attr)
+            auto operator*(Core::Attribute<T>& attr)
             {
                 if constexpr(std::is_same_v<Op, NOPTraits::at_mult_at_t>)
                 {
@@ -244,7 +244,7 @@ namespace JuNOCpp
             }
 
             template<typename T>
-            auto operator/(Attribute<T>& attr)
+            auto operator/(Core::Attribute<T>& attr)
             {
                 if constexpr(std::is_same_v<Op, NOPTraits::at_div_at_t>)
                 {

@@ -14,8 +14,11 @@
 
 namespace JuNOCpp
 {
-    template<class PrT, typename RT, typename CmpOpT>
-    class Premise;
+    namespace Core
+    {
+        template<class PrT, typename RT, typename CmpOpT>
+        class Premise;
+    } // namespace Core
 
     namespace Utils
     {
@@ -63,51 +66,51 @@ namespace JuNOCpp
             struct is_premise_of: std::false_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, not_equal_t>, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, not_equal_t>, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, equal_t>, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, equal_t>, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, greater_t>, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, greater_t>, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, greater_equal_t>, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, greater_equal_t>, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, less_t>, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, less_t>, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, less_equal_t>, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, less_equal_t>, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, not_equal_t>*, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, not_equal_t>*, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, equal_t>*, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, equal_t>*, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, greater_t>*, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, greater_t>*, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, greater_equal_t>*, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, greater_equal_t>*, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, less_t>*, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, less_t>*, LType, RType>
             : std::true_type {};
 
             template<typename LType, typename RType>
-            struct is_premise_of<Premise<LType, RType, less_equal_t>*, RType, LType>
+            struct is_premise_of<Core::Premise<LType, RType, less_equal_t>*, LType, RType>
             : std::true_type {};
 
             template<typename PrType, typename LType, typename RType>

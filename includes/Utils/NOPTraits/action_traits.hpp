@@ -14,17 +14,19 @@
 
 namespace JuNOCpp
 {
-    class BetterAction;
+    namespace Core
+    {
+        class Action;
+    } // namespace Core
+    
 
     namespace Utils
     {
         namespace NOPTraits
         {
             template<typename ActType>
-            struct is_action: std::false_type{};
-
-            template<>
-            struct is_action<BetterAction>: std::true_type{};
+            struct is_action: std::is_same<std::remove_pointer_t<std::remove_reference_t<std::remove_cv_t<ActType>>>, Core::Action>
+            {};
 
             template<typename ActType>
             inline constexpr bool is_action_v = is_action<ActType>::value;

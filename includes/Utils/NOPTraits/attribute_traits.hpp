@@ -21,8 +21,11 @@
 
 namespace JuNOCpp
 {
-    template<class TYPE>
-    class Attribute;
+    namespace Core
+    {
+        template<class TYPE>
+        class Attribute;
+    }
 
     namespace Utils
     {
@@ -30,13 +33,8 @@ namespace JuNOCpp
         {
             
             template<typename AttrType, typename Type>
-            struct is_attribute_of: std::false_type {};
-
-            template<typename Type>
-            struct is_attribute_of<Attribute<Type>, Type>: std::true_type {};
-
-            template<typename Type>
-            struct is_attribute_of<Attribute<Type>*, Type>: std::true_type {};
+            struct is_attribute_of: std::is_same<std::remove_pointer_t<std::remove_reference_t<std::remove_cv_t<AttrType>>>, Core::Attribute<Type>>
+            {};
 
             template<typename AttrType, typename Type>
             inline constexpr bool is_attribute_of_v = is_attribute_of<AttrType, Type>::value;
@@ -116,7 +114,7 @@ namespace JuNOCpp
             }
 
             template <typename T, typename PrT>
-            void insertPremise(Attribute<T>* attr, shared_ptr<PrT> premise)
+            void insertPremise(Core::Attribute<T>* attr, shared_ptr<PrT> premise)
             {
                 attr->insert(premise);
             }
@@ -133,7 +131,7 @@ namespace JuNOCpp
             }
 
             template <typename T, typename PrT>
-            void removePremise(Attribute<T>* attr, shared_ptr<PrT> premise)
+            void removePremise(Core::Attribute<T>* attr, shared_ptr<PrT> premise)
             {
                 attr->remove(premise);
             }
@@ -150,7 +148,7 @@ namespace JuNOCpp
             }
 
             template <typename T, typename PrT>
-            void addImpertinent(Attribute<T>* attr, shared_ptr<PrT> premise)
+            void addImpertinent(Core::Attribute<T>* attr, shared_ptr<PrT> premise)
             {
                 attr->addImpertinent(premise);
             }
