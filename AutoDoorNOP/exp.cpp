@@ -37,18 +37,18 @@ int main()
         NOP::PremiseGreaterEqual<double, double> prIsPersonMoving = person->at_velocity >= 0.0;
 
         //Init Rules
-        RULE(prPersonOnDoorFront and prIsPersonMoving and door->at_is_open == false and sensor->at_person_detected == true, rlOpenDoor)
+        RULE(prPersonOnDoorFront and prIsPersonMoving and door->at_is_open == false and sensor->at_person_detected == true)
             INSTIGATE([=](){door->at_is_open = true;})
         END_RULE
 
         door->at_is_open.setStatus(false, true);
 
-        RULE(prPersonOnDoorFront and prIsDoorOpen and prIsPersonMoving, rlPersonPassDoor)
+        RULE(prPersonOnDoorFront and prIsDoorOpen and prIsPersonMoving)
             INSTIGATE([=](){person->at_pos_door_front = false;})
             INSTIGATE([=](){sensor->at_person_detected = false;})
         END_RULE
 
-        RULE(person->at_pos_door_front == false and prIsDoorOpen and sensor->at_person_detected == false, rlCloseDoor)
+        RULE(person->at_pos_door_front == false and prIsDoorOpen and sensor->at_person_detected == false)
             INSTIGATE([=](){door->at_is_open = false;})
         END_RULE
 
@@ -154,9 +154,13 @@ int main()
         NOP::PremiseEqual<bool, bool> prIsDoorOpen = door->at_is_open == true;
 
         NOP::PremiseGreaterEqual<double, double> prIsPersonMoving = person->at_velocity >= 0.0;
+        
+        RULE(person->at_pos_door_front == true)
+            INSTIGATE([](){std::cout << "It works!" << std::endl; })
+        END_RULE
 
         //Init Rules
-        RULE(prPersonOnDoorFront and prIsPersonMoving and (door->at_is_open == false and sensor->at_person_detected == true), rlPersonPassDoor2)
+        RULE(prPersonOnDoorFront and prIsPersonMoving and (door->at_is_open == false and sensor->at_person_detected == true))
             INSTIGATE([=](){door->at_is_open = true;})
             INSTIGATE([=](){person->at_pos_door_front = false;})
             INSTIGATE([=](){sensor->at_person_detected = false;})

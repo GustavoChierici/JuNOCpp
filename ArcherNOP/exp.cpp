@@ -20,9 +20,17 @@ int main()
         apple_list.push_back(apple_tmp);
 
         //Init Rules
-        RULE(archer_tmp->atArcherStatus == true and apple_tmp->atAppleStatus == true and apple_tmp->atAppleColor == 'R')
+        NOP::Rule* rlOne = new Core::Rule();
+        RULE(*rlOne, archer_tmp->atArcherStatus == true and apple_tmp->atAppleStatus == true and apple_tmp->atAppleColor == 'R')
             INSTIGATE([=](){apple_tmp->atAppleColor = 'G';})
+            // RULE(apple_tmp->atAppleStatus == false)
+            //     INSTIGATE([=](){std::cout << "Pulse" << std::endl;})
+            // END_RULE
         END_RULE
+
+        // RULE(rlOne->getCondition())
+        //     INSTIGATE([=](){std::cout << "Dependant" << std::endl;})
+        // END_RULE
 
         archer_tmp->atArcherStatus = true;
         apple_tmp->atAppleStatus = true;

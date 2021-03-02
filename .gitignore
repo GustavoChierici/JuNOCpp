@@ -72,6 +72,8 @@ NOPCollection.hpp
 base_notifier_tuple.hpp
 notifier_tuple.hpp
 *.cmake
+NOPBitonic
+JuNOCpp_Application
 
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,c++,cmake
