@@ -123,10 +123,12 @@ namespace JuNOCpp
          */
         template<class TYPE>
         Attribute<TYPE>::Attribute(TYPE value, Utils::CustomString name):
-        Notifiable(name)
+        Notifiable(name),
+        current_status{value},
+        previous_status{value}
         {
-            this->current_status = value;
-            this->previous_status = value;
+            // this->current_status = value;
+            // this->previous_status = value;
         }
 
         /**

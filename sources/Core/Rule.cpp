@@ -47,7 +47,7 @@ namespace JuNOCpp
 
                     Utils::NOPLogger::Get().incrementIdentation();
                 #endif // SHOW_NOP_LOGGER
-
+                is_approved = true;
                 this->notify();
                 Rule::approved++;
 
@@ -55,6 +55,8 @@ namespace JuNOCpp
                     Utils::NOPLogger::Get().decrementIdentation();
                 #endif // SHOW_NOP_LOGGER
             }
+            else
+                is_approved = false;
         }
 
         /**
@@ -72,7 +74,7 @@ namespace JuNOCpp
 
                     Utils::NOPLogger::Get().incrementIdentation();
                 #endif // SHOW_NOP_LOGGER
-
+                is_approved = true;
                 this->notify();
                 Rule::approved++;
 
@@ -80,6 +82,8 @@ namespace JuNOCpp
                     Utils::NOPLogger::Get().decrementIdentation();
                 #endif // SHOW_NOP_LOGGER
             }
+            else
+                is_approved = false;
         }   
     } // namespace Core
 }

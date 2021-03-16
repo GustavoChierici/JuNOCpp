@@ -17,11 +17,11 @@ namespace JuNOCpp
             Action* action;
             
             int id;
-            bool is_approved;
 
         public:
             static int counter;
             static int approved;
+            bool is_approved;
 
         public:
             Rule(Utils::CustomString name = "UnnamedRule");

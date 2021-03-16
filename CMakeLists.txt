@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
 project(JuNOC++ VERSION 1.0.0 DESCRIPTION "JuNOC++: Just A Notification Oriented C++. A high level Notification Oriented Paradigm C++ framework")
 
+option(JUNOCPP_TEST_ENABLE "Build JuNOC++ tests" ON)
+
 file(GLOB JUNOCPP_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/sources/Core/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/sources/Utils/*.cpp
@@ -36,6 +38,10 @@ install(TARGETS JuNOC++
 export(TARGETS JuNOC++ FILE ${CMAKE_CURRENT_BINARY_DIR}/JuNOC++.cmake)
 
 export(PACKAGE JuNOCpp)
+
+if(JUNOCPP_TEST_ENABLE)
+    add_subdirectory(tests)
+endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/JuNOCpp.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/JuNOCpp.cmake @ONLY
