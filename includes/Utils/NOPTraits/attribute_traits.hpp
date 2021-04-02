@@ -31,7 +31,33 @@ namespace JuNOCpp
     {
         namespace NOPTraits
         {
+            template<typename AttrType>
+            struct is_attribute: std::false_type
+            {};
+
+            template<template<typename> typename AttrType, typename Type>
+            struct is_attribute<AttrType<Type>>: std::is_same<std::remove_pointer_t<std::remove_reference_t<std::remove_cv_t<AttrType<Type>>>>, Core::Attribute<Type>>
+            {
+                 typedef Type type;
+            };
+
+            template<template<typename> typename AttrType, typename Type>
+            struct is_attribute<AttrType<Type>*>: std::is_same<std::remove_pointer_t<std::remove_reference_t<std::remove_cv_t<AttrType<Type>>>>, Core::Attribute<Type>>
+            {
+                 typedef Type type;
+            };
             
+            template<typename AttrType>
+            inline constexpr bool is_attribute_v = is_attribute<AttrType>::value;
+
+            template<typename AttrType>
+            struct attribute_type
+            {};
+
+
+            template<typename AttrType>
+            using is_attribute_t = typename is_attribute<AttrType>::type;  
+
             template<typename AttrType, typename Type>
             struct is_attribute_of: std::is_same<std::remove_pointer_t<std::remove_reference_t<std::remove_cv_t<AttrType>>>, Core::Attribute<Type>>
             {};

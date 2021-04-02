@@ -109,26 +109,30 @@ namespace JuNOCpp
          */
         void Condition::update(const bool renotify, const bool status)
         {
-            if(status)
-            {
-                this->count_approved++;
+            // if(status)
+            // {
+            //     this->count_approved++;
 
-                if(this->count_approved == this->quantity)
-                {
-                    this->current_status = true;
-                }
-                #ifdef SHOW_NOP_LOGGER
-                    Utils::NOPLogger::Get().writeIncrementCondition(name, this, count_approved, quantity);
-                #endif // SHOW_NOP_LOGGER
-            }
-            else
-            {
-                this->count_approved--;
-                this->current_status = false;
-                #ifdef SHOW_NOP_LOGGER
-                    Utils::NOPLogger::Get().writeDecrementCondition(name, this, count_approved, quantity);
-                #endif // SHOW_NOP_LOGGER
-            }
+            //     if(this->count_approved == this->quantity)
+            //     {
+            //         this->current_status = true;
+            //     }
+            //     #ifdef SHOW_NOP_LOGGER
+            //         Utils::NOPLogger::Get().writeIncrementCondition(name, this, count_approved, quantity);
+            //     #endif // SHOW_NOP_LOGGER
+            // }
+            // else
+            // {
+            //     this->count_approved--;
+            //     this->current_status = false;
+            //     #ifdef SHOW_NOP_LOGGER
+            //         Utils::NOPLogger::Get().writeDecrementCondition(name, this, count_approved, quantity);
+            //     #endif // SHOW_NOP_LOGGER
+            // }
+            count_approved += (status * 2 - 1);
+
+            current_status = count_approved >= quantity ? true : false;
+
             if(current_status != previous_status)
             {
                 #ifdef SHOW_NOP_LOGGER
@@ -156,37 +160,44 @@ namespace JuNOCpp
                     Utils::NOPLogger::Get().decrementIdentation();
                 #endif // SHOW_NOP_LOGGER
             }
-            if(count_approved + count_impertinents == quantity and !impertinents.empty())
+            if(!impertinents.empty())
             {
-                if(!is_impertinents_active)
+                if(count_approved + count_impertinents == quantity)
+                {
+                    if(!is_impertinents_active)
+                    {
+                        #ifdef SHOW_NOP_LOGGER
+                            Utils::NOPLogger::Get().writeActivatingImpertinents(name, this);
+
+                            Utils::NOPLogger::Get().incrementIdentation();
+                        #endif // SHOW_NOP_LOGGER
+                        is_impertinents_active = true;
+                        activateImpertinents();
+
+                        #ifdef SHOW_NOP_LOGGER
+                            Utils::NOPLogger::Get().decrementIdentation();
+                        #endif // SHOW_NOP_LOGGER
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+                else if(is_impertinents_active && count_approved + count_impertinents < quantity)
                 {
                     #ifdef SHOW_NOP_LOGGER
-                        Utils::NOPLogger::Get().writeActivatingImpertinents(name, this);
+                        Utils::NOPLogger::Get().writeDeactivatingImpertinents(name, this);
 
                         Utils::NOPLogger::Get().incrementIdentation();
                     #endif // SHOW_NOP_LOGGER
-                    is_impertinents_active = true;
-                    activateImpertinents();
+
+                    is_impertinents_active = false;
+                    deactivateImpertinents();
 
                     #ifdef SHOW_NOP_LOGGER
                         Utils::NOPLogger::Get().decrementIdentation();
                     #endif // SHOW_NOP_LOGGER
                 }
-            }
-            else if(is_impertinents_active)
-            {
-                #ifdef SHOW_NOP_LOGGER
-                    Utils::NOPLogger::Get().writeDeactivatingImpertinents(name, this);
-
-                    Utils::NOPLogger::Get().incrementIdentation();
-                #endif // SHOW_NOP_LOGGER
-
-                is_impertinents_active = false;
-                deactivateImpertinents();
-
-                #ifdef SHOW_NOP_LOGGER
-                    Utils::NOPLogger::Get().decrementIdentation();
-                #endif // SHOW_NOP_LOGGER
             }
         }
 
@@ -244,38 +255,39 @@ namespace JuNOCpp
          */
         Condition& Condition::operator &&(Condition& b_condition)
         {
-            if((b_condition.mode == Condition::CONJUNCTION or b_condition.mode == Condition::SINGLE)
-            and (this->mode == Condition::CONJUNCTION or this->mode == Condition::SINGLE) 
-            and !b_condition.persistant and !this->persistant)
-            {
-                b_condition.insert(this->shared_from_this());
-                this->setQuantity(this->quantity + 1);
+            // if((b_condition.mode == Condition::CONJUNCTION or b_condition.mode == Condition::SINGLE)
+            // and (this->mode == Condition::CONJUNCTION or this->mode == Condition::SINGLE) 
+            // and !b_condition.persistant and !this->persistant)
+            // {
+            //     b_condition.insert(this->shared_from_this());
+            //     this->setQuantity(this->quantity + 1);
 
-                if(b_condition.getCurrentStatus())
-                    update(false, b_condition.getCurrentStatus());
+            //     if(b_condition.getCurrentStatus())
+            //         update(false, b_condition.getCurrentStatus());
 
-                return *this;
-            }
-            else
-            {
-                #ifdef USE_CUSTOM_SMART_PTRS
-                    shared_ptr<Condition> condition(new Condition());
-                #else
-                    shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-                #endif // USE_CUSTOM_SMART_PTRS
-                condition->setQuantity(2);
-                condition->mode = Condition::CONJUNCTION;
+            //     return *this;
+            // }
+            // else
+            // {
+            //     #ifdef USE_CUSTOM_SMART_PTRS
+            //         shared_ptr<Condition> condition(new Condition());
+            //     #else
+            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
+            //     #endif // USE_CUSTOM_SMART_PTRS
+            //     condition->setQuantity(2);
+            //     condition->mode = Condition::CONJUNCTION;
 
-                this->insert(condition);
-                b_condition.insert(condition);
+            //     this->insert(condition);
+            //     b_condition.insert(condition);
 
-                if(this->current_status)
-                    condition->update(false, this->current_status);
-                if(b_condition.getCurrentStatus())
-                    condition->update(false, b_condition.getCurrentStatus());
+            //     if(this->current_status)
+            //         condition->update(false, this->current_status);
+            //     if(b_condition.getCurrentStatus())
+            //         condition->update(false, b_condition.getCurrentStatus());
                 
-                return *condition;
-            }
+            //     return *condition;
+            // }
+            return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_condition);
         }
 
         /**
@@ -286,38 +298,40 @@ namespace JuNOCpp
          */
         Condition& Condition::operator &&(Condition&& b_condition)
         {
-            if((b_condition.mode == Condition::CONJUNCTION or b_condition.mode == Condition::SINGLE)
-            and (this->mode == Condition::CONJUNCTION or this->mode == Condition::SINGLE) 
-            and !b_condition.persistant and !this->persistant)
-            {
-                b_condition.insert(this->shared_from_this());
-                this->setQuantity(this->quantity + 1);
+            // if((b_condition.mode == Condition::CONJUNCTION or b_condition.mode == Condition::SINGLE)
+            // and (this->mode == Condition::CONJUNCTION or this->mode == Condition::SINGLE) 
+            // and !b_condition.persistant and !this->persistant)
+            // {
+            //     b_condition.insert(this->shared_from_this());
+            //     this->setQuantity(this->quantity + 1);
 
-                if(b_condition.getCurrentStatus())
-                    update(false, b_condition.getCurrentStatus());
+            //     if(b_condition.getCurrentStatus())
+            //         update(false, b_condition.getCurrentStatus());
 
-                return *this;
-            }
-            else
-            {
-                #ifdef USE_CUSTOM_SMART_PTRS
-                    shared_ptr<Condition> condition(new Condition());
-                #else
-                    shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-                #endif // USE_CUSTOM_SMART_PTRS
-                condition->setQuantity(2);
-                condition->mode = Condition::CONJUNCTION;
+            //     return *this;
+            // }
+            // else
+            // {
+            //     #ifdef USE_CUSTOM_SMART_PTRS
+            //         shared_ptr<Condition> condition(new Condition());
+            //     #else
+            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
+            //     #endif // USE_CUSTOM_SMART_PTRS
+            //     condition->setQuantity(2);
+            //     condition->mode = Condition::CONJUNCTION;
 
-                this->insert(condition);
-                b_condition.insert(condition);
+            //     this->insert(condition);
+            //     b_condition.insert(condition);
 
-                if(this->current_status)
-                    condition->update(false, this->current_status);
-                if(b_condition.getCurrentStatus())
-                    condition->update(false, b_condition.getCurrentStatus());
+            //     if(this->current_status)
+            //         condition->update(false, this->current_status);
+            //     if(b_condition.getCurrentStatus())
+            //         condition->update(false, b_condition.getCurrentStatus());
                 
-                return *condition;
-            }
+            //     return *condition;
+            // }
+
+            return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_condition);
         }
 
         /**
@@ -328,37 +342,39 @@ namespace JuNOCpp
          */
         Condition& Condition::operator ||(Condition& b_condition)
         {
-            if((b_condition.mode == Condition::DISJUNCTION or b_condition.mode == Condition::SINGLE)
-            and (this->mode == Condition::DISJUNCTION or this->mode == Condition::SINGLE) 
-            and !b_condition.persistant and !this->persistant)
-            {
-                b_condition.insert(this->shared_from_this());
+            // if((b_condition.mode == Condition::DISJUNCTION or b_condition.mode == Condition::SINGLE)
+            // and (this->mode == Condition::DISJUNCTION or this->mode == Condition::SINGLE) 
+            // and !b_condition.persistant and !this->persistant)
+            // {
+            //     b_condition.insert(this->shared_from_this());
 
-                if(b_condition.getCurrentStatus())
-                    update(false, b_condition.getCurrentStatus());
+            //     if(b_condition.getCurrentStatus())
+            //         update(false, b_condition.getCurrentStatus());
 
-                return *this;
-            }
-            else
-            {
-                #ifdef USE_CUSTOM_SMART_PTRS
-                    shared_ptr<Condition> condition(new Condition());
-                #else
-                    shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-                #endif // USE_CUSTOM_SMART_PTRS
-                condition->setQuantity(1);
-                condition->mode = Condition::DISJUNCTION;
+            //     return *this;
+            // }
+            // else
+            // {
+            //     #ifdef USE_CUSTOM_SMART_PTRS
+            //         shared_ptr<Condition> condition(new Condition());
+            //     #else
+            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
+            //     #endif // USE_CUSTOM_SMART_PTRS
+            //     condition->setQuantity(1);
+            //     condition->mode = Condition::DISJUNCTION;
 
-                this->insert(condition);
-                b_condition.insert(condition);
+            //     this->insert(condition);
+            //     b_condition.insert(condition);
 
-                if(this->current_status)
-                    condition->update(false, this->current_status);
-                if(b_condition.getCurrentStatus())
-                    condition->update(false, b_condition.getCurrentStatus());
+            //     if(this->current_status)
+            //         condition->update(false, this->current_status);
+            //     if(b_condition.getCurrentStatus())
+            //         condition->update(false, b_condition.getCurrentStatus());
                 
-                return *condition;
-            }
+            //     return *condition;
+            // }
+
+            return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_condition);
         }
 
         /**
@@ -369,37 +385,39 @@ namespace JuNOCpp
          */
         Condition& Condition::operator ||(Condition&& b_condition)
         {
-            if((b_condition.mode == Condition::DISJUNCTION or b_condition.mode == Condition::SINGLE)
-            and (this->mode == Condition::DISJUNCTION or this->mode == Condition::SINGLE) 
-            and !b_condition.persistant and !this->persistant)
-            {
-                b_condition.insert(this->shared_from_this());
+            // if((b_condition.mode == Condition::DISJUNCTION or b_condition.mode == Condition::SINGLE)
+            // and (this->mode == Condition::DISJUNCTION or this->mode == Condition::SINGLE) 
+            // and !b_condition.persistant and !this->persistant)
+            // {
+            //     b_condition.insert(this->shared_from_this());
 
-                if(b_condition.getCurrentStatus())
-                    update(false, b_condition.getCurrentStatus());
+            //     if(b_condition.getCurrentStatus())
+            //         update(false, b_condition.getCurrentStatus());
 
-                return *this;
-            }
-            else
-            {
-                #ifdef USE_CUSTOM_SMART_PTRS
-                    shared_ptr<Condition> condition(new Condition());
-                #else
-                    shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-                #endif // USE_CUSTOM_SMART_PTRS
-                condition->setQuantity(1);
-                condition->mode = Condition::DISJUNCTION;
+            //     return *this;
+            // }
+            // else
+            // {
+            //     #ifdef USE_CUSTOM_SMART_PTRS
+            //         shared_ptr<Condition> condition(new Condition());
+            //     #else
+            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
+            //     #endif // USE_CUSTOM_SMART_PTRS
+            //     condition->setQuantity(1);
+            //     condition->mode = Condition::DISJUNCTION;
 
-                this->insert(condition);
-                b_condition.insert(condition);
+            //     this->insert(condition);
+            //     b_condition.insert(condition);
 
-                if(this->current_status)
-                    condition->update(false, this->current_status);
-                if(b_condition.getCurrentStatus())
-                    condition->update(false, b_condition.getCurrentStatus());
+            //     if(this->current_status)
+            //         condition->update(false, this->current_status);
+            //     if(b_condition.getCurrentStatus())
+            //         condition->update(false, b_condition.getCurrentStatus());
                 
-                return *condition;
-            }
+            //     return *condition;
+            // }
+
+            return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_condition);
         }
     } // namespace Core
 } // namespace JuNOCpp

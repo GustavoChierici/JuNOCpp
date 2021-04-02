@@ -11,7 +11,7 @@ namespace JuNOCpp
 {
     namespace Core
     {
-        template <class PrT, typename RT, typename CmpOpT>
+        template <typename LT, typename RT, typename CmpOpT>
         class Premise;
         template<class TYPE>
         class Attribute: public Notifier, public Notifiable
@@ -60,42 +60,42 @@ namespace JuNOCpp
 
             void operator=(TYPE value);
 
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& operator==(Attribute<TYPE>& b_attr);
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& operator==(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& operator==(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& operator==(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::equal_t>& operator==(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::equal_t>& operator==(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& operator!=(Attribute<TYPE>& b_attr);
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& operator!=(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& operator!=(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& operator!=(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::not_equal_t>& operator!=(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::not_equal_t>& operator!=(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& operator>(Attribute<TYPE>& b_attr);
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& operator>(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& operator>(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& operator>(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_t>& operator>(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_t>& operator>(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& operator>=(Attribute<TYPE>& b_attr);
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& operator>=(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& operator>=(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& operator>=(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>& operator>=(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>& operator>=(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>& operator<(Attribute<TYPE>& b_attr);
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>& operator<(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& operator<(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& operator<(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_t>& operator<(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_t>& operator<(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& operator<=(Attribute<TYPE>& b_attr);
-            Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& operator<=(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& operator<=(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& operator<=(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_equal_t>& operator<=(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_equal_t>& operator<=(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>& operator==(const TYPE value);
-            Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>& operator!=(const TYPE value);
-            Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>& operator>(const TYPE value);
-            Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>& operator>=(const TYPE value);
-            Premise<TYPE, TYPE, Utils::NOPTraits::less_t>& operator<(const TYPE value);
-            Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>& operator<=(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::equal_t>& operator==(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::not_equal_t>& operator!=(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_t>& operator>(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_equal_t>& operator>=(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_t>& operator<(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_equal_t>& operator<=(const TYPE value);
             
         private:
             TYPE current_status;
@@ -345,29 +345,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "Equals";
             pr_name += b_attr.name.getString(); 
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>
-                        (this, &b_attr, Utils::NOPTraits::equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>(this, &b_attr, Utils::NOPTraits::equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::equal, &b_attr, pr_name);
 
             return *premise;
         }
@@ -377,29 +364,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>&
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>&
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "Equals";
-            pr_name += b_attr.name.getString(); 
+            pr_name += b_attr.name.getString();
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>
-                        (this, &b_attr, Utils::NOPTraits::equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::equal_t>(this, &b_attr, Utils::NOPTraits::equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::equal, &b_attr, pr_name);
 
             return *premise;
         }
@@ -411,29 +385,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::equal_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::equal_t>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::equal_t>> premise
-                    (new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::equal_t>
-                        (this, tup_h.tup, Utils::NOPTraits::equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::equal_t>>
-                        (*new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::equal_t>(this, tup_h.tup, Utils::NOPTraits::equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            Utils::NOPTraits::insertPremise(tup_h.tup, premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::equal, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -443,29 +404,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "NotEqual";
             pr_name += b_attr.name.getString(); 
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>
-                        (this, &b_attr, Utils::NOPTraits::not_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>(this, &b_attr, Utils::NOPTraits::not_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::not_equal, &b_attr, pr_name);
 
             return *premise;
         }
@@ -475,29 +423,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "NotEqual";
             pr_name += b_attr.name.getString(); 
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>
-                        (this, &b_attr, Utils::NOPTraits::not_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>(this, &b_attr, Utils::NOPTraits::not_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::not_equal, &b_attr, pr_name);
 
             return *premise;
         }
@@ -509,29 +444,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::not_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::not_equal_t>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::not_equal_t>> premise
-                    (new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::not_equal_t>
-                        (this, tup_h.tup, Utils::NOPTraits::not_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::not_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::not_equal_t>>
-                        (*new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::not_equal_t>(this, tup_h.tup, Utils::NOPTraits::not_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            Utils::NOPTraits::insertPremise(tup_h.tup, premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::not_equal, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -541,29 +463,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterThan";
             pr_name += b_attr.name.getString(); 
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>
-                        (this, &b_attr, Utils::NOPTraits::greater, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>(this, &b_attr, Utils::NOPTraits::greater, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::greater, &b_attr, pr_name);
 
             return *premise;
         }
@@ -573,29 +482,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterThan";
             pr_name += b_attr.name.getString(); 
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>
-                        (this, &b_attr, Utils::NOPTraits::greater, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_t>(this, &b_attr, Utils::NOPTraits::greater, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::greater, &b_attr, pr_name);
 
             return *premise;
         }
@@ -607,29 +503,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_t>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_t>> premise
-                    (new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_t>
-                        (this, tup_h.tup, Utils::NOPTraits::greater, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_t>> premise = 
-                    std::make_shared<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_t>>
-                        (*new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_t>(this, tup_h.tup, Utils::NOPTraits::greater, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            Utils::NOPTraits::insertPremise(tup_h.tup, premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::greater, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -639,29 +522,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterOrEqual";
             pr_name += b_attr.name.getString(); 
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>
-                        (this, &b_attr, Utils::NOPTraits::greater_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>(this, &b_attr, Utils::NOPTraits::greater_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::greater_equal, &b_attr, pr_name);
 
             return *premise;
         }
@@ -671,29 +541,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterOrEqual";
             pr_name += b_attr.name.getString(); 
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>
-                        (this, &b_attr, Utils::NOPTraits::greater_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>(this, &b_attr, Utils::NOPTraits::greater_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::greater_equal, &b_attr, pr_name);
 
             return *premise;
         }
@@ -705,29 +562,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>> premise
-                    (new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>
-                        (this, tup_h.tup, Utils::NOPTraits::greater_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>>
-                        (*new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>(this, tup_h.tup, Utils::NOPTraits::greater_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            Utils::NOPTraits::insertPremise(tup_h.tup, premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::greater_equal, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -737,29 +581,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessThan";
-            pr_name += b_attr.name.getString(); 
+            pr_name += b_attr.name.getString();
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>
-                        (this, &b_attr, Utils::NOPTraits::less, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>(this, &b_attr, Utils::NOPTraits::less, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::less, &b_attr, pr_name);
 
             return *premise;
         }
@@ -769,29 +600,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessThan";
             pr_name += b_attr.name.getString(); 
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>
-                        (this, &b_attr, Utils::NOPTraits::less, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_t>(this, &b_attr, Utils::NOPTraits::less, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::less, &b_attr, pr_name);
 
             return *premise;
         }
@@ -803,29 +621,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_t>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_t>> premise
-                    (new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_t>
-                        (this, tup_h.tup, Utils::NOPTraits::less, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_t>> premise = 
-                    std::make_shared<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_t>>
-                        (*new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_t>(this, tup_h.tup, Utils::NOPTraits::less, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            Utils::NOPTraits::insertPremise(tup_h.tup, premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::less, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -835,29 +640,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessOrEqual";
             pr_name += b_attr.name.getString(); 
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>
-                        (this, &b_attr, Utils::NOPTraits::less_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>(this, &b_attr, Utils::NOPTraits::less_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::less_equal, &b_attr, pr_name);
 
             return *premise;
         }
@@ -867,29 +659,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessOrEqual";
             pr_name += b_attr.name.getString(); 
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>> premise
-                    (new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>
-                        (this, &b_attr, Utils::NOPTraits::less_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>>
-                        (*new Premise<TYPE, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>(this, &b_attr, Utils::NOPTraits::less_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            this->insert(premise);
-            b_attr.insert(premise);
-
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::less_equal, &b_attr, pr_name);
 
             return *premise;
         }
@@ -901,28 +680,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_equal_t>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_equal_t>> premise
-                    (new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_equal_t>
-                        (this, tup_h.tup, Utils::NOPTraits::less_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_equal_t>>
-                        (*new Premise<TYPE, std::tuple<T...>, Utils::NOPTraits::less_equal_t>(this, tup_h.tup, Utils::NOPTraits::less_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            insert(premise);
-            Utils::NOPTraits::insertPremise(tup_h.tup, premise);
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::less_equal, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -932,10 +699,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "Equals";
@@ -945,17 +712,8 @@ namespace JuNOCpp
                 pr_name += std::to_string(value);
             else
                 pr_name += "Value";
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>> premise
-                    (new Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>(this, value, Utils::NOPTraits::equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>>
-                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::equal_t>(this, value, Utils::NOPTraits::equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            insert(premise);
-            premise->update();
+                
+            auto premise = make_premise(this, Utils::NOPTraits::equal, value, pr_name);
 
             return *premise;
         }
@@ -965,10 +723,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::not_equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "NotEqual";
@@ -978,17 +736,8 @@ namespace JuNOCpp
                 pr_name += std::to_string(value);
             else
                 pr_name += "Value";
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>> premise
-                    (new Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>(this, value, Utils::NOPTraits::not_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>>
-                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::not_equal_t>(this, value, Utils::NOPTraits::not_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
 
-            insert(premise);
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::not_equal, value, pr_name);
 
             return *premise;
         }
@@ -998,10 +747,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterThan";
@@ -1011,17 +760,8 @@ namespace JuNOCpp
                 pr_name += std::to_string(value);
             else
                 pr_name += "Value";
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>> premise
-                    (new Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>(this, value, Utils::NOPTraits::greater, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>> premise = 
-                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>>
-                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::greater_t>(this, value, Utils::NOPTraits::greater, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
 
-            insert(premise);
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::greater, value, pr_name);
 
             return *premise;
         }
@@ -1031,10 +771,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterOrEqual";
@@ -1044,17 +784,8 @@ namespace JuNOCpp
                 pr_name += std::to_string(value);
             else
                 pr_name += "Value";
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>> premise
-                    (new Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>(this, value, Utils::NOPTraits::greater_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>>
-                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::greater_equal_t>(this, value, Utils::NOPTraits::greater_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
 
-            insert(premise);
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::greater_equal, value, pr_name);
 
             return *premise;
         }
@@ -1064,10 +795,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<TYPE, TYPE, Utils::NOPTraits::less_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, TYPE, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessThan";
@@ -1077,17 +808,8 @@ namespace JuNOCpp
                 pr_name += std::to_string(value);
             else
                 pr_name += "Value";
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::less_t>> premise
-                    (new Premise<TYPE, TYPE, Utils::NOPTraits::less_t>(this, value, Utils::NOPTraits::less, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::less_t>> premise = 
-                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::less_t>>
-                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::less_t>(this, value, Utils::NOPTraits::less, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
 
-            insert(premise);
-            premise->update();
+            auto premise = make_premise(this, Utils::NOPTraits::less, value, pr_name);
 
             return *premise;
         }
@@ -1097,10 +819,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_equal_t>& 
          */
         template <class TYPE>
-        Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessOrEqual";
@@ -1110,17 +832,8 @@ namespace JuNOCpp
                 pr_name += std::to_string(value);
             else
                 pr_name += "Value";
-            #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>> premise
-                    (new Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>(this, value, Utils::NOPTraits::less_equal, pr_name));
-            #else
-                shared_ptr<Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>> premise = 
-                    std::make_shared<Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>>
-                        (*new Premise<TYPE, TYPE, Utils::NOPTraits::less_equal_t>(this, value, Utils::NOPTraits::less_equal, pr_name));
-            #endif // USE_CUSTOM_SMART_PTRS
-
-            insert(premise);
-            notify();
+            
+            auto premise = make_premise(this, Utils::NOPTraits::less_equal, value, pr_name);
 
             return *premise;
         }

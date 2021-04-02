@@ -62,6 +62,7 @@ build/
 !.vscode/extensions.json
 *.code-workspace
 settings.json
+.vscode/
 
 ### test files ###
 teste.cpp

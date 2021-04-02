@@ -2,7 +2,6 @@
 #include "catch.hpp"
 #include <string>
 
-
 TEST_CASE("Attribute can be of type int", "[Attribute]")
 {
     NOP::Attribute<int> at1{123456};
@@ -55,6 +54,7 @@ TEST_CASE("Attribute can be of type string", "[Attribute]")
 
 SCENARIO("Premises can be a comparison between an Attribute and a const value", "[Premise]")
 {
+
     GIVEN("An Attribute and a constant value")
     {
         const int val{1234};
@@ -62,7 +62,7 @@ SCENARIO("Premises can be a comparison between an Attribute and a const value", 
 
         WHEN("The Premise is a equality between this Attribute and the same constant value")
         {
-           auto& pr = at == 1234;
+            auto& pr = at == 1234;
 
             THEN("The Premise should be approved")
                 REQUIRE(pr.getCurrentStatus() == true);
@@ -208,7 +208,7 @@ SCENARIO("Conditions can be a logical expression between Premises", "[Condition]
 }
 
 
-SCENARIO("Conditions can be a logical expression between Premises and another Conditions", "[Condition]")
+SCENARIO("Conditions can be a logical expression between Premise and Conds", "[Condition]")
 {
     GIVEN("One Premises and one Condition")
     {
@@ -279,8 +279,68 @@ SCENARIO("Conditions can be a logical expression between Premises and another Co
                 at2 = true;
                 THEN("Condition is approved")
                     REQUIRE(cd2.getCurrentStatus() == true);
+
+                AND_WHEN("The Premise disapproves")
+                {
+                    at1 = 3;
+                    THEN("Condition should remain approved")
+                        REQUIRE(cd2.getCurrentStatus() == true);
+
+                    AND_WHEN("The first Condition also disapproves")
+                    {
+                        at2 = false;
+                        THEN("Condition now should be disapproved")
+                            REQUIRE_FALSE(cd2.getCurrentStatus() == true);
+                    }
+                }
             }
         }      
+    }
+}
+
+SCENARIO("Premises can be impertinents", "[Premise][Impertinent]")
+{
+    GIVEN("Two unapproved Premises, one common and one impertinent")
+    {
+        NOP::Attribute<int> at1{3};
+        NOP::Attribute<bool> at2{false};
+        auto& pr1 = at1 == 5;
+        auto& prImp = IMPERTINENT((at2 == true));
+
+        WHEN("A Condition is a conjunction between the two premises")
+        {
+            auto& cd = pr1 and prImp;
+            
+            AND_WHEN("The Attribute of the impertinent Premise changes");
+            {
+                at2 = true;
+                THEN("The impertinent Premise remains unapproved")
+                    REQUIRE_FALSE(prImp.getCurrentStatus() == true);
+
+                AND_WHEN("The common Premise approves")
+                {
+                    at1 = 5;
+
+                    THEN("The impertinent Premise and the Condition should now be approved")
+                    {
+                        REQUIRE(prImp.getCurrentStatus() == true);
+                        REQUIRE(cd.getCurrentStatus() == true);
+
+                        AND_WHEN("The common Premise disapproves")
+                        {
+                            at1 = 7;
+
+                            THEN("The Condition and the impertinent Premise should be disapproved")
+                            {
+                                //REQUIRE_FALSE(prImp.getCurrentStatus() == true);
+                                REQUIRE_FALSE(cd.getCurrentStatus() == true);
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
     }
 }
 
@@ -345,7 +405,7 @@ SCENARIO("Rules can be constructed with previous declared NOP expressions", "[Ru
     }
 }
 
-SCENARIO("Rules can be constructed directly with the NOP expression construction", "[Rule]")
+SCENARIO("Rules can be constructed directly with the NOP expression itself", "[Rule]")
 {
     GIVEN("Some Attributes and Premises")
     {
@@ -405,4 +465,3 @@ SCENARIO("Rules can be constructed directly with the NOP expression construction
         }
     }
 }
-
