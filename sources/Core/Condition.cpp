@@ -255,38 +255,6 @@ namespace JuNOCpp
          */
         Condition& Condition::operator &&(Condition& b_condition)
         {
-            // if((b_condition.mode == Condition::CONJUNCTION or b_condition.mode == Condition::SINGLE)
-            // and (this->mode == Condition::CONJUNCTION or this->mode == Condition::SINGLE) 
-            // and !b_condition.persistant and !this->persistant)
-            // {
-            //     b_condition.insert(this->shared_from_this());
-            //     this->setQuantity(this->quantity + 1);
-
-            //     if(b_condition.getCurrentStatus())
-            //         update(false, b_condition.getCurrentStatus());
-
-            //     return *this;
-            // }
-            // else
-            // {
-            //     #ifdef USE_CUSTOM_SMART_PTRS
-            //         shared_ptr<Condition> condition(new Condition());
-            //     #else
-            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            //     #endif // USE_CUSTOM_SMART_PTRS
-            //     condition->setQuantity(2);
-            //     condition->mode = Condition::CONJUNCTION;
-
-            //     this->insert(condition);
-            //     b_condition.insert(condition);
-
-            //     if(this->current_status)
-            //         condition->update(false, this->current_status);
-            //     if(b_condition.getCurrentStatus())
-            //         condition->update(false, b_condition.getCurrentStatus());
-                
-            //     return *condition;
-            // }
             return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_condition);
         }
 
@@ -298,39 +266,6 @@ namespace JuNOCpp
          */
         Condition& Condition::operator &&(Condition&& b_condition)
         {
-            // if((b_condition.mode == Condition::CONJUNCTION or b_condition.mode == Condition::SINGLE)
-            // and (this->mode == Condition::CONJUNCTION or this->mode == Condition::SINGLE) 
-            // and !b_condition.persistant and !this->persistant)
-            // {
-            //     b_condition.insert(this->shared_from_this());
-            //     this->setQuantity(this->quantity + 1);
-
-            //     if(b_condition.getCurrentStatus())
-            //         update(false, b_condition.getCurrentStatus());
-
-            //     return *this;
-            // }
-            // else
-            // {
-            //     #ifdef USE_CUSTOM_SMART_PTRS
-            //         shared_ptr<Condition> condition(new Condition());
-            //     #else
-            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            //     #endif // USE_CUSTOM_SMART_PTRS
-            //     condition->setQuantity(2);
-            //     condition->mode = Condition::CONJUNCTION;
-
-            //     this->insert(condition);
-            //     b_condition.insert(condition);
-
-            //     if(this->current_status)
-            //         condition->update(false, this->current_status);
-            //     if(b_condition.getCurrentStatus())
-            //         condition->update(false, b_condition.getCurrentStatus());
-                
-            //     return *condition;
-            // }
-
             return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_condition);
         }
 
@@ -342,38 +277,6 @@ namespace JuNOCpp
          */
         Condition& Condition::operator ||(Condition& b_condition)
         {
-            // if((b_condition.mode == Condition::DISJUNCTION or b_condition.mode == Condition::SINGLE)
-            // and (this->mode == Condition::DISJUNCTION or this->mode == Condition::SINGLE) 
-            // and !b_condition.persistant and !this->persistant)
-            // {
-            //     b_condition.insert(this->shared_from_this());
-
-            //     if(b_condition.getCurrentStatus())
-            //         update(false, b_condition.getCurrentStatus());
-
-            //     return *this;
-            // }
-            // else
-            // {
-            //     #ifdef USE_CUSTOM_SMART_PTRS
-            //         shared_ptr<Condition> condition(new Condition());
-            //     #else
-            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            //     #endif // USE_CUSTOM_SMART_PTRS
-            //     condition->setQuantity(1);
-            //     condition->mode = Condition::DISJUNCTION;
-
-            //     this->insert(condition);
-            //     b_condition.insert(condition);
-
-            //     if(this->current_status)
-            //         condition->update(false, this->current_status);
-            //     if(b_condition.getCurrentStatus())
-            //         condition->update(false, b_condition.getCurrentStatus());
-                
-            //     return *condition;
-            // }
-
             return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_condition);
         }
 
@@ -385,38 +288,6 @@ namespace JuNOCpp
          */
         Condition& Condition::operator ||(Condition&& b_condition)
         {
-            // if((b_condition.mode == Condition::DISJUNCTION or b_condition.mode == Condition::SINGLE)
-            // and (this->mode == Condition::DISJUNCTION or this->mode == Condition::SINGLE) 
-            // and !b_condition.persistant and !this->persistant)
-            // {
-            //     b_condition.insert(this->shared_from_this());
-
-            //     if(b_condition.getCurrentStatus())
-            //         update(false, b_condition.getCurrentStatus());
-
-            //     return *this;
-            // }
-            // else
-            // {
-            //     #ifdef USE_CUSTOM_SMART_PTRS
-            //         shared_ptr<Condition> condition(new Condition());
-            //     #else
-            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            //     #endif // USE_CUSTOM_SMART_PTRS
-            //     condition->setQuantity(1);
-            //     condition->mode = Condition::DISJUNCTION;
-
-            //     this->insert(condition);
-            //     b_condition.insert(condition);
-
-            //     if(this->current_status)
-            //         condition->update(false, this->current_status);
-            //     if(b_condition.getCurrentStatus())
-            //         condition->update(false, b_condition.getCurrentStatus());
-                
-            //     return *condition;
-            // }
-
             return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_condition);
         }
     } // namespace Core

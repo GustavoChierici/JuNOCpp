@@ -5,14 +5,18 @@
 #include "NOPManager.hpp"
 #include "tuple_helper.hpp"
 #include "premise_traits.hpp"
-#include "attribute_traits.hpp"
 
 namespace JuNOCpp
 {
     namespace Core
     {
-        template <typename LT, typename RT, typename CmpOpT>
+        enum class Comparison; 
+        template <typename LT, typename RT, Comparison cmp_operator>
         class Premise;
+        
+        template<Comparison cmp_operator, typename LT, typename RT>
+        auto make_premise(LT lhs, RT rhs, Utils::CustomString name);
+
         template<class TYPE>
         class Attribute: public Notifier, public Notifiable
         {
@@ -23,12 +27,10 @@ namespace JuNOCpp
             Attribute(Attribute&& rhs);
             ~Attribute();
 
-            TYPE getPreviousStatus();
-            TYPE getCurrentStatus();
+            TYPE getPreviousValue();
+            TYPE getValue();
 
-            void setStatus(TYPE value, bool renotify = false);
-
-            void referenceAttributeAbove(Attribute<TYPE>* b_attr);
+            void setValue(TYPE value, bool renotify = false);
 
             void update(const bool renotify = false);
             void update(const bool renotify, const bool status) {}
@@ -60,46 +62,46 @@ namespace JuNOCpp
 
             void operator=(TYPE value);
 
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& operator==(Attribute<TYPE>& b_attr);
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& operator==(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::EQUAL>& operator==(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::EQUAL>& operator==(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::equal_t>& operator==(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::EQUAL>& operator==(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& operator!=(Attribute<TYPE>& b_attr);
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& operator!=(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::NOT_EQUAL>& operator!=(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::NOT_EQUAL>& operator!=(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::not_equal_t>& operator!=(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::NOT_EQUAL>& operator!=(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& operator>(Attribute<TYPE>& b_attr);
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& operator>(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER>& operator>(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER>& operator>(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_t>& operator>(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::GREATER>& operator>(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& operator>=(Attribute<TYPE>& b_attr);
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& operator>=(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER_EQUAL>& operator>=(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER_EQUAL>& operator>=(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>& operator>=(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::GREATER_EQUAL>& operator>=(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& operator<(Attribute<TYPE>& b_attr);
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& operator<(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS>& operator<(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS>& operator<(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_t>& operator<(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::LESS>& operator<(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& operator<=(Attribute<TYPE>& b_attr);
-            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& operator<=(Attribute<TYPE>&& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS_EQUAL>& operator<=(Attribute<TYPE>& b_attr);
+            Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS_EQUAL>& operator<=(Attribute<TYPE>&& b_attr);
             template<typename _Op, typename ...T>
-            Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_equal_t>& operator<=(Utils::tuple_helper<_Op, T...> tup_h);
+            Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::LESS_EQUAL>& operator<=(Utils::tuple_helper<_Op, T...> tup_h);
 
-            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::equal_t>& operator==(const TYPE value);
-            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::not_equal_t>& operator!=(const TYPE value);
-            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_t>& operator>(const TYPE value);
-            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_equal_t>& operator>=(const TYPE value);
-            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_t>& operator<(const TYPE value);
-            Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_equal_t>& operator<=(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Comparison::EQUAL>& operator==(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Comparison::NOT_EQUAL>& operator!=(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Comparison::GREATER>& operator>(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Comparison::GREATER_EQUAL>& operator>=(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Comparison::LESS>& operator<(const TYPE value);
+            Premise<Attribute<TYPE>*, TYPE, Comparison::LESS_EQUAL>& operator<=(const TYPE value);
             
         private:
-            TYPE current_status;
-            TYPE previous_status;
+            TYPE value;
+            TYPE p_value;
 
             Utils::forward_list<shared_ptr<Notifiable>> _impertinents;
         };
@@ -124,11 +126,11 @@ namespace JuNOCpp
         template<class TYPE>
         Attribute<TYPE>::Attribute(TYPE value, Utils::CustomString name):
         Notifiable(name),
-        current_status{value},
-        previous_status{value}
+        value{value},
+        p_value{value}
         {
-            // this->current_status = value;
-            // this->previous_status = value;
+            // this->value = value;
+            // this->p_value = value;
         }
 
         /**
@@ -141,8 +143,8 @@ namespace JuNOCpp
         Attribute<TYPE>::Attribute(const Attribute<TYPE>& rhs):
         Notifiable{rhs.name},
         Notifier{rhs.notifiables},
-        current_status{rhs.current_status},
-        previous_status{rhs.previous_status}
+        value{rhs.value},
+        p_value{rhs.p_value}
         {
         }
 
@@ -156,8 +158,8 @@ namespace JuNOCpp
         Attribute<TYPE>::Attribute(Attribute&& rhs):
         Notifiable{rhs.name},
         Notifier{rhs.notifiables},
-        current_status{rhs.current_status},
-        previous_status{rhs.previous_status}
+        value{rhs.value},
+        p_value{rhs.p_value}
         {
         }
 
@@ -172,27 +174,27 @@ namespace JuNOCpp
         }
 
         /**
-         * Getter do previous_status 
+         * Getter do p_value 
          * 
          * @tparam TYPE 
          * @return TYPE 
          */
         template<class TYPE>
-        TYPE Attribute<TYPE>::getPreviousStatus()
+        TYPE Attribute<TYPE>::getPreviousValue()
         {
-            return this->previous_status;
+            return this->p_value;
         }
 
         /**
-         * Getter do current_status
+         * Getter do value
          * 
          * @tparam TYPE 
          * @return TYPE 
          */
         template<class TYPE>
-        TYPE Attribute<TYPE>::getCurrentStatus()
+        TYPE Attribute<TYPE>::getValue()
         {
-            return this->current_status;
+            return this->value;
         }
 
         /**
@@ -203,9 +205,9 @@ namespace JuNOCpp
          * @param renotify == false
          */
         template<class TYPE>
-        void Attribute<TYPE>::setStatus(TYPE value, bool renotify)
+        void Attribute<TYPE>::setValue(TYPE value, bool renotify)
         {
-            if(renotify || value != this->current_status)
+            if(renotify || value != this->value)
             {
                 #ifdef SHOW_NOP_LOGGER
                     Utils::NOPLogger::Get().writeAssignment(name, this, value, renotify);
@@ -214,8 +216,8 @@ namespace JuNOCpp
                     Utils::NOPLogger::Get().incrementIdentation();
                 #endif // SHOW_NOP_LOGGER
 
-                this->previous_status = this->current_status;
-                this->current_status = value;
+                this->p_value = this->value;
+                this->value = value;
 
                 notify(renotify);
 
@@ -234,7 +236,7 @@ namespace JuNOCpp
         template<class TYPE>
         void Attribute<TYPE>::update(bool renotify)
         {
-            // this->current_status = this->updateOperation(this->current_status, value);
+            // this->value = this->updateOperation(this->value, value);
             std::cout << this << std::endl;
             std::cout << "Não era pra você estar aqui" << std::endl;
             // notify(renotify);
@@ -329,7 +331,7 @@ namespace JuNOCpp
         }
 
         /**
-         * Overload do operator = para chamar automaticamente o método setStatus
+         * Overload do operator = para chamar automaticamente o método setValue
          * 
          * @tparam TYPE 
          * @param value 
@@ -337,7 +339,7 @@ namespace JuNOCpp
         template<class TYPE>
         void Attribute<TYPE>::operator=(TYPE value)
         {
-            setStatus(value);
+            setValue(value);
         }
 
         /**
@@ -345,16 +347,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::EQUAL>& Attribute<TYPE>::operator==(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "Equals";
             pr_name += b_attr.name.getString(); 
 
-            auto premise = make_premise(this, Utils::NOPTraits::equal, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::EQUAL>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -364,16 +366,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>&
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::EQUAL>&
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::EQUAL>& Attribute<TYPE>::operator==(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "Equals";
             pr_name += b_attr.name.getString();
 
-            auto premise = make_premise(this, Utils::NOPTraits::equal, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::EQUAL>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -385,16 +387,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::equal_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::EQUAL>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::EQUAL>& Attribute<TYPE>::operator==(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            auto premise = make_premise(this, Utils::NOPTraits::equal, tup_h.tup, pr_name);
+            auto premise = make_premise<Comparison::EQUAL>(this, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -404,16 +406,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::NOT_EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::NOT_EQUAL>& Attribute<TYPE>::operator!=(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "NotEqual";
             pr_name += b_attr.name.getString(); 
 
-            auto premise = make_premise(this, Utils::NOPTraits::not_equal, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::NOT_EQUAL>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -423,16 +425,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::NOT_EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::NOT_EQUAL>& Attribute<TYPE>::operator!=(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "NotEqual";
             pr_name += b_attr.name.getString(); 
 
-            auto premise = make_premise(this, Utils::NOPTraits::not_equal, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::NOT_EQUAL>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -444,16 +446,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::not_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::NOT_EQUAL>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::NOT_EQUAL>& Attribute<TYPE>::operator!=(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            auto premise = make_premise(this, Utils::NOPTraits::not_equal, tup_h.tup, pr_name);
+            auto premise = make_premise<Comparison::NOT_EQUAL>(this, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -463,16 +465,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER>& Attribute<TYPE>::operator>(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterThan";
             pr_name += b_attr.name.getString(); 
 
-            auto premise = make_premise(this, Utils::NOPTraits::greater, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::GREATER>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -482,16 +484,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER>& Attribute<TYPE>::operator>(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterThan";
             pr_name += b_attr.name.getString(); 
 
-            auto premise = make_premise(this, Utils::NOPTraits::greater, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::GREATER>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -503,16 +505,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::GREATER>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::GREATER>& Attribute<TYPE>::operator>(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            auto premise = make_premise(this, Utils::NOPTraits::greater, tup_h.tup, pr_name);
+            auto premise = make_premise<Comparison::GREATER>(this, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -522,16 +524,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER_EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER_EQUAL>& Attribute<TYPE>::operator>=(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterOrEqual";
             pr_name += b_attr.name.getString(); 
 
-            auto premise = make_premise(this, Utils::NOPTraits::greater_equal, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::GREATER_EQUAL>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -541,16 +543,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER_EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::GREATER_EQUAL>& Attribute<TYPE>::operator>=(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterOrEqual";
             pr_name += b_attr.name.getString(); 
 
-            auto premise = make_premise(this, Utils::NOPTraits::greater_equal, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::GREATER_EQUAL>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -562,16 +564,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::GREATER_EQUAL>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::GREATER_EQUAL>& Attribute<TYPE>::operator>=(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            auto premise = make_premise(this, Utils::NOPTraits::greater_equal, tup_h.tup, pr_name);
+            auto premise = make_premise<Comparison::GREATER_EQUAL>(this, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -581,16 +583,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS>& Attribute<TYPE>::operator<(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessThan";
             pr_name += b_attr.name.getString();
 
-            auto premise = make_premise(this, Utils::NOPTraits::less, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::LESS>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -600,16 +602,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS>& Attribute<TYPE>::operator<(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessThan";
             pr_name += b_attr.name.getString(); 
 
-            auto premise = make_premise(this, Utils::NOPTraits::less, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::LESS>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -621,16 +623,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::LESS>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::LESS>& Attribute<TYPE>::operator<(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            auto premise = make_premise(this, Utils::NOPTraits::less, tup_h.tup, pr_name);
+            auto premise = make_premise<Comparison::LESS>(this, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -640,16 +642,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS_EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(Attribute<TYPE>& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS_EQUAL>& Attribute<TYPE>::operator<=(Attribute<TYPE>& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessOrEqual";
             pr_name += b_attr.name.getString(); 
 
-            auto premise = make_premise(this, Utils::NOPTraits::less_equal, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::LESS_EQUAL>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -659,16 +661,16 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param b_attr 
-         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS_EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(Attribute<TYPE>&& b_attr)
+        Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::LESS_EQUAL>& Attribute<TYPE>::operator<=(Attribute<TYPE>&& b_attr)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessOrEqual";
             pr_name += b_attr.name.getString(); 
 
-            auto premise = make_premise(this, Utils::NOPTraits::less_equal, &b_attr, pr_name);
+            auto premise = make_premise<Comparison::LESS_EQUAL>(this, &b_attr, pr_name);
 
             return *premise;
         }
@@ -680,16 +682,16 @@ namespace JuNOCpp
          * @tparam _Op 
          * @tparam T 
          * @param tup_h 
-         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::LESS_EQUAL>& 
          */
         template <class TYPE>
         template<typename _Op, typename ...T>
-        Premise<Attribute<TYPE>*, std::tuple<T...>, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(Utils::tuple_helper<_Op, T...> tup_h)
+        Premise<Attribute<TYPE>*, std::tuple<T...>, Comparison::LESS_EQUAL>& Attribute<TYPE>::operator<=(Utils::tuple_helper<_Op, T...> tup_h)
         {
             std::string pr_name = name.getString();
             pr_name += "EqualsArgs";
 
-            auto premise = make_premise(this, Utils::NOPTraits::less_equal, tup_h.tup, pr_name);
+            auto premise = make_premise<Comparison::LESS_EQUAL>(this, tup_h.tup, pr_name);
 
             return *premise;
         }
@@ -699,10 +701,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::equal_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Comparison::EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::equal_t>& Attribute<TYPE>::operator==(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Comparison::EQUAL>& Attribute<TYPE>::operator==(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "Equals";
@@ -713,7 +715,7 @@ namespace JuNOCpp
             else
                 pr_name += "Value";
                 
-            auto premise = make_premise(this, Utils::NOPTraits::equal, value, pr_name);
+            auto premise = make_premise<Comparison::EQUAL>(this, value, pr_name);
 
             return *premise;
         }
@@ -723,10 +725,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::not_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Comparison::NOT_EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::not_equal_t>& Attribute<TYPE>::operator!=(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Comparison::NOT_EQUAL>& Attribute<TYPE>::operator!=(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "NotEqual";
@@ -737,7 +739,7 @@ namespace JuNOCpp
             else
                 pr_name += "Value";
 
-            auto premise = make_premise(this, Utils::NOPTraits::not_equal, value, pr_name);
+            auto premise = make_premise<Comparison::NOT_EQUAL>(this, value, pr_name);
 
             return *premise;
         }
@@ -747,10 +749,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Comparison::GREATER>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_t>& Attribute<TYPE>::operator>(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Comparison::GREATER>& Attribute<TYPE>::operator>(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterThan";
@@ -761,7 +763,7 @@ namespace JuNOCpp
             else
                 pr_name += "Value";
 
-            auto premise = make_premise(this, Utils::NOPTraits::greater, value, pr_name);
+            auto premise = make_premise<Comparison::GREATER>(this, value, pr_name);
 
             return *premise;
         }
@@ -771,10 +773,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Comparison::GREATER_EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::greater_equal_t>& Attribute<TYPE>::operator>=(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Comparison::GREATER_EQUAL>& Attribute<TYPE>::operator>=(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "IsGreaterOrEqual";
@@ -785,7 +787,7 @@ namespace JuNOCpp
             else
                 pr_name += "Value";
 
-            auto premise = make_premise(this, Utils::NOPTraits::greater_equal, value, pr_name);
+            auto premise = make_premise<Comparison::GREATER_EQUAL>(this, value, pr_name);
 
             return *premise;
         }
@@ -795,10 +797,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Comparison::LESS>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_t>& Attribute<TYPE>::operator<(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Comparison::LESS>& Attribute<TYPE>::operator<(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessThan";
@@ -809,7 +811,7 @@ namespace JuNOCpp
             else
                 pr_name += "Value";
 
-            auto premise = make_premise(this, Utils::NOPTraits::less, value, pr_name);
+            auto premise = make_premise<Comparison::LESS>(this, value, pr_name);
 
             return *premise;
         }
@@ -819,10 +821,10 @@ namespace JuNOCpp
          * 
          * @tparam TYPE 
          * @param value 
-         * @return Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_equal_t>& 
+         * @return Premise<Attribute<TYPE>*, TYPE, Comparison::LESS_EQUAL>& 
          */
         template <class TYPE>
-        Premise<Attribute<TYPE>*, TYPE, Utils::NOPTraits::less_equal_t>& Attribute<TYPE>::operator<=(const TYPE value)
+        Premise<Attribute<TYPE>*, TYPE, Comparison::LESS_EQUAL>& Attribute<TYPE>::operator<=(const TYPE value)
         {
             std::string pr_name = name.getString();
             pr_name += "IsLessOrEqual";
@@ -833,7 +835,7 @@ namespace JuNOCpp
             else
                 pr_name += "Value";
             
-            auto premise = make_premise(this, Utils::NOPTraits::less_equal, value, pr_name);
+            auto premise = make_premise<Comparison::LESS_EQUAL>(this, value, pr_name);
 
             return *premise;
         }

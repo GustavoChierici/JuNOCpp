@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.14)
 add_executable(junocpp_test tests.cpp tests-main.cpp)
 
 set_target_properties(junocpp_test PROPERTIES
-	CXX_STANDARD 17
+	CXX_STANDARD 20
 )
 
 target_link_libraries(junocpp_test JuNOC++)

@@ -16,13 +16,15 @@ namespace JuNOCpp
         // template<typename LT>
         // auto make_condition(LT lhs, int op, Condition* rhs);
 
-        template<class PrT, typename RT, typename CmpOpT>
+        enum class Comparison;
+
+        template<class PrT, typename RT, Comparison cmp_operator>
         class Premise;
 
         class Rule;
         class Condition: public Notifiable, public Notifier
         {
-        template<class PrT, typename RT, typename CmpOpT>
+        template<class PrT, typename RT, Comparison cmp_operator>
         friend class Premise;
         public:
             enum LogicalOperator {
@@ -93,39 +95,9 @@ namespace JuNOCpp
              * @param b_premise 
              * @return Condition& 
              */
-            template <class PrT, typename RT, typename CmpOpT>
-            Condition& operator &&(Premise<PrT, RT, CmpOpT>& b_premise)
+            template <class PrT, typename RT, Comparison cmp_operator>
+            Condition& operator &&(Premise<PrT, RT, cmp_operator>& b_premise)
             {
-                // if((this->mode == Condition::CONJUNCTION or this->mode == Condition::SINGLE) and !this->persistant)
-                // {
-                //     b_premise.insert(shared_from_this());
-                //     incQuantity();
-
-                //     if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-                //         update(false, b_premise.getCurrentStatus());
-
-                //     return *this;
-                // }
-                // else
-                // {
-                //     #ifdef USE_CUSTOM_SMART_PTRS
-                //         shared_ptr<Condition> condition(new Condition());
-                //     #else
-                //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-                //     #endif // USE_CUSTOM_SMART_PTRS
-                //     condition->setQuantity(2);
-                //     condition->mode = Condition::CONJUNCTION;
-
-                //     this->insert(condition);
-                //     b_premise.insert(condition);
-
-                //     if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-                //         condition->update(false, b_premise.getCurrentStatus());
-                //     if(this->current_status)
-                //         condition->update(false, this->current_status);
-                    
-                //     return *condition;
-                // }
                 return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_premise);
             }
 
@@ -138,40 +110,9 @@ namespace JuNOCpp
              * @param b_premise 
              * @return Condition& 
              */
-            template <class PrT, typename RT, typename CmpOpT>
-            Condition& operator &&(Premise<PrT, RT, CmpOpT>&& b_premise)
+            template <class PrT, typename RT, Comparison cmp_operator>
+            Condition& operator &&(Premise<PrT, RT, cmp_operator>&& b_premise)
             {
-                // if((this->mode == Condition::CONJUNCTION or this->mode == Condition::SINGLE) and !this->persistant)
-                // {
-                //     b_premise.insert(shared_from_this());
-                //     incQuantity();
-
-                //     if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-                //         update(false, b_premise.getCurrentStatus());
-
-                //     return *this;
-                // }
-                // else
-                // {
-                //     #ifdef USE_CUSTOM_SMART_PTRS
-                //         shared_ptr<Condition> condition(new Condition());
-                //     #else
-                //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-                //     #endif // USE_CUSTOM_SMART_PTRS
-                //     condition->setQuantity(2);
-                //     condition->mode = Condition::CONJUNCTION;
-
-                //     this->insert(condition);
-                //     b_premise.insert(condition);
-
-                //     if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-                //         condition->update(false, b_premise.getCurrentStatus());
-                //     if(this->current_status)
-                //         condition->update(false, this->current_status);
-                    
-                //     return *condition;
-                // }
-
                 return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_premise);
             }
 
@@ -184,39 +125,9 @@ namespace JuNOCpp
              * @param b_premise 
              * @return Condition& 
              */
-            template <class PrT, typename RT, typename CmpOpT>
-            Condition& operator ||(Premise<PrT, RT, CmpOpT>& b_premise)
+            template <class PrT, typename RT, Comparison cmp_operator>
+            Condition& operator ||(Premise<PrT, RT, cmp_operator>& b_premise)
             {
-                // if((this->mode == Condition::DISJUNCTION or this->mode == Condition::SINGLE) and !this->persistant)
-                // {
-                //     b_premise.insert(shared_from_this());
-
-                //     if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-                //         update(false, b_premise.getCurrentStatus());
-
-                //     return *this;
-                // }
-                // else
-                // {
-                //     #ifdef USE_CUSTOM_SMART_PTRS
-                //         shared_ptr<Condition> condition(new Condition());
-                //     #else
-                //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-                //     #endif // USE_CUSTOM_SMART_PTRS
-                //     condition->setQuantity(1);
-                //     condition->mode = Condition::DISJUNCTION;
-
-                //     this->insert(condition);
-                //     b_premise.insert(condition);
-
-                //     if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-                //         condition->update(false, b_premise.getCurrentStatus());
-                //     if(this->current_status)
-                //         condition->update(false, this->current_status);
-                    
-                //     return *condition;
-                // }
-
                 return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_premise);
             }
 
@@ -229,39 +140,9 @@ namespace JuNOCpp
              * @param b_premise 
              * @return Condition& 
              */
-            template <class PrT, typename RT, typename CmpOpT>
-            Condition& operator ||(Premise<PrT, RT, CmpOpT>&& b_premise)
+            template <class PrT, typename RT, Comparison cmp_operator>
+            Condition& operator ||(Premise<PrT, RT, cmp_operator>&& b_premise)
             {
-                // if((this->mode == Condition::DISJUNCTION or this->mode == Condition::SINGLE) and !this->persistant)
-                // {
-                //     b_premise.insert(this->shared_from_this());
-
-                //     if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-                //         update(false, b_premise.getCurrentStatus());
-
-                //     return *this;
-                // }
-                // else
-                // {
-                //     #ifdef USE_CUSTOM_SMART_PTRS
-                //         shared_ptr<Condition> condition(new Condition());
-                //     #else
-                //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-                //     #endif // USE_CUSTOM_SMART_PTRS> condition = std::make_shared<Condition>(aux);
-                //     condition->setQuantity(1);
-                //     condition->mode = Condition::DISJUNCTION;
-
-                //     this->insert(condition);
-                //     b_premise.insert(condition);
-
-                //     if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-                //         condition->update(false, b_premise.getCurrentStatus());
-                //     if(this->current_status)
-                //         condition->update(false, this->current_status);
-                    
-                //     return *condition;
-                // }
-
                 return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_premise);
             }
             

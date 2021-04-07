@@ -1,7 +1,7 @@
 #ifndef JUNOCPP_TUPLE_HELPER_HPP
 #define JUNOCPP_TUPLE_HELPER_HPP
 #include <algorithm>
-#include "./NOPTraits/attribute_traits.hpp"
+#include "attribute_traits.hpp"
 
 namespace JuNOCpp
 {   

@@ -18,14 +18,15 @@ namespace JuNOCpp
 {
     namespace Core
     {
-        template<typename LT, typename RT, typename CmpOpT>
+        template<typename LT, typename RT, Comparison cmp_operator>
         class Premise;
-        template<typename LT, typename RT, typename CmpOpT>
-        auto make_premise(LT lhs, CmpOpT comparison_operator, RT rhs, Utils::CustomString name = "UnnamedPremise");
+        template<Comparison cmp_operator, typename LT, typename RT>
+        auto make_premise(LT lhs, RT rhs, Utils::CustomString name);
 
-        template<typename LT, typename RT, typename CmpOpT>
+        template<typename LT, typename RT, Comparison cmp_operator>
         class Premise: public Impertinent, public Notifier, public Notifiable
         {
+
         friend class Condition;
         private:
             LT lhs_value;
@@ -36,7 +37,6 @@ namespace JuNOCpp
         private:
             Premise(LT lhs, 
                     RT rhs,
-                    CmpOpT _op,
                     Utils::CustomString name = "UnnamedPremise"
             );
 
@@ -46,15 +46,15 @@ namespace JuNOCpp
             Premise(Premise&& rhs) = delete;
             ~Premise();
             
-            friend auto make_premise<>(LT lhs, CmpOpT comparison_operator, RT rhs, Utils::CustomString name);
+            friend auto make_premise<cmp_operator>(LT lhs, RT rhs, Utils::CustomString name);
 
             const bool getCurrentStatus() const { return status; }
 
-            void update(const bool renotify = false);
+            void update(const bool renotify = false) override;
 
-            void update(const bool renotify, const bool status) {}
+            void update(const bool renotify, const bool status) override {}
 
-            void makeImpertinent();
+            void makeImpertinent() override;
             Premise& impertinentThis()
             {
                 this->makeImpertinent();
@@ -63,14 +63,14 @@ namespace JuNOCpp
             void activate() override;
             void deactivate() override;
 
-            template <class RLT, typename RPrRT, typename RPrCmpOpT>
-            Condition& operator &&(Premise<RLT, RPrRT, RPrCmpOpT>& b_premise);
-            template <class RLT, typename RPrRT, typename RPrCmpOpT>
-            Condition& operator &&(Premise<RLT, RPrRT, RPrCmpOpT>&& b_premise);
-            template <class RLT, typename RPrRT, typename RPrCmpOpT>
-            Condition& operator ||(Premise<RLT, RPrRT, RPrCmpOpT>& b_premise);
-            template <class RLT, typename RPrRT, typename RPrCmpOpT>
-            Condition& operator ||(Premise<RLT, RPrRT, RPrCmpOpT>&& b_premise);
+            template <class RLT, typename RPrRT, Comparison rPr_cmp_op>
+            Condition& operator &&(Premise<RLT, RPrRT, rPr_cmp_op>& b_premise);
+            template <class RLT, typename RPrRT, Comparison rPr_cmp_op>
+            Condition& operator &&(Premise<RLT, RPrRT, rPr_cmp_op>&& b_premise);
+            template <class RLT, typename RPrRT, Comparison rPr_cmp_op>
+            Condition& operator ||(Premise<RLT, RPrRT, rPr_cmp_op>& b_premise);
+            template <class RLT, typename RPrRT, Comparison rPr_cmp_op>
+            Condition& operator ||(Premise<RLT, RPrRT, rPr_cmp_op>&& b_premise);
 
             Condition& operator &&(Condition& b_condition);
             Condition& operator &&(Condition&& b_condition);
@@ -85,16 +85,16 @@ namespace JuNOCpp
          * 
          * @tparam LT 
          * @tparam RT 
-         * @tparam CmpOpT 
+         * @tparam cmp_operator 
          * @param lhs 
          * @param rhs_val 
          * @param _op 
          * @param name 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        Premise<LT, RT, CmpOpT>::Premise(
+        template <typename LT, typename RT, Comparison cmp_operator>
+        Premise<LT, RT, cmp_operator>::Premise(
             LT lhs,
-            RT rhs_val, CmpOpT _op, Utils::CustomString name
+            RT rhs_val, Utils::CustomString name
         ) : 
         Notifiable(name),
         lhs_value{lhs}, 
@@ -109,10 +109,10 @@ namespace JuNOCpp
          * 
          * @tparam LT 
          * @tparam RT 
-         * @tparam CmpOpT 
+         * @tparam cmp_operator 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        Premise<LT, RT, CmpOpT>::~Premise()
+        template <typename LT, typename RT, Comparison cmp_operator>
+        Premise<LT, RT, cmp_operator>::~Premise()
         {
         }
 
@@ -121,20 +121,20 @@ namespace JuNOCpp
          * 
          * @tparam LT 
          * @tparam RT 
-         * @tparam CmpOpT 
+         * @tparam cmp_operator 
          * @param renotify 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        void Premise<LT, RT, CmpOpT>::update(const bool renotify)
+        template <typename LT, typename RT, Comparison cmp_operator>
+        void Premise<LT, RT, cmp_operator>::update(const bool renotify)
         {
-            if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::not_equal_t>) {
+            if constexpr(cmp_operator == Comparison::NOT_EQUAL) {
                 if constexpr(Utils::NOPTraits::is_attribute_v<LT>){
                     if constexpr(std::is_same_v<Utils::NOPTraits::is_attribute_t<LT>, RT>)
-                    status = lhs_value->getCurrentStatus() != rhs_value;
+                    status = lhs_value->getValue() != rhs_value;
                     else if constexpr(Utils::NOPTraits::is_attribute_of_v<RT, Utils::NOPTraits::is_attribute_t<LT>>)
-                        status = lhs_value->getCurrentStatus() != rhs_value->getCurrentStatus();
+                        status = lhs_value->getValue() != rhs_value->getValue();
                     else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
-                        status = lhs_value->getCurrentStatus() != Utils::NOPTraits::eval(rhs_value);
+                        status = lhs_value->getValue() != Utils::NOPTraits::eval(rhs_value);
                     else {
                         std::cout << "Invalid rhs_value type (RT)!" << std::endl;
                         exit(1);
@@ -144,14 +144,14 @@ namespace JuNOCpp
                     std::cout << "Invalid lhs_value type (LT)!" << std::endl;
                     exit(1);
                 }
-            } else if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::equal_t>) {
+            } else if constexpr(cmp_operator == Comparison::EQUAL) {
                 if constexpr(Utils::NOPTraits::is_attribute_v<LT>){
                     if constexpr(std::is_same_v<Utils::NOPTraits::is_attribute_t<LT>, RT>)
-                    status = lhs_value->getCurrentStatus() == rhs_value;
+                    status = lhs_value->getValue() == rhs_value;
                     else if constexpr(Utils::NOPTraits::is_attribute_of_v<RT, Utils::NOPTraits::is_attribute_t<LT>>)
-                        status = lhs_value->getCurrentStatus() == rhs_value->getCurrentStatus();
+                        status = lhs_value->getValue() == rhs_value->getValue();
                     else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
-                        status = lhs_value->getCurrentStatus() == Utils::NOPTraits::eval(rhs_value);
+                        status = lhs_value->getValue() == Utils::NOPTraits::eval(rhs_value);
                     else {
                         std::cout << "Invalid rhs_value type (RT)!" << std::endl;
                         exit(1);
@@ -161,14 +161,14 @@ namespace JuNOCpp
                     std::cout << "Invalid lhs_value type (LT)!" << std::endl;
                     exit(1);
                 }
-            } else if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::greater_t>) {
+            } else if constexpr(cmp_operator == Comparison::GREATER) {
                 if constexpr(Utils::NOPTraits::is_attribute_v<LT>){
                     if constexpr(std::is_same_v<Utils::NOPTraits::is_attribute_t<LT>, RT>)
-                    status = lhs_value->getCurrentStatus() > rhs_value;
+                    status = lhs_value->getValue() > rhs_value;
                     else if constexpr(Utils::NOPTraits::is_attribute_of_v<RT, Utils::NOPTraits::is_attribute_t<LT>>)
-                        status = lhs_value->getCurrentStatus() > rhs_value->getCurrentStatus();
+                        status = lhs_value->getValue() > rhs_value->getValue();
                     else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
-                        status = lhs_value->getCurrentStatus() > Utils::NOPTraits::eval(rhs_value);
+                        status = lhs_value->getValue() > Utils::NOPTraits::eval(rhs_value);
                     else {
                         std::cout << "Invalid rhs_value type (RT)!" << std::endl;
                         exit(1);
@@ -178,14 +178,14 @@ namespace JuNOCpp
                     std::cout << "Invalid lhs_value type (LT)!" << std::endl;
                     exit(1);
                 }
-            } else if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::greater_equal_t>) {
+            } else if constexpr(cmp_operator == Comparison::GREATER_EQUAL) {
                 if constexpr(Utils::NOPTraits::is_attribute_v<LT>){
                     if constexpr(std::is_same_v<Utils::NOPTraits::is_attribute_t<LT>, RT>)
-                    status = lhs_value->getCurrentStatus() >= rhs_value;
+                    status = lhs_value->getValue() >= rhs_value;
                     else if constexpr(Utils::NOPTraits::is_attribute_of_v<RT, Utils::NOPTraits::is_attribute_t<LT>>)
-                        status = lhs_value->getCurrentStatus() >= rhs_value->getCurrentStatus();
+                        status = lhs_value->getValue() >= rhs_value->getValue();
                     else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
-                        status = lhs_value->getCurrentStatus() >= Utils::NOPTraits::eval(rhs_value);
+                        status = lhs_value->getValue() >= Utils::NOPTraits::eval(rhs_value);
                     else {
                         std::cout << "Invalid rhs_value type (RT)!" << std::endl;
                         exit(1);
@@ -195,14 +195,14 @@ namespace JuNOCpp
                     std::cout << "Invalid lhs_value type (LT)!" << std::endl;
                     exit(1);
                 }
-            } else if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::less_t>) {
+            } else if constexpr(cmp_operator == Comparison::LESS) {
                 if constexpr(Utils::NOPTraits::is_attribute_v<LT>){
                     if constexpr(std::is_same_v<Utils::NOPTraits::is_attribute_t<LT>, RT>)
-                    status = lhs_value->getCurrentStatus() < rhs_value;
+                    status = lhs_value->getValue() < rhs_value;
                     else if constexpr(Utils::NOPTraits::is_attribute_of_v<RT, Utils::NOPTraits::is_attribute_t<LT>>)
-                        status = lhs_value->getCurrentStatus() < rhs_value->getCurrentStatus();
+                        status = lhs_value->getValue() < rhs_value->getValue();
                     else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
-                        status = lhs_value->getCurrentStatus() < Utils::NOPTraits::eval(rhs_value);
+                        status = lhs_value->getValue() < Utils::NOPTraits::eval(rhs_value);
                     else {
                         std::cout << "Invalid rhs_value type (RT)!" << std::endl;
                         exit(1);
@@ -212,14 +212,14 @@ namespace JuNOCpp
                     std::cout << "Invalid lhs_value type (LT)!" << std::endl;
                     exit(1);
                 }
-            } else if constexpr(std::is_same_v<CmpOpT, Utils::NOPTraits::less_equal_t>) {
+            } else if constexpr(cmp_operator == Comparison::LESS_EQUAL) {
                 if constexpr(Utils::NOPTraits::is_attribute_v<LT>){
                     if constexpr(std::is_same_v<Utils::NOPTraits::is_attribute_t<LT>, RT>)
-                    status = lhs_value->getCurrentStatus() <= rhs_value;
+                    status = lhs_value->getValue() <= rhs_value;
                     else if constexpr(Utils::NOPTraits::is_attribute_of_v<RT, Utils::NOPTraits::is_attribute_t<LT>>)
-                        status = lhs_value->getCurrentStatus() <= rhs_value->getCurrentStatus();
+                        status = lhs_value->getValue() <= rhs_value->getValue();
                     else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
-                        status = lhs_value->getCurrentStatus() <= Utils::NOPTraits::eval(rhs_value);
+                        status = lhs_value->getValue() <= Utils::NOPTraits::eval(rhs_value);
                     else {
                         std::cout << "Invalid rhs_value type (RT)!" << std::endl;
                         exit(1);
@@ -270,10 +270,10 @@ namespace JuNOCpp
          * 
          * @tparam LT 
          * @tparam RT 
-         * @tparam CmpOpT 
+         * @tparam cmp_operator 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        void Premise<LT, RT, CmpOpT>::makeImpertinent()
+        template <typename LT, typename RT, Comparison cmp_operator>
+        void Premise<LT, RT, cmp_operator>::makeImpertinent()
         { 
             impertinent = true; 
 
@@ -301,8 +301,8 @@ namespace JuNOCpp
 
         }
 
-        template <typename LT, typename RT, typename CmpOpT>
-        void Premise<LT, RT, CmpOpT>::activate()
+        template <typename LT, typename RT, Comparison cmp_operator>
+        void Premise<LT, RT, cmp_operator>::activate()
         {
             #ifdef SHOW_NOP_LOGGER
                 Utils::NOPLogger::Get().writeImpertinentActivated(name, this);
@@ -327,8 +327,8 @@ namespace JuNOCpp
             #endif // SHOW_NOP_LOGGER 
         }
 
-        template <typename LT, typename RT, typename CmpOpT>
-        void Premise<LT, RT, CmpOpT>::deactivate()
+        template <typename LT, typename RT, Comparison cmp_operator>
+        void Premise<LT, RT, cmp_operator>::deactivate()
         {
             #ifdef SHOW_NOP_LOGGER
                 Utils::NOPLogger::Get().writeImpertinentDeactivated(name, this);
@@ -362,38 +362,10 @@ namespace JuNOCpp
          * @param b_premise 
          * @return Condition& 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        template <class RLT, typename RPrRT, typename RPrCmpOpT>
-        Condition& Premise<LT, RT, CmpOpT>::operator &&(Premise<RLT, RPrRT, RPrCmpOpT>& b_premise)
+        template <typename LT, typename RT, Comparison cmp_operator>
+        template <class RLT, typename RPrRT, Comparison rPr_cmp_op>
+        Condition& Premise<LT, RT, cmp_operator>::operator &&(Premise<RLT, RPrRT, rPr_cmp_op>& b_premise)
         {
-            // #ifdef USE_CUSTOM_SMART_PTRS
-            //     shared_ptr<Condition> condition(new Condition());
-            // #else
-            //     shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            // #endif // USE_CUSTOM_SMART_PTRS
-
-            // condition->setQuantity(2);
-            // condition->setMode(Condition::CONJUNCTION);
-
-            // if(this->isImpertinent())
-            // {
-            //     condition->incCountImpertinents();
-            //     condition->addImpertinent(this);
-            // }
-            // if(b_premise.isImpertinent())
-            // {
-            //     condition->incCountImpertinents();
-            //     condition->addImpertinent(&b_premise);
-            // }
-            // // std::cout << condition->count_impertinents << std::endl;
-            // this->insert(condition);
-            // b_premise.insert(condition);
-
-            // if(this->status and !this->impertinent)
-            //     condition->update(false, this->status);
-            // if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-            //     condition->update(false, b_premise.getCurrentStatus());
-            //return *condition;
             return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_premise);
         }
 
@@ -405,29 +377,11 @@ namespace JuNOCpp
          * @param b_premise 
          * @return Condition& 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        template <class RLT, typename RPrRT, typename RPrCmpOpT>
-        Condition& Premise<LT, RT, CmpOpT>::operator &&(Premise<RLT, RPrRT, RPrCmpOpT>&& b_premise)
+        template <typename LT, typename RT, Comparison cmp_operator>
+        template <class RLT, typename RPrRT, Comparison rPr_cmp_op>
+        Condition& Premise<LT, RT, cmp_operator>::operator &&(Premise<RLT, RPrRT, rPr_cmp_op>&& b_premise)
         {
-            // #ifdef USE_CUSTOM_SMART_PTRS
-            //     shared_ptr<Condition> condition(new Condition());
-            // #else
-            //     shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            // #endif // USE_CUSTOM_SMART_PTRS
-            // condition->setQuantity(2);
-            // condition->setMode(Condition::CONJUNCTION);
-
-            // this->insert(condition);
-            // b_premise.insert(condition);
-
-            // if(this->status and !this->impertinent)
-            //     condition->update(false, this->status);
-            // if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-            //     condition->update(false, b_premise.getCurrentStatus());
-            
-            // return *condition;
-
-             return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_premise);
+            return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_premise);
         }
 
         /**
@@ -438,28 +392,11 @@ namespace JuNOCpp
          * @param b_premise 
          * @return Condition& 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        template <class RLT, typename RPrRT, typename RPrCmpOpT>
-        Condition& Premise<LT, RT, CmpOpT>::operator ||(Premise<RLT, RPrRT, RPrCmpOpT>& b_premise)
+        template <typename LT, typename RT, Comparison cmp_operator>
+        template <class RLT, typename RPrRT, Comparison rPr_cmp_op>
+        Condition& Premise<LT, RT, cmp_operator>::operator ||(Premise<RLT, RPrRT, rPr_cmp_op>& b_premise)
         {
-            // #ifdef USE_CUSTOM_SMART_PTRS
-            //     shared_ptr<Condition> condition(new Condition());
-            // #else
-            //     shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            // #endif // USE_CUSTOM_SMART_PTRS
-            // condition->setQuantity(1);
-            // condition->setMode(Condition::DISJUNCTION);
-
-            // this->insert(condition);
-            // b_premise.insert(condition);
-
-            // if(this->status and !this->impertinent)
-            //     condition->update(false, this->status);
-            // if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-            //     condition->update(false, b_premise.getCurrentStatus());
-            
-            // return *condition;
-             return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_premise);
+            return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_premise);
         }
 
         /**
@@ -470,29 +407,11 @@ namespace JuNOCpp
          * @param b_premise 
          * @return Condition& 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        template <class RLT, typename RPrRT, typename RPrCmpOpT>
-        Condition& Premise<LT, RT, CmpOpT>::operator ||(Premise<RLT, RPrRT, RPrCmpOpT>&& b_premise)
+        template <typename LT, typename RT, Comparison cmp_operator>
+        template <class RLT, typename RPrRT, Comparison rPr_cmp_op>
+        Condition& Premise<LT, RT, cmp_operator>::operator ||(Premise<RLT, RPrRT, rPr_cmp_op>&& b_premise)
         {
-            // #ifdef USE_CUSTOM_SMART_PTRS
-            //     shared_ptr<Condition> condition(new Condition());
-            // #else
-            //     shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            // #endif // USE_CUSTOM_SMART_PTRS
-            // condition->setQuantity(1);
-            // condition->setMode(Condition::DISJUNCTION);
-
-            // this->insert(condition);
-            // b_premise.insert(condition);
-
-            // if(this->status and !this->impertinent)
-            //     condition->update(false, this->status);
-            // if(b_premise.getCurrentStatus() and !b_premise.isImpertinent())
-            //     condition->update(false, b_premise.getCurrentStatus());
-            
-            // return *condition;
-
-             return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_premise);
+            return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_premise);
         }
 
         /**
@@ -502,40 +421,9 @@ namespace JuNOCpp
          * @param b_condition
          * @return Condition& 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        Condition& Premise<LT, RT, CmpOpT>::operator &&(Condition& b_condition)
+        template <typename LT, typename RT, Comparison cmp_operator>
+        Condition& Premise<LT, RT, cmp_operator>::operator &&(Condition& b_condition)
         {
-            // if((b_condition.getMode() == Condition::CONJUNCTION or b_condition.getMode() == Condition::SINGLE) and !b_condition.isPersistant())
-            // {
-            //     this->insert(b_condition.shared_from_this());
-            //     b_condition.incQuantity();
-
-            //     if(this->status and !this->impertinent)
-            //         b_condition.update(false, this->status);
-                
-            //     return b_condition;
-            // }
-            // else
-            // {
-            //     #ifdef USE_CUSTOM_SMART_PTRS
-            //         shared_ptr<Condition> condition(new Condition());
-            //     #else
-            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            //     #endif // USE_CUSTOM_SMART_PTRS
-            //     condition->setQuantity(2);
-            //     condition->setMode(Condition::CONJUNCTION);
-
-            //     this->insert(condition);
-            //     b_condition.insert(condition);
-
-            //     if(this->status and !this->impertinent)
-            //         condition->update(false, this->status);
-            //     if(b_condition.getCurrentStatus())
-            //         condition->update(false, b_condition.getCurrentStatus());
-                
-                
-            //     return *condition;
-            // }
             return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_condition);
         }
 
@@ -546,39 +434,9 @@ namespace JuNOCpp
          * @param b_condition 
          * @return Condition& 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        Condition& Premise<LT, RT, CmpOpT>::operator &&(Condition&& b_condition)
+        template <typename LT, typename RT, Comparison cmp_operator>
+        Condition& Premise<LT, RT, cmp_operator>::operator &&(Condition&& b_condition)
         {
-            // if((b_condition.mode == Condition::CONJUNCTION or b_condition.mode == Condition::SINGLE) and !b_condition.isPersistant())
-            // {
-            //     this->insert(b_condition.shared_from_this());
-            //     b_condition.incQuantity();
-
-            //     if(this->status and !this->impertinent)
-            //         b_condition.update(false, this->status);
-                
-            //     return b_condition;
-            // }
-            // else
-            // {
-            //     #ifdef USE_CUSTOM_SMART_PTRS
-            //         shared_ptr<Condition> condition(new Condition());
-            //     #else
-            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            //     #endif // USE_CUSTOM_SMART_PTRS
-            //     condition->setQuantity(2);
-            //     condition->setMode(Condition::CONJUNCTION);
-
-            //     this->insert(condition);
-            //     b_condition.insert(condition);
-
-            //     if(this->status and !this->impertinent)
-            //         condition->update(false, this->status);
-            //     if(b_condition.getCurrentStatus())
-            //         condition->update(false, b_condition.getCurrentStatus());
-                
-            //     return *condition;
-            // }
             return *make_condition(this, Condition::LogicalOperator::CONJUNCTION, &b_condition);
         }
 
@@ -589,38 +447,9 @@ namespace JuNOCpp
          * @param b_condition 
          * @return Condition& 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        Condition& Premise<LT, RT, CmpOpT>::operator ||(Condition& b_condition)
+        template <typename LT, typename RT, Comparison cmp_operator>
+        Condition& Premise<LT, RT, cmp_operator>::operator ||(Condition& b_condition)
         {
-            // if ((b_condition.getMode() == Condition::DISJUNCTION or b_condition.getMode() == Condition::SINGLE) and !b_condition.isPersistant())
-            // {
-            //     this->insert(b_condition.shared_from_this());
-
-            //     if(this->status and !this->impertinent)
-            //         b_condition.update(false, this->status);
-
-            //     return b_condition;
-            // }
-            // else
-            // {
-            //     #ifdef USE_CUSTOM_SMART_PTRS
-            //         shared_ptr<Condition> condition(new Condition());
-            //     #else
-            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            //     #endif // USE_CUSTOM_SMART_PTRS
-            //     condition->setQuantity(1);
-            //     condition->setMode(Condition::DISJUNCTION);
-
-            //     this->insert(condition);
-            //     b_condition.insert(condition);
-
-            //     if(this->status and !this->impertinent)
-            //         condition->update(false, this->status);
-            //     if(b_condition.getCurrentStatus())
-            //         condition->update(false, b_condition.getCurrentStatus());
-                
-            //     return *condition;
-            // }
             return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_condition);
         }
 
@@ -631,39 +460,9 @@ namespace JuNOCpp
          * @param b_condition 
          * @return Condition& 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        Condition& Premise<LT, RT, CmpOpT>::operator ||(Condition&& b_condition)
+        template <typename LT, typename RT, Comparison cmp_operator>
+        Condition& Premise<LT, RT, cmp_operator>::operator ||(Condition&& b_condition)
         {
-            // if ((b_condition.mode == Condition::DISJUNCTION or b_condition.mode == Condition::SINGLE) and !b_condition.isPersistant())
-            // {
-            //     this->insert(b_condition.shared_from_this());
-
-            //     if(this->status and !this->impertinent)
-            //         b_condition.update(false, this->status);
-
-            //     return b_condition;
-            // }
-            // else
-            // {
-            //     #ifdef USE_CUSTOM_SMART_PTRS
-            //         shared_ptr<Condition> condition(new Condition());
-            //     #else
-            //         shared_ptr<Condition> condition = std::make_shared<Condition>(*new Condition());
-            //     #endif // USE_CUSTOM_SMART_PTRS
-            //     condition->setQuantity(1);
-            //     condition->setMode(Condition::DISJUNCTION);
-
-            //     this->insert(condition);
-            //     b_condition.insert(condition);
-
-            //     if(this->status and !this->impertinent)
-            //         condition->update(false, this->status);
-            //     if(b_condition.getCurrentStatus())
-            //         condition->update(false, b_condition.getCurrentStatus());
-                
-            //     return *condition;
-            // }
-
             return *make_condition(this, Condition::LogicalOperator::DISJUNCTION, &b_condition);
         }
 
@@ -673,8 +472,8 @@ namespace JuNOCpp
          * @tparam LT 
          * @return Condition& 
          */
-        template <typename LT, typename RT, typename CmpOpT>
-        Premise<LT, RT, CmpOpT>::operator Condition&()
+        template <typename LT, typename RT, Comparison cmp_operator>
+        Premise<LT, RT, cmp_operator>::operator Condition&()
         {
             #ifdef USE_CUSTOM_SMART_PTRS
                 shared_ptr<Condition> condition(new Condition());
@@ -693,17 +492,17 @@ namespace JuNOCpp
         }
 
 
-        template<typename LT, typename RT, typename CmpOpT>
-        auto make_premise(LT lhs, CmpOpT comparison_operator, RT rhs, Utils::CustomString name)
+        template<Comparison cmp_operator, typename LT, typename RT>
+        auto make_premise(LT lhs, RT rhs, Utils::CustomString name)
         {
             #ifdef USE_CUSTOM_SMART_PTRS
-                shared_ptr<Premise<LT, RT, CmpOpT>> premise
-                    (new Premise<LT, RT, CmpOpT>
-                        (lhs, rhs, comparison_operator, name));
+                shared_ptr<Premise<LT, RT, cmp_operator>> premise
+                    (new Premise<LT, RT, cmp_operator>
+                        (lhs, rhs, name));
             #else
-                shared_ptr<Premise<LT, RT, CmpOpT>> premise = 
-                    std::make_shared<Premise<LT, RT, CmpOpT>>
-                        (*new Premise<LT, RT, CmpOpT>(lhs, rhs, comparison_operator, name));
+                shared_ptr<Premise<LT, RT, cmp_operator>> premise = 
+                    std::make_shared<Premise<LT, RT, cmp_operator>>
+                        (*new Premise<LT, RT, cmp_operator>(lhs, rhs, name));
             #endif // USE_CUSTOM_SMART_PTRS
 
             if constexpr(Utils::NOPTraits::is_attribute_v<LT>)

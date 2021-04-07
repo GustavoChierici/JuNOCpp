@@ -18,6 +18,7 @@
 #else
     #include <memory>
 #endif // USE_CUSTOM_SMART_PTRS
+#include <tuple>
 
 namespace JuNOCpp
 {
@@ -65,61 +66,61 @@ namespace JuNOCpp
             template<typename AttrType, typename Type>
             inline constexpr bool is_attribute_of_v = is_attribute_of<AttrType, Type>::value;
             
-            auto at_add_at = [](auto ... args) { return (... + args->getCurrentStatus()); };
-            using at_add_at_t = decltype(at_add_at);
-
             /** Attribute opertions (used in tuples) **/
             /** + operator **/
 
-            auto at_add_val = [](auto attr, auto ... values) { return attr->getCurrentStatus() + (... + values); };
+            static auto at_add_at = [](auto ... args) { return (... + args->getValue()); };
+            using at_add_at_t = decltype(at_add_at);
+
+            static auto at_add_val = [](auto attr, auto ... values) { return attr->getValue() + (... + values); };
             using at_add_val_t = decltype(at_add_val);
 
-            auto val_add_at = [](auto value, auto ... attrs) { return value + (... + attrs->getCurrentStatus()); };
+            static auto val_add_at = [](auto value, auto ... attrs) { return value + (... + attrs->getValue()); };
             using val_add_at_t = decltype(val_add_at);
 
-            auto val_add_val = [](auto... args) { return (... + args); };
+            static auto val_add_val = [](auto... args) { return (... + args); };
             using val_add_val_t = decltype(val_add_val);
 
             /** - operator **/
 
-            auto at_sub_at = [](auto ... args) { return (... - args->getCurrentStatus()); };
+            static auto at_sub_at = [](auto ... args) { return (... - args->getValue()); };
             using at_sub_at_t = decltype(at_sub_at);
 
-            auto at_sub_val = [](auto attr, auto ... values) { return attr->getCurrentStatus() - (... - values); };
+            static auto at_sub_val = [](auto attr, auto ... values) { return attr->getValue() - (... - values); };
             using at_sub_val_t = decltype(at_sub_val);
 
-            auto val_sub_at = [](auto value, auto ... attrs) { return value - (... - attrs->getCurrentStatus()); };
+            static auto val_sub_at = [](auto value, auto ... attrs) { return value - (... - attrs->getValue()); };
             using val_sub_at_t = decltype(val_sub_at);
 
-            auto val_sub_val = [](auto... args) { return (... - args); };
+            static auto val_sub_val = [](auto... args) { return (... - args); };
             using val_sub_val_t = decltype(val_sub_val);
 
             /** * operator **/
 
-            auto at_mult_at = [](auto ... args) { return (... * args->getCurrentStatus()); };
+            static auto at_mult_at = [](auto ... args) { return (... * args->getValue()); };
             using at_mult_at_t = decltype(at_mult_at);
 
-            auto at_mult_val = [](auto attr, auto ... values) { return attr->getCurrentStatus() * (... * values); };
+            static auto at_mult_val = [](auto attr, auto ... values) { return attr->getValue() * (... * values); };
             using at_mult_val_t = decltype(at_mult_val);
 
-            auto val_mult_at = [](auto value, auto ... attrs) { return value * (... * attrs->getCurrentStatus()); };
+            static auto val_mult_at = [](auto value, auto ... attrs) { return value * (... * attrs->getValue()); };
             using val_mult_at_t = decltype(val_mult_at);
 
-            auto val_mult_val = [](auto... args) { return (... * args); };
+            static auto val_mult_val = [](auto... args) { return (... * args); };
             using val_mult_val_t = decltype(val_mult_val);
 
             /** / operator **/
 
-            auto at_div_at = [](auto ... args) { return (... / args->getCurrentStatus()); };
+            static auto at_div_at = [](auto ... args) { return (... / args->getValue()); };
             using at_div_at_t = decltype(at_div_at);
 
-            auto at_div_val = [](auto attr, auto ... values) { return attr->getCurrentStatus() / (... / values); };
+            static auto at_div_val = [](auto attr, auto ... values) { return attr->getValue() / (... / values); };
             using at_div_val_t = decltype(at_div_val);
 
-            auto val_div_at = [](auto value, auto ... attrs) { return value / (... / attrs->getCurrentStatus()); };
+            static auto val_div_at = [](auto value, auto ... attrs) { return value / (... / attrs->getValue()); };
             using val_div_at_t = decltype(val_div_at);
 
-            auto val_div_val = [](auto... args) { return (... / args); };
+            static auto val_div_val = [](auto... args) { return (... / args); };
             using val_div_val_t = decltype(val_div_val);
 
             #ifdef USE_CUSTOM_SMART_PTRS

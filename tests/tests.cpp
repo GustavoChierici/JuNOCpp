@@ -6,14 +6,14 @@ TEST_CASE("Attribute can be of type int", "[Attribute]")
 {
     NOP::Attribute<int> at1{123456};
 
-    REQUIRE(at1.getCurrentStatus() == 123456);
+    REQUIRE(at1.getValue() == 123456);
 }
 
 TEST_CASE("Attribute can be of type bool", "[Attribute]")
 {
     NOP::Attribute<bool> at1{true};
 
-    REQUIRE(at1.getCurrentStatus() == true);
+    REQUIRE(at1.getValue() == true);
 }
 
 TEST_CASE("Attribute can be of a custom type", "[Attribute]")
@@ -34,14 +34,14 @@ TEST_CASE("Attribute can be of a custom type", "[Attribute]")
 
     const Rectangle val1{1, 2};
     NOP::Attribute<Rectangle> at1{val1};
-    REQUIRE(at1.getCurrentStatus() == val1);
+    REQUIRE(at1.getValue() == val1);
 
     const Rectangle val2{3, 4};
     NOP::Attribute<Rectangle> at2{val2};
-    REQUIRE_FALSE(at1.getCurrentStatus() == at2.getCurrentStatus());
+    REQUIRE_FALSE(at1.getValue() == at2.getValue());
 
-    at2.setStatus(val1);
-    REQUIRE(at1.getCurrentStatus() == at2.getCurrentStatus());
+    at2.setValue(val1);
+    REQUIRE(at1.getValue() == at2.getValue());
 }
 
 TEST_CASE("Attribute can be of type string", "[Attribute]")
@@ -49,7 +49,7 @@ TEST_CASE("Attribute can be of type string", "[Attribute]")
     const std::string val{"test"};
     NOP::Attribute<std::string> at1{val};
 
-    REQUIRE(at1.getCurrentStatus() == val);
+    REQUIRE(at1.getValue() == val);
 }
 
 SCENARIO("Premises can be a comparison between an Attribute and a const value", "[Premise]")
@@ -311,7 +311,7 @@ SCENARIO("Premises can be impertinents", "[Premise][Impertinent]")
         {
             auto& cd = pr1 and prImp;
             
-            AND_WHEN("The Attribute of the impertinent Premise changes");
+            AND_WHEN("The Attribute of the impertinent Premise changes")
             {
                 at2 = true;
                 THEN("The impertinent Premise remains unapproved")

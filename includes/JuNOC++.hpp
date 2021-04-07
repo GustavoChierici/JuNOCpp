@@ -48,30 +48,30 @@ namespace NOP {
     using AttributePtr = shared_ptr<Core::Attribute<TYPE>>;
 
     template<class PrT, typename RT>
-    using PremiseEqual = Core::Premise<PrT, RT, NOPTraits::equal_t>&;
+    using PremiseEqual = Core::Premise<PrT, RT, Core::Comparison::EQUAL>&;
     template<class PrT, typename RT>
-    using PremiseNotEqual = Core::Premise<PrT, RT, NOPTraits::not_equal_t>&;
+    using PremiseNotEqual = Core::Premise<PrT, RT, Core::Comparison::NOT_EQUAL>&;
     template<class PrT, typename RT>
-    using PremiseGreater = Core::Premise<PrT, RT, NOPTraits::greater_t>&;
+    using PremiseGreater = Core::Premise<PrT, RT, Core::Comparison::GREATER>&;
     template<class PrT, typename RT>
-    using PremiseGreaterEqual = Core::Premise<PrT, RT, NOPTraits::greater_equal_t>&;
+    using PremiseGreaterEqual = Core::Premise<PrT, RT, Core::Comparison::GREATER_EQUAL>&;
     template<class PrT, typename RT>
-    using PremiseLess = Core::Premise<PrT, RT, NOPTraits::less_t>&;
+    using PremiseLess = Core::Premise<PrT, RT, Core::Comparison::LESS>&;
     template<class PrT, typename RT>
-    using PremiseLessEqual = Core::Premise<PrT, RT, NOPTraits::less_equal_t>&;
+    using PremiseLessEqual = Core::Premise<PrT, RT, Core::Comparison::LESS_EQUAL>&;
 
     template<class PrT, typename RT>
-    using PremiseEqualPtr = shared_ptr<Core::Premise<PrT, RT, NOPTraits::equal_t>>;
+    using PremiseEqualPtr = shared_ptr<Core::Premise<PrT, RT, Core::Comparison::EQUAL>>;
     template<class PrT, typename RT>
-    using PremiseNotEqualPtr = shared_ptr<Core::Premise<PrT, RT, NOPTraits::not_equal_t>>;
+    using PremiseNotEqualPtr = shared_ptr<Core::Premise<PrT, RT, Core::Comparison::NOT_EQUAL>>;
     template<class PrT, typename RT>
-    using PremiseGreaterPtr = shared_ptr<Core::Premise<PrT, RT, NOPTraits::greater_t>>;
+    using PremiseGreaterPtr = shared_ptr<Core::Premise<PrT, RT, Core::Comparison::GREATER>>;
     template<class PrT, typename RT>
-    using PremiseGreaterEqualPtr = shared_ptr<Core::Premise<PrT, RT, NOPTraits::greater_equal_t>>;
+    using PremiseGreaterEqualPtr = shared_ptr<Core::Premise<PrT, RT, Core::Comparison::GREATER>>;
     template<class PrT, typename RT>
-    using PremiseLessPtr = shared_ptr<Core::Premise<PrT, RT, NOPTraits::less_t>>;
+    using PremiseLessPtr = shared_ptr<Core::Premise<PrT, RT, Core::Comparison::LESS>>;
     template<class PrT, typename RT>
-    using PremiseLessEqualPtr = shared_ptr<Core::Premise<PrT, RT, NOPTraits::less_equal_t>>;
+    using PremiseLessEqualPtr = shared_ptr<Core::Premise<PrT, RT, Core::Comparison::LESS_EQUAL>>;
 
     using Condition = Core::Condition&;
     using ConditionPtr = shared_ptr<Core::Condition>;
