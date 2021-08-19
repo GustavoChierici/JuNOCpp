@@ -186,7 +186,12 @@ namespace JuNOCpp
                 std::apply([premise](auto... args){ (addImpertinent(args, premise), ...); }, tuple);
             }
 
-        } // namespace NOPTrais
+            template<typename T>
+            concept Incrementable = requires(T a) {a++; ++a;};
+            template<typename T>
+            concept Decrementable = requires(T a) {a--; --a;};
+
+        } // namespace NOPTraits
         
     } // namespace Utils
     

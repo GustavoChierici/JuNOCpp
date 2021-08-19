@@ -78,6 +78,10 @@ namespace NOP {
     using Rule = Core::Rule;
     using RulePtr = shared_ptr<Core::Rule>;
     using Instigation = Core::Instigation;
+
+    using Utils::NOPTraits::NoNotify;
+    using Utils::NOPTraits::Notify;
+    using Utils::NOPTraits::ReNotify;
 }
 
 #endif // !JUNOCPP

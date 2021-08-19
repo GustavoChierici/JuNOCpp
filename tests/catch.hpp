@@ -17,6 +17,8 @@
 #define CATCH_VERSION_MINOR 13
 #define CATCH_VERSION_PATCH 4
 
+#define CATCH_CONFIG_ENABLE_BENCHMARKING
+
 #ifdef __clang__
 #    pragma clang system_header
 #elif defined __GNUC__

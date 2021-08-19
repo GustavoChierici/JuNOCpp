@@ -5,12 +5,12 @@
 #include "NOPManager.hpp"
 #include "tuple_helper.hpp"
 #include "premise_traits.hpp"
+#include "common_traits.hpp"
 
 namespace JuNOCpp
 {
     namespace Core
     {
-        enum class Comparison; 
         template <typename LT, typename RT, Comparison cmp_operator>
         class Premise;
         
@@ -30,7 +30,8 @@ namespace JuNOCpp
             TYPE getPreviousValue();
             TYPE getValue();
 
-            void setValue(TYPE value, bool renotify = false);
+            template<Utils::NOPTraits::NotificationFlag flag = Utils::NOPTraits::NotificationFlag::Notify>
+            void setValue(TYPE value);
 
             void update(const bool renotify = false);
             void update(const bool renotify, const bool status) {}
@@ -60,7 +61,8 @@ namespace JuNOCpp
             auto operator/(Utils::tuple_helper<T...> tup_h);
             auto operator/(TYPE value);
 
-            void operator=(TYPE value);
+            void operator=(TYPE value); 
+            void operator=(std::tuple<TYPE, Utils::NOPTraits::NotificationFlag> notification_tup);
 
             Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::EQUAL>& operator==(Attribute<TYPE>& b_attr);
             Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::EQUAL>& operator==(Attribute<TYPE>&& b_attr);
@@ -98,6 +100,39 @@ namespace JuNOCpp
             Premise<Attribute<TYPE>*, TYPE, Comparison::GREATER_EQUAL>& operator>=(const TYPE value);
             Premise<Attribute<TYPE>*, TYPE, Comparison::LESS>& operator<(const TYPE value);
             Premise<Attribute<TYPE>*, TYPE, Comparison::LESS_EQUAL>& operator<=(const TYPE value);
+
+            // operator const TYPE()
+            // {
+            //     return value;
+            // }
+
+            /**
+             * Concepts operators
+             */
+
+            Attribute<TYPE>& operator++(int) requires Utils::NOPTraits::Incrementable<TYPE>
+            {
+                setValue<Utils::NOPTraits::ReNotify>(value++);
+                return *this;
+            }
+
+            Attribute<TYPE>& operator++() requires Utils::NOPTraits::Incrementable<TYPE>
+            {
+                setValue<Utils::NOPTraits::ReNotify>(++value);
+                return *this;
+            }
+
+            Attribute<TYPE>& operator--(int) requires Utils::NOPTraits::Decrementable<TYPE>
+            {
+                setValue<Utils::NOPTraits::ReNotify>(value--);
+                return *this;
+            }
+
+            Attribute<TYPE>& operator--() requires Utils::NOPTraits::Decrementable<TYPE>
+            {
+                setValue<Utils::NOPTraits::ReNotify>(--value);
+                return *this;
+            }
             
         private:
             TYPE value;
@@ -205,9 +240,13 @@ namespace JuNOCpp
          * @param renotify == false
          */
         template<class TYPE>
-        void Attribute<TYPE>::setValue(TYPE value, bool renotify)
+        template<Utils::NOPTraits::NotificationFlag flag>
+        void Attribute<TYPE>::setValue(TYPE value)
         {
-            if(renotify || value != this->value)
+            this->p_value = this->value;
+            this->value = value;
+            if constexpr(flag == Utils::NOPTraits::NoNotify); // Nothing
+            else if constexpr(flag == Utils::NOPTraits::ReNotify)
             {
                 #ifdef SHOW_NOP_LOGGER
                     Utils::NOPLogger::Get().writeAssignment(name, this, value, renotify);
@@ -219,12 +258,14 @@ namespace JuNOCpp
                 this->p_value = this->value;
                 this->value = value;
 
-                notify(renotify);
+                notify(true);
 
                 #ifdef SHOW_NOP_LOGGER
                     Utils::NOPLogger::Get().decrementIdentation();
                 #endif // SHOW_NOP_LOGGER    
             }
+            else if(this->value != this->p_value)
+                notify();
         }
 
         /**
@@ -340,6 +381,16 @@ namespace JuNOCpp
         void Attribute<TYPE>::operator=(TYPE value)
         {
             setValue(value);
+        }
+
+        template<class TYPE>
+        void Attribute<TYPE>::operator=(std::tuple<TYPE, Utils::NOPTraits::NotificationFlag> notification_tup)
+        {
+            const auto [value, flag] = notification_tup;
+            if (flag == Utils::NOPTraits::ReNotify)
+                setValue<Utils::NOPTraits::ReNotify>(value);
+            else
+                setValue(value);
         }
 
         /**
@@ -840,7 +891,6 @@ namespace JuNOCpp
             return *premise;
         }
     } // namespace Core
-    
 }
 
 #endif // !JUNOCPP_ATTRIBUTE_HPP

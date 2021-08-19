@@ -1,5 +1,6 @@
 #include "JuNOC++.hpp"
 #include "catch.hpp"
+#define CATCH_CONFIG_ENABLE_BENCHMARKING
 #include <string>
 
 TEST_CASE("Attribute can be of type int", "[Attribute]")
@@ -464,4 +465,60 @@ SCENARIO("Rules can be constructed directly with the NOP expression itself", "[R
             }
         }
     }
+}
+
+TEST_CASE("Loop Rule", "[Complete]")
+{
+    NOP::Attribute<int> at_counter{0};
+
+    RULE(at_counter < 10)
+        INSTIGATE([&](){
+            ++at_counter;
+        })
+    END_RULE
+
+    REQUIRE(at_counter.getValue() == 10);
+}
+
+long long int factorial(long long int n)
+{
+    return n == 0 ? 1 : n * factorial(n - 1);
+}
+
+long long int iterative_fact(long long int n)
+{
+    for(long long int i = n - 1; i > 0; --i)
+        n *= i;
+
+    return n;
+}
+
+TEST_CASE("Factorial Rule", "[Complete]")
+{
+    BENCHMARK("NOP Factorial")
+    {
+        NOP::Attribute<long long int> at_entry{-1};
+        NOP::Attribute<long long int> at_result{1};
+
+        RULE(at_entry > 0)
+            INSTIGATE([&]{
+                at_result.setValue<NOP::NoNotify>(at_result.getValue() * (at_entry.getValue()));
+                --at_entry;
+            })
+        END_RULE
+
+        at_entry = 1000;
+
+        // REQUIRE(at_result.getValue() == factorial(1000));
+    };
+
+    BENCHMARK("Interative Factorial")
+    {
+        return iterative_fact(1000);
+    };
+
+    BENCHMARK("Recursive Factorial")
+    {
+        return factorial(1000);
+    };
 }

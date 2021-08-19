@@ -178,10 +178,6 @@ namespace JuNOCpp
                             Utils::NOPLogger::Get().decrementIdentation();
                         #endif // SHOW_NOP_LOGGER
                     }
-                    else
-                    {
-                        
-                    }
                 }
                 else if(is_impertinents_active && count_approved + count_impertinents < quantity)
                 {

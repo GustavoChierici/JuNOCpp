@@ -9,6 +9,8 @@ set_target_properties(junocpp_test PROPERTIES
 	CXX_STANDARD 20
 )
 
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wa,-mbig-obj")
+
 target_link_libraries(junocpp_test JuNOC++)
 
 add_test(NAME junocpp_test

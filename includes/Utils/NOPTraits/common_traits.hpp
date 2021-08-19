@@ -56,6 +56,19 @@ namespace JuNOCpp
             template<typename T>
             inline constexpr bool is_string_v= is_string<T>::value;
 
+            enum NotificationFlag
+            {
+                NoNotify = 0,
+                Notify,
+                ReNotify,
+            };
+
+            template<typename T>
+            std::tuple<T, NotificationFlag> operator,(T value, NotificationFlag flag)
+            {
+                return {value, flag};
+            }
+
         } // namespace NOPTraits
         
     } // namespace Utils

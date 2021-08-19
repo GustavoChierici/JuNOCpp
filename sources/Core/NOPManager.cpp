@@ -251,7 +251,8 @@ namespace JuNOCpp
          */
         void NOPManager::EndRule()
         {
-            rule_stack.top()->condition->update();
+            if(rule_stack.top()->condition->getCurrentStatus());
+                rule_stack.top()->update();
             rule_stack.pop();
         }
 
