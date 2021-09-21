@@ -69,6 +69,13 @@ namespace JuNOCpp
                 return {value, flag};
             }
 
+
+
+            //Concepts
+
+            template<typename T>
+            concept ExpressionTuple = is_tuple_v<T>;
+
         } // namespace NOPTraits
         
     } // namespace Utils

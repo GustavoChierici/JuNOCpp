@@ -186,10 +186,26 @@ namespace JuNOCpp
                 std::apply([premise](auto... args){ (addImpertinent(args, premise), ...); }, tuple);
             }
 
+
+            // CONCEPTS
+
+            template<typename T>
+            concept NOPAttribute = is_attribute_v<T>;
+
             template<typename T>
             concept Incrementable = requires(T a) {a++; ++a;};
             template<typename T>
             concept Decrementable = requires(T a) {a--; --a;};
+            template<typename LT, typename RT>
+            concept Addables = requires(LT lhs, RT rhs) {lhs + rhs;};
+            template<typename LT, typename RT>
+            concept Subtractables = requires(LT lhs, RT rhs) {lhs - rhs;};
+            template<typename LT, typename RT>
+            concept Multipliables = requires(LT lhs, RT rhs) {lhs * rhs;};
+            template<typename LT, typename RT>
+            concept Divisibles = requires(LT lhs, RT rhs) {lhs / rhs;};
+
+
 
         } // namespace NOPTraits
         

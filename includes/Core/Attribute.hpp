@@ -41,7 +41,7 @@ namespace JuNOCpp
                 _impertinents.push_back(impertinent);
             }
 
-            auto operator+(Attribute<TYPE>& attr);
+            auto operator+(Attribute<TYPE>& attr) requires Utils::NOPTraits::Addables<TYPE, TYPE>;
             template<typename ...T>
             auto operator+(Utils::tuple_helper<T...> tup_h);
             auto operator+(TYPE value);
@@ -62,6 +62,7 @@ namespace JuNOCpp
             auto operator/(TYPE value);
 
             void operator=(TYPE value); 
+            void operator=(Attribute<TYPE> value); 
             void operator=(std::tuple<TYPE, Utils::NOPTraits::NotificationFlag> notification_tup);
 
             Premise<Attribute<TYPE>*, Attribute<TYPE>*, Comparison::EQUAL>& operator==(Attribute<TYPE>& b_attr);
@@ -284,7 +285,7 @@ namespace JuNOCpp
         }
 
         template <class TYPE>
-        auto Attribute<TYPE>::operator+(Attribute<TYPE>& attr)
+        auto Attribute<TYPE>::operator+(Attribute<TYPE>& attr) requires Utils::NOPTraits::Addables<TYPE, TYPE>
         {
             return Utils::make_tuple_h(std::make_tuple
                 (Utils::NOPTraits::at_add_at, this, &attr), Utils::NOPTraits::at_add_at);
@@ -381,6 +382,18 @@ namespace JuNOCpp
         void Attribute<TYPE>::operator=(TYPE value)
         {
             setValue(value);
+        }
+
+        /**
+         * Overload do operator = para chamar automaticamente o método setValue
+         * 
+         * @tparam TYPE 
+         * @param value 
+         */
+        template<class TYPE>
+        void Attribute<TYPE>::operator=(Attribute<TYPE> value)
+        {
+            setValue(value.getValue());
         }
 
         template<class TYPE>

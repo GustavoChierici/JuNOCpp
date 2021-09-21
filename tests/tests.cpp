@@ -522,3 +522,70 @@ TEST_CASE("Factorial Rule", "[Complete]")
         return factorial(1000);
     };
 }
+
+template<typename T>
+struct NOPList
+{
+    NOP::Attribute<T> hd;
+    NOP::Attribute<NOPList<T>*> tl;
+    NOP::Attribute<T*> to_push;
+
+    NOPList():
+    tl{nullptr},
+    to_push{nullptr}
+    {
+        RULE(this->to_push != nullptr and this->tl == nullptr)
+        INSTIGATE([this](){
+            this->hd = *this->to_push.getValue();
+            delete this->to_push.getValue();
+            this->to_push = nullptr;
+            this->tl = new NOPList<T>();
+        })
+        END_RULE
+
+        RULE(this->to_push != nullptr and this->tl != nullptr)
+        INSTIGATE([this](){
+            this->tl.getValue()->push(*this->to_push.getValue());
+            delete this->to_push.getValue();
+            this->to_push = nullptr;
+        })
+        END_RULE
+
+    }
+
+    void push(T element)
+    {
+        this->to_push = new int(element);
+    }
+};
+
+TEST_CASE("NOPList", "[DataStructures]")
+{
+    auto list = new NOPList<int>;
+
+    list->push(5);
+    list->push(6);
+    list->push(52);
+    list->push(-47);
+
+    // auto aux = list;
+
+    // NOP::Attribute<NOPList<int>*> aux{list};
+
+    // while(aux != nullptr)
+    // {
+    //     std::cout << aux->hd.getValue() << "-" << aux << std::endl;
+    //     aux = aux->tl.getValue();
+    // }
+
+    // RULE(aux != nullptr)
+    //     INSTIGATE([&](){
+    //         std::cout << aux.getValue()->hd.getValue() << std::endl;
+    //         aux.setValue<NOP::ReNotify>(aux.getValue()->tl.getValue());
+    //     })
+    // END_RULE
+
+    REQUIRE(list->hd.getValue() == 5);
+    REQUIRE(list->tl.getValue()->tl.getValue()->hd.getValue() == 52);
+
+}

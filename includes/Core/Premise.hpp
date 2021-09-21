@@ -505,11 +505,13 @@ namespace JuNOCpp
                         (*new Premise<LT, RT, cmp_operator>(lhs, rhs, name));
             #endif // USE_CUSTOM_SMART_PTRS
 
-            if constexpr(Utils::NOPTraits::is_attribute_v<LT>)
+            if constexpr(Utils::NOPTraits::NOPAttribute<LT>)
                 lhs->insert(premise);
-            if constexpr(Utils::NOPTraits::is_attribute_v<RT>)
+            else if constexpr(Utils::NOPTraits::ExpressionTuple<LT>)
+                Utils::NOPTraits::insertPremise(lhs, premise);
+            if constexpr(Utils::NOPTraits::NOPAttribute<RT>)
                 rhs->insert(premise);
-            else if constexpr(Utils::NOPTraits::is_tuple_v<RT>)
+            else if constexpr(Utils::NOPTraits::ExpressionTuple<RT>)
                 Utils::NOPTraits::insertPremise(rhs, premise);
 
             premise->update();
